@@ -16,6 +16,7 @@ import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MANIFEST_PATH = path.resolve(__dirname, "..", "src", "manifest.json");
+const PACKAGE_PATH  = path.resolve(__dirname, "..", "package.json");
 
 function main() {
     let tag = process.env.CI_COMMIT_TAG;
@@ -33,6 +34,15 @@ function main() {
     manifest.version = version;
     writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
     console.log("set-version: manifest.json version -> " + version);
+
+    // package.json's version is the npm-package identity, not the shipped
+    // extension version, but keeping the two numbers in sync avoids the
+    // confusing "which version is this really" question when someone reads
+    // package.json without knowing manifest.json is the source of truth.
+    let pkg = JSON.parse(readFileSync(PACKAGE_PATH, "utf8"));
+    pkg.version = version;
+    writeFileSync(PACKAGE_PATH, JSON.stringify(pkg, null, 2) + "\n");
+    console.log("set-version: package.json version -> " + version);
 }
 
 main();

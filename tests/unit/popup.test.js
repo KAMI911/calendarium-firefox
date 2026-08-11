@@ -27,8 +27,11 @@ describe("popup.html markup reuses newtab's DOM ids (shared render.js works agai
     it("exposes every element getEls() expects", () => {
         expect(els.date).toBeTruthy();
         expect(els.time).toBeTruthy();
-        expect(els.searchForm).toBeTruthy();
-        expect(els.searchInput).toBeTruthy();
+    });
+
+    it("has no search box — the popup deliberately omits it (only New Tab/homepage/full view show it)", () => {
+        expect(els.searchForm).toBeFalsy();
+        expect(document.getElementById("cal-search-form")).toBeNull();
     });
 
     it("has a compact-view 'open full view' link the newtab page doesn't have", () => {

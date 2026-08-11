@@ -22,7 +22,7 @@ import { Wikipedia } from "./lib/wikipedia.js";
 import { DEFAULTS } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
-    renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
+    renderWikiOnThisDay, renderWikiFeatured,
     resolveLocale, applyThemeMode, applyIconSize, applyPanelOpacity
 } from "./lib/render.js";
 
@@ -41,13 +41,6 @@ async function loadLocaleData(state) {
         Holidays.loadData("data/holidays", hlLang)
     ]);
     return { namedayData, folkdayData, holidayData };
-}
-
-/** Resolve the tab id search results should open in: the active tab in the current window. */
-async function resolveActiveTabId() {
-    if (typeof browser === "undefined" || !browser.tabs || !browser.tabs.query) return null;
-    let tabs = await browser.tabs.query({ active: true, currentWindow: true });
-    return (tabs && tabs[0]) ? tabs[0].id : null;
 }
 
 async function fetchWikipediaOnce(state, els, data) {
@@ -100,8 +93,6 @@ async function initApp() {
     applyPanelOpacity(els.container, state);
     let localeData = await loadLocaleData(state);
     let data = Object.assign({ wikiOnThisDay: null, wikiFeatured: null, wikiRotateStep: 0 }, localeData);
-
-    initSearchBox(els, resolveActiveTabId);
 
     let openFullViewBtn = document.getElementById("cal-open-full-view");
     if (openFullViewBtn) {
