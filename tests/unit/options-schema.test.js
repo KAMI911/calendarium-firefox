@@ -38,8 +38,12 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 72 fields: the 66 ported from the source settings-schema.json, 'show-search-box' (a Firefox-only extra, not present in the Cinnamon desklet), and 5 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url')", () => {
-        expect(Object.keys(FIELDS).length).toBe(72);
+    it("has 73 fields: the 65 ported from the source settings-schema.json ('text-scale' was removed as dead code — see the theme-agent's note in schema.js history), 'show-search-box' (a Firefox-only extra, not present in the Cinnamon desklet), and 7 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url', 'background-rotate', 'background-rotate-minutes')", () => {
+        expect(Object.keys(FIELDS).length).toBe(73);
+    });
+
+    it("no longer has a 'text-scale' field (dead code, superseded by Firefox's own per-origin Ctrl+/- zoom)", () => {
+        expect(FIELDS["text-scale"]).toBeUndefined();
     });
 
     it("field.id always matches its own key in FIELDS", () => {
@@ -49,7 +53,7 @@ describe("settings/schema.js structural integrity", () => {
     });
 
     it("every field has a recognized type", () => {
-        let known = new Set(["checkbox", "combobox", "entry", "spinbutton", "scale", "color"]);
+        let known = new Set(["checkbox", "combobox", "entry", "entry-multiline", "spinbutton", "scale", "color"]);
         for (let field of Object.values(FIELDS)) {
             expect(known.has(field.type), `unknown type '${field.type}' on '${field.id}'`).toBe(true);
         }
@@ -130,6 +134,36 @@ describe("isFieldEnabled", () => {
             expect(isFieldEnabled(field, { "background-style": "gradient" })).toBe(false);
         });
     });
+
+    describe("array dependencyValue (OR semantics, e.g. background-rotate applies to more than one background-style value)", () => {
+        it("background-rotate is enabled for either 'gradient' or 'custom-image-url'", () => {
+            let field = FIELDS["background-rotate"];
+            expect(field.dependency).toBe("background-style");
+            expect(Array.isArray(field.dependencyValue)).toBe(true);
+            expect(isFieldEnabled(field, { "background-style": "gradient" })).toBe(true);
+            expect(isFieldEnabled(field, { "background-style": "custom-image-url" })).toBe(true);
+        });
+
+        it("background-rotate is disabled for 'theme-default', 'solid-color', or 'firefox-theme'", () => {
+            let field = FIELDS["background-rotate"];
+            expect(isFieldEnabled(field, { "background-style": "theme-default" })).toBe(false);
+            expect(isFieldEnabled(field, { "background-style": "solid-color" })).toBe(false);
+            expect(isFieldEnabled(field, { "background-style": "firefox-theme" })).toBe(false);
+        });
+
+        it("background-rotate-minutes depends (truthily) on background-rotate", () => {
+            let field = FIELDS["background-rotate-minutes"];
+            expect(field.dependency).toBe("background-rotate");
+            expect(isFieldEnabled(field, { "background-rotate": true })).toBe(true);
+            expect(isFieldEnabled(field, { "background-rotate": false })).toBe(false);
+        });
+    });
+});
+
+describe("background-style 'firefox-theme' option", () => {
+    it("is present in background-style's combobox options", () => {
+        expect(Object.values(FIELDS["background-style"].options)).toContain("firefox-theme");
+    });
 });
 
 describe("options.js rendering against the schema (jsdom)", () => {
@@ -165,5 +199,23 @@ describe("options.js rendering against the schema (jsdom)", () => {
         let dependentInput = document.getElementById("holiday-lookahead");
         // Default show-holidays is true, so it should start enabled.
         expect(dependentInput.disabled).toBe(false);
+    });
+
+    it("renders a <textarea> for the 'entry-multiline' field type (background-image-url)", async () => {
+        let { buildPages, loadState } = await import("../../src/options.js");
+        await loadState();
+        buildPages();
+        let input = document.getElementById("background-image-url");
+        expect(input.tagName).toBe("TEXTAREA");
+    });
+
+    it("applyDependencies() enables background-rotate for either 'gradient' or 'custom-image-url' background-style", async () => {
+        global.browser.storage.local.get = vi.fn(() => Promise.resolve({ "background-style": "custom-image-url" }));
+        let { buildPages, applyDependencies, loadState } = await import("../../src/options.js");
+        await loadState();
+        buildPages();
+        applyDependencies();
+        expect(document.getElementById("background-rotate").disabled).toBe(false);
+        expect(document.getElementById("background-color").disabled).toBe(true);
     });
 });

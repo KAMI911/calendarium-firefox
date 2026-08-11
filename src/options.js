@@ -68,6 +68,18 @@ function buildFieldControl(field) {
             input.addEventListener("input", () => onFieldChanged(field, input.value));
             break;
         }
+        case "entry-multiline": {
+            // e.g. "background-image-url": one value per line, for fields
+            // that accept multiple entries (see settings/schema.js's
+            // field-shape doc comment and parseImageUrlList() in
+            // lib/render.js, which is what actually parses/validates this
+            // back out on the render side).
+            input = document.createElement("textarea");
+            input.rows = 3;
+            input.value = state[field.id] != null ? state[field.id] : "";
+            input.addEventListener("input", () => onFieldChanged(field, input.value));
+            break;
+        }
         case "color": {
             input = document.createElement("input");
             input.type = "color";

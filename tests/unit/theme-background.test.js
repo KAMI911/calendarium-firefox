@@ -1,6 +1,9 @@
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach } from "vitest";
-import { applyThemeMode, applyBackground } from "../../src/lib/render.js";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import {
+    applyThemeMode, applyBackground, applyIconSize, applyPanelOpacity,
+    isEffectiveDarkTheme, applyFirefoxThemeBackground, parseImageUrlList
+} from "../../src/lib/render.js";
 import { DEFAULTS, BACKGROUND_GRADIENT_OPTIONS } from "../../src/settings/schema.js";
 
 function baseState(overrides = {}) {
@@ -144,5 +147,240 @@ describe("applyBackground", () => {
     it("falls back to 'theme-default' for an unrecognized background-style value", () => {
         applyBackground(el, baseState({ "background-style": "not-a-real-style" }));
         expect(el.classList.contains("calendarium-bg-theme-default")).toBe(true);
+    });
+
+    it("adds only the 'calendarium-bg-firefox-theme' class, with no inline color/image, for 'firefox-theme' (color/image are applied separately, async, by applyFirefoxThemeBackground)", () => {
+        applyBackground(el, baseState({ "background-style": "firefox-theme" }));
+        expect(el.classList.contains("calendarium-bg-firefox-theme")).toBe(true);
+        expect(el.style.backgroundColor).toBe("");
+        expect(el.style.backgroundImage).toBe("");
+    });
+
+    describe("background-rotate for 'gradient'", () => {
+        it("without rotation, always uses the configured 'background-gradient' regardless of rotateStep", () => {
+            applyBackground(el, baseState({ "background-style": "gradient", "background-gradient": "candy" }), 5);
+            expect(el.classList.contains("calendarium-bg-gradient-candy")).toBe(true);
+        });
+
+        it("with rotation on, cycles through the full BACKGROUND_GRADIENT_OPTIONS order as rotateStep advances", () => {
+            let names = Object.values(BACKGROUND_GRADIENT_OPTIONS);
+            for (let step = 0; step < names.length; step++) {
+                applyBackground(el, baseState({ "background-style": "gradient", "background-rotate": true }), step);
+                expect(el.classList.contains("calendarium-bg-gradient-" + names[step])).toBe(true);
+            }
+        });
+
+        it("wraps around after the last gradient", () => {
+            let names = Object.values(BACKGROUND_GRADIENT_OPTIONS);
+            applyBackground(el, baseState({ "background-style": "gradient", "background-rotate": true }), names.length);
+            expect(el.classList.contains("calendarium-bg-gradient-" + names[0])).toBe(true);
+        });
+    });
+
+    describe("parseImageUrlList", () => {
+        it("splits on newlines, trims, and drops blank/invalid lines", () => {
+            let out = parseImageUrlList("https://example.com/a.jpg\n\n  https://example.com/b.jpg  \nnot-a-url\njavascript:alert(1)");
+            expect(out).toEqual(["https://example.com/a.jpg", "https://example.com/b.jpg"]);
+        });
+
+        it("returns an empty array for falsy/non-string input", () => {
+            expect(parseImageUrlList("")).toEqual([]);
+            expect(parseImageUrlList(null)).toEqual([]);
+            expect(parseImageUrlList(undefined)).toEqual([]);
+        });
+    });
+
+    describe("background-rotate for 'custom-image-url'", () => {
+        const URLS = "https://example.com/a.jpg\nhttps://example.com/b.jpg\nhttps://example.com/c.jpg";
+
+        it("without rotation, always uses the first valid URL", () => {
+            applyBackground(el, baseState({ "background-style": "custom-image-url", "background-image-url": URLS }), 2);
+            expect(el.style.backgroundImage).toContain("a.jpg");
+        });
+
+        it("with rotation on and multiple URLs, cycles through them by rotateStep", () => {
+            applyBackground(el, baseState({
+                "background-style": "custom-image-url", "background-image-url": URLS, "background-rotate": true
+            }), 0);
+            expect(el.style.backgroundImage).toContain("a.jpg");
+
+            applyBackground(el, baseState({
+                "background-style": "custom-image-url", "background-image-url": URLS, "background-rotate": true
+            }), 1);
+            expect(el.style.backgroundImage).toContain("b.jpg");
+
+            applyBackground(el, baseState({
+                "background-style": "custom-image-url", "background-image-url": URLS, "background-rotate": true
+            }), 3);
+            expect(el.style.backgroundImage).toContain("a.jpg"); // wraps: 3 % 3 === 0
+        });
+
+        it("with rotation on but only a single URL, stays on that one URL regardless of rotateStep", () => {
+            applyBackground(el, baseState({
+                "background-style": "custom-image-url", "background-image-url": "https://example.com/only.jpg",
+                "background-rotate": true
+            }), 4);
+            expect(el.style.backgroundImage).toContain("only.jpg");
+        });
+
+        it("sets no background-image when the list is empty/all-invalid", () => {
+            applyBackground(el, baseState({ "background-style": "custom-image-url", "background-image-url": "not-a-url" }));
+            expect(el.style.backgroundImage).toBe("");
+        });
+    });
+});
+
+describe("applyIconSize", () => {
+    let el;
+    beforeEach(() => { el = document.createElement("div"); });
+
+    it("sets --cal-icon-size to the medium default when unset", () => {
+        applyIconSize(el, baseState());
+        expect(el.style.getPropertyValue("--cal-icon-size")).toBe("20px");
+    });
+
+    it("maps small/medium/large to their pixel values", () => {
+        applyIconSize(el, baseState({ "icon-size": "small" }));
+        expect(el.style.getPropertyValue("--cal-icon-size")).toBe("14px");
+        applyIconSize(el, baseState({ "icon-size": "large" }));
+        expect(el.style.getPropertyValue("--cal-icon-size")).toBe("30px");
+    });
+
+    it("falls back to medium for an unrecognized value", () => {
+        applyIconSize(el, baseState({ "icon-size": "huge" }));
+        expect(el.style.getPropertyValue("--cal-icon-size")).toBe("20px");
+    });
+
+    it("no-ops silently when el is null/undefined", () => {
+        expect(() => applyIconSize(null, baseState())).not.toThrow();
+    });
+});
+
+describe("isEffectiveDarkTheme", () => {
+    it("returns true for explicit 'dark' theme-mode", () => {
+        expect(isEffectiveDarkTheme(baseState({ "theme-mode": "dark" }))).toBe(true);
+    });
+
+    it("returns false for explicit 'light' theme-mode", () => {
+        expect(isEffectiveDarkTheme(baseState({ "theme-mode": "light" }))).toBe(false);
+    });
+
+    it("falls back to prefers-color-scheme for 'auto' (jsdom without matchMedia support defaults to false/light)", () => {
+        expect(isEffectiveDarkTheme(baseState({ "theme-mode": "auto" }))).toBe(false);
+    });
+});
+
+describe("applyPanelOpacity — 'bg-opacity', panel-only application (NOT document.body)", () => {
+    let container, body;
+    beforeEach(() => {
+        container = document.createElement("div");
+        body = document.body;
+        body.style.backgroundColor = "";
+    });
+
+    it("leaves backgroundColor empty (fully transparent) for the default 0 opacity", () => {
+        applyPanelOpacity(container, baseState());
+        expect(container.style.backgroundColor).toBe("");
+    });
+
+    it("sets a black-ish rgba panel color for a dark effective theme", () => {
+        applyPanelOpacity(container, baseState({ "bg-opacity": 0.5, "theme-mode": "dark" }));
+        expect(container.style.backgroundColor).toBe("rgba(0, 0, 0, 0.5)");
+    });
+
+    it("sets a white-ish rgba panel color for a light effective theme", () => {
+        applyPanelOpacity(container, baseState({ "bg-opacity": 0.5, "theme-mode": "light" }));
+        expect(container.style.backgroundColor).toBe("rgba(255, 255, 255, 0.5)");
+    });
+
+    it("clamps out-of-range opacity into [0, 1]", () => {
+        applyPanelOpacity(container, baseState({ "bg-opacity": 5, "theme-mode": "dark" }));
+        // jsdom's CSSOM normalizes a fully-opaque rgba(...,1) down to rgb(...).
+        expect(container.style.backgroundColor).toBe("rgb(0, 0, 0)");
+    });
+
+    it("is applied ONLY to the given element, never to document.body", () => {
+        applyPanelOpacity(container, baseState({ "bg-opacity": 1, "theme-mode": "dark" }));
+        expect(container.style.backgroundColor).not.toBe("");
+        expect(body.style.backgroundColor).toBe("");
+    });
+
+    it("no-ops silently when el is null/undefined", () => {
+        expect(() => applyPanelOpacity(null, baseState({ "bg-opacity": 1 }))).not.toThrow();
+    });
+});
+
+describe("applyFirefoxThemeBackground ('firefox-theme' background-style)", () => {
+    let el;
+    beforeEach(() => { el = document.createElement("div"); });
+    afterEach(() => { delete global.browser; });
+
+    it("no-ops (leaves no inline color/image) when browser.theme is entirely unavailable — degrades to the CSS class's theme-default-equivalent fallback", async () => {
+        global.browser = {};
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundColor).toBe("");
+        expect(el.style.backgroundImage).toBe("");
+    });
+
+    it("no-ops when the global browser object itself is undefined", async () => {
+        delete global.browser;
+        await expect(applyFirefoxThemeBackground(el)).resolves.toBeUndefined();
+        expect(el.style.backgroundColor).toBe("");
+    });
+
+    it("applies a theme color (string) from theme.colors.frame when ntp_background is absent", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => Promise.resolve({ colors: { frame: "#336699" } })) } };
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundColor).toContain("rgb");
+    });
+
+    it("prefers ntp_background over frame/toolbar when present", async () => {
+        global.browser = {
+            theme: {
+                getCurrent: vi.fn(() => Promise.resolve({
+                    colors: { ntp_background: "rgb(10, 20, 30)", frame: "#000000", toolbar: "#111111" }
+                }))
+            }
+        };
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundColor).toBe("rgb(10, 20, 30)");
+    });
+
+    it("accepts an [r,g,b] array theme color", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => Promise.resolve({ colors: { frame: [10, 20, 30] } })) } };
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundColor).toBe("rgb(10, 20, 30)");
+    });
+
+    it("applies theme.images.theme_frame as a background-image", async () => {
+        global.browser = {
+            theme: { getCurrent: vi.fn(() => Promise.resolve({ images: { theme_frame: "https://example.com/theme.png" } })) }
+        };
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundImage).toContain("theme.png");
+    });
+
+    it("falls back gracefully (no inline color/image) when the active theme has no useful colors/images, e.g. the default theme", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => Promise.resolve({})) } };
+        await applyFirefoxThemeBackground(el);
+        expect(el.style.backgroundColor).toBe("");
+        expect(el.style.backgroundImage).toBe("");
+    });
+
+    it("falls back gracefully when browser.theme.getCurrent() rejects", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => Promise.reject(new Error("boom"))) } };
+        await expect(applyFirefoxThemeBackground(el)).resolves.toBeUndefined();
+        expect(el.style.backgroundColor).toBe("");
+    });
+
+    it("falls back gracefully when browser.theme.getCurrent() throws synchronously", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => { throw new Error("boom"); }) } };
+        await expect(applyFirefoxThemeBackground(el)).resolves.toBeUndefined();
+        expect(el.style.backgroundColor).toBe("");
+    });
+
+    it("no-ops silently when el is null/undefined", async () => {
+        global.browser = { theme: { getCurrent: vi.fn(() => Promise.resolve({ colors: { frame: "#fff" } })) } };
+        await expect(applyFirefoxThemeBackground(null)).resolves.toBeUndefined();
     });
 });

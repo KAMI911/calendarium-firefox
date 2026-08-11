@@ -20,15 +20,32 @@
  *
  * ── Background ───────────────────────────────────────────────────────
  * The "background-style" setting (General > Background) is unrelated to
- * theme-mode and unrelated to Firefox's own New-Tab wallpaper picker
- * (which extensions cannot read or set — this is the extension's own,
- * independent background). src/lib/render.js's applyBackground() toggles
- * a `calendarium-bg-<style>` class (and, for gradients, an additional
- * `calendarium-bg-gradient-<name>` class) on <body>, plus an inline
- * `background-color`/`background-image` for the solid-color/custom-image
- * variants. This only applies on the New Tab / homepage / full-view
- * pages — popup.js never calls applyBackground(), so the toolbar popup
- * always uses --cal-page-bg from the theme palette.
+ * theme-mode and unrelated to Firefox's own built-in New-Tab wallpaper
+ * picker (which extensions cannot read or set — this is the extension's
+ * own, independent background). src/lib/render.js's applyBackground()
+ * toggles a `calendarium-bg-<style>` class (and, for gradients, an
+ * additional `calendarium-bg-gradient-<name>` class) on <body>, plus an
+ * inline `background-color`/`background-image` for the solid-color/
+ * custom-image variants. `background-rotate` cycles the gradient (or,
+ * for custom-image-url, the parsed multi-line URL list) over time via a
+ * plain setInterval in newtab.js — see scheduleBackgroundRotation() there.
+ * The "firefox-theme" style reads the ACTIVE, INSTALLED Firefox Theme's
+ * own colors via the real `browser.theme` WebExtension API (applied
+ * async by applyFirefoxThemeBackground(), separate from the sync class
+ * toggle here) — again, NOT the New Tab wallpaper picker; see that
+ * function's doc comment for the distinction. All of this only applies on
+ * the New Tab / homepage / full-view pages — popup.js never calls
+ * applyBackground(), so the toolbar popup always uses --cal-page-bg from
+ * the theme palette.
+ *
+ * ── Panel opacity ────────────────────────────────────────────────────
+ * "bg-opacity" is a distinct, older setting (ported from the original
+ * desklet) that has nothing to do with "background-style": it's a
+ * semi-transparent panel color applied only to #calendarium-container
+ * (the element that actually holds the date/time/moon/etc. rows), via
+ * src/lib/render.js's applyPanelOpacity(). See that function's doc
+ * comment for why the color is light/dark-aware rather than hardcoded
+ * black like the original desklet.
  */
 
 :root {
@@ -36,6 +53,12 @@
 
   /* Page / surface */
   --cal-page-bg: #f0f0f3;
+
+  /* Icon/symbol size ("icon-size" setting — small/medium/large), set on
+     #calendarium-container by src/lib/render.js's applyIconSize(). Not
+     theme-dependent, so defined once here rather than repeated in the
+     dark-palette blocks below. */
+  --cal-icon-size: 20px;
 
   /* Date / time / name-day (brightest text) */
   --cal-date-color: #1c1c1f;
@@ -234,9 +257,16 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* background-image set inline by applyBackground() after URL validation */
+  /* background-image set inline by applyBackground() after URL validation
+     (and rotated among multiple valid URLs when "background-rotate" is on) */
 }
+/* "Firefox theme colors" — colors/image applied inline (async) by
+   applyFirefoxThemeBackground(); this class alone is exactly the
+   theme-default fallback, used whenever the active Firefox Theme has no
+   useful colors/images (or the browser.theme API is unavailable). */
+.calendarium-bg-firefox-theme { background: var(--cal-page-bg); }
 
+/* The original 6 — names/values kept exactly as introduced. */
 .calendarium-bg-gradient-sunset { background: linear-gradient(135deg, #ff9a56, #ff6f91, #6a5acd); }
 .calendarium-bg-gradient-ocean  { background: linear-gradient(135deg, #1f3b57, #2b5876, #4e9cad); }
 .calendarium-bg-gradient-forest { background: linear-gradient(135deg, #134e5e, #4c8c5b, #a8e063); }
@@ -244,12 +274,27 @@ body {
 .calendarium-bg-gradient-candy  { background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1); }
 .calendarium-bg-gradient-slate  { background: linear-gradient(135deg, #232526, #414345, #5c6265); }
 
+/* Added later, alongside the original 6, to widen the choice / rotation pool. */
+.calendarium-bg-gradient-meadow   { background: linear-gradient(135deg, #11998e, #38ef7d, #c7f9cc); }
+.calendarium-bg-gradient-berry    { background: linear-gradient(135deg, #7b2ff7, #f107a3, #ff9a8b); }
+.calendarium-bg-gradient-lagoon   { background: linear-gradient(135deg, #0f2027, #2c5364, #56ccf2); }
+.calendarium-bg-gradient-twilight { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); }
+.calendarium-bg-gradient-ember    { background: linear-gradient(135deg, #ff512f, #dd2476, #f8b500); }
+.calendarium-bg-gradient-mint     { background: linear-gradient(135deg, #43e97b, #38f9d7, #d9f7ee); }
+.calendarium-bg-gradient-lavender { background: linear-gradient(135deg, #a18cd1, #fbc2eb, #e0c3fc); }
+.calendarium-bg-gradient-copper   { background: linear-gradient(135deg, #b79891, #94716b, #43302b); }
+
 .calendarium-container {
   font-size: 15px;
   padding: 22px 30px 26px 30px;
   display: flex;
   flex-direction: column;
   gap: 1px;
+  /* Default: fully transparent, i.e. "bg-opacity" = 0. A non-zero
+     "bg-opacity" setting overrides this via an inline background-color
+     set by src/lib/render.js's applyPanelOpacity() — a semi-transparent
+     panel behind *this element's own text content* only, independent of
+     whatever "background-style" is painting on document.body below it. */
   background-color: rgba(0, 0, 0, 0);
   border-radius: 12px;
   width: min(560px, 92vw);
@@ -314,9 +359,15 @@ body {
 }
 
 #cal-moon-icon {
-  font-size: 20px;
+  font-size: var(--cal-icon-size);
   color: var(--cal-moon-color);
   padding-right: 5px;
+}
+
+/* Zodiac symbols ("icon-size" setting) — see .calendarium-zodiac-icon on
+   the western/chinese icon spans in newtab.html/popup.html. */
+.calendarium-zodiac-icon {
+  font-size: var(--cal-icon-size);
 }
 
 .calendarium-moon {

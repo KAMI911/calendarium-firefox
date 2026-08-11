@@ -22,7 +22,12 @@
  *                  it instead of merely being truthy (used for fields that
  *                  only apply to one combobox option among several, e.g.
  *                  "background-color" only when "background-style" is
- *                  "solid-color")
+ *                  "solid-color"). `dependencyValue` may also be an array,
+ *                  in which case the dependency key's value must equal any
+ *                  one of the array's entries (OR semantics — used for
+ *                  fields that apply to more than one combobox option,
+ *                  e.g. "background-rotate" when "background-style" is
+ *                  either "gradient" or "custom-image-url")
  *     dependencyValue: optional — see `dependency` above
  *     indent:      optional bool, purely a UI hint (nest under dependency)
  *     options:     for combobox — { label: value, ... } (label order preserved)
@@ -80,10 +85,13 @@ export const LAYOUT = {
             "wikipedia-rotate-minutes", "wikipedia-cache-hours"
         ]
     },
-    "section-appearance":   { title: "Appearance", keys: ["theme-mode", "icon-size", "text-scale", "bg-opacity"] },
+    "section-appearance":   { title: "Appearance", keys: ["theme-mode", "icon-size", "bg-opacity"] },
     "section-background":   {
         title: "Background",
-        keys: ["background-style", "background-color", "background-gradient", "background-image-url"]
+        keys: [
+            "background-style", "background-color", "background-gradient", "background-image-url",
+            "background-rotate", "background-rotate-minutes"
+        ]
     }
 };
 
@@ -96,7 +104,12 @@ const DISPLAY_MODE_OPTIONS  = { "Icon and text": "icon-and-text", "Icon only": "
  * values are also the CSS class-name suffixes used by newtab.css
  * (`.calendarium-bg-gradient-<value>`) and are validated against by
  * lib/render.js's applyBackground() before being written to a class name,
- * so keep the two lists in sync if you add/remove one here.
+ * so keep the two lists in sync if you add/remove one here. This is also
+ * the rotation order used when "background-rotate" is enabled and
+ * "background-style" is "gradient" (see applyBackground()'s rotateStep
+ * parameter) — the original 6 (sunset..slate) keep their exact names/
+ * values; everything after "Slate" was added later purely to widen the
+ * choice and the rotation pool.
  */
 export const BACKGROUND_GRADIENT_OPTIONS = {
     "Sunset": "sunset",
@@ -104,7 +117,15 @@ export const BACKGROUND_GRADIENT_OPTIONS = {
     "Forest": "forest",
     "Aurora": "aurora",
     "Candy": "candy",
-    "Slate": "slate"
+    "Slate": "slate",
+    "Meadow": "meadow",
+    "Berry": "berry",
+    "Lagoon": "lagoon",
+    "Twilight": "twilight",
+    "Ember": "ember",
+    "Mint": "mint",
+    "Lavender": "lavender",
+    "Copper": "copper"
 };
 
 export const FIELDS = {
@@ -221,18 +242,22 @@ export const FIELDS = {
         options: { "Match system": "auto", "Light": "light", "Dark": "dark" }
     },
     "icon-size":  { id: "icon-size", type: "combobox", default: "medium", description: "Icon and symbol size", tooltip: "Controls the display size of moon phase and zodiac symbols.", options: { "Small": "small", "Medium": "medium", "Large": "large" } },
-    "text-scale": { id: "text-scale", type: "spinbutton", default: 1.0, min: 0.5, max: 3.0, step: 0.05, units: "×", description: "Text scale factor", tooltip: "Scale all text in the desklet up or down." },
-    "bg-opacity": { id: "bg-opacity", type: "scale", default: 0.0, min: 0.0, max: 1.0, step: 0.05, description: "Background opacity", tooltip: "0 = fully transparent (wallpaper shows through), 1 = solid black background" },
+    "bg-opacity": {
+        id: "bg-opacity", type: "scale", default: 0.0, min: 0.0, max: 1.0, step: 0.05,
+        description: "Background opacity",
+        tooltip: "0 = fully transparent (default), 1 = a solid opaque panel behind the widget's own text content, independent of the page background below. The panel color follows the light/dark theme so text always stays legible."
+    },
 
     "background-style": {
         id: "background-style", type: "combobox", default: "theme-default",
         description: "Page background (New Tab / homepage / full view)",
-        tooltip: "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.",
+        tooltip: "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. The toolbar popup always uses the plain theme palette, regardless of this setting.",
         options: {
             "Theme default": "theme-default",
             "Solid color": "solid-color",
             "Gradient": "gradient",
-            "Custom image URL": "custom-image-url"
+            "Custom image URL": "custom-image-url",
+            "Firefox theme colors": "firefox-theme"
         }
     },
     "background-color": {
@@ -246,10 +271,22 @@ export const FIELDS = {
         description: "Gradient", options: BACKGROUND_GRADIENT_OPTIONS
     },
     "background-image-url": {
-        id: "background-image-url", type: "entry", default: "", indent: true,
+        id: "background-image-url", type: "entry-multiline", default: "", indent: true,
         dependency: "background-style", dependencyValue: "custom-image-url",
-        description: "Custom background image URL",
-        tooltip: "A direct https:// (or data:image/...) image URL. Used only as a CSS background-image — never evaluated as script or markup."
+        description: "Custom background image URL(s)",
+        tooltip: "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do."
+    },
+    "background-rotate": {
+        id: "background-rotate", type: "checkbox", default: false,
+        dependency: "background-style", dependencyValue: ["gradient", "custom-image-url"],
+        description: "Rotate backgrounds automatically",
+        tooltip: "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\", cycles through every URL listed above (if more than one). Has no effect for the other background styles."
+    },
+    "background-rotate-minutes": {
+        id: "background-rotate-minutes", type: "spinbutton", default: 30, min: 1, max: 1440, step: 1, units: "minutes",
+        dependency: "background-rotate", indent: true,
+        description: "Rotate every",
+        tooltip: "How often to switch to the next background while rotation is enabled."
     },
 
     "show-julian":  { id: "show-julian", type: "checkbox", default: false, description: "Show Julian calendar date" },
@@ -266,7 +303,10 @@ export const DEFAULTS = Object.freeze(
 /** Return true if `field` should be enabled given the current settings object. */
 export function isFieldEnabled(field, settings) {
     if (!field.dependency) return true;
-    if (field.dependencyValue !== undefined) return settings[field.dependency] === field.dependencyValue;
+    if (field.dependencyValue !== undefined) {
+        if (Array.isArray(field.dependencyValue)) return field.dependencyValue.includes(settings[field.dependency]);
+        return settings[field.dependency] === field.dependencyValue;
+    }
     return !!settings[field.dependency];
 }
 

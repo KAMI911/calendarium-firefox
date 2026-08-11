@@ -185,6 +185,7 @@ export function strftime(date, fmt) {
 export function getEls(root = document) {
     let q = (id) => root.getElementById ? root.getElementById(id) : root.querySelector("#" + id);
     return {
+        container: q("calendarium-container"),
         searchForm: q("cal-search-form"),
         searchInput: q("cal-search-input"),
         date: q("cal-date"),
@@ -773,6 +774,80 @@ export function renderAll(els, state, data, now) {
 // function above.
 // ══════════════════════════════════════════════════════════════════════
 
+// ══════════════════════════════════════════════════════════════════════
+// Icon size ("icon-size" setting) — small/medium/large, applied as a CSS
+// custom property on the widget's own container element so newtab.css's
+// #cal-moon-icon and .calendarium-zodiac-icon selectors (and anything
+// else that wants icon-sized symbols later) can just read var(--cal-icon-size)
+// instead of every render function knowing about the setting directly.
+// ══════════════════════════════════════════════════════════════════════
+
+const ICON_SIZES_PX = { small: "14px", medium: "20px", large: "30px" };
+
+/** Set --cal-icon-size on `el` (normally the #calendarium-container element) from the "icon-size" setting. */
+export function applyIconSize(el, state) {
+    if (!el) return;
+    let size = (state && state["icon-size"]) || "medium";
+    el.style.setProperty("--cal-icon-size", ICON_SIZES_PX[size] || ICON_SIZES_PX.medium);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Panel opacity ("bg-opacity" setting) — NOT the same thing as
+// "background-style" (which paints document.body / the whole page). This
+// is the older, distinct desklet setting: a semi-transparent panel color
+// applied only to the widget's own content wrapper (#calendarium-container),
+// so the date/time/moon/etc. text stays legible regardless of whatever the
+// page-level background underneath happens to be. 0 = fully transparent
+// (default, current look), 1 = a fully opaque panel.
+// ══════════════════════════════════════════════════════════════════════
+
+function prefersDarkColorScheme() {
+    try {
+        if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+            return !!window.matchMedia("(prefers-color-scheme: dark)").matches;
+        }
+    } catch (_e) { /* ignore — e.g. jsdom without matchMedia support */ }
+    return false;
+}
+
+/**
+ * Resolve whether the *effective* palette is dark, mirroring applyThemeMode's
+ * own auto/light/dark cascade — used only to pick a light-vs-dark-aware
+ * panel color for applyPanelOpacity, so the bg-opacity panel reads
+ * reasonably against either palette instead of always being black (which
+ * would fight a light theme's page background/text colors).
+ */
+export function isEffectiveDarkTheme(state) {
+    let mode = state && state["theme-mode"];
+    if (mode === "dark") return true;
+    if (mode === "light") return false;
+    return prefersDarkColorScheme();
+}
+
+/**
+ * Apply "bg-opacity" to `el` (normally the #calendarium-container element,
+ * never document.body/the viewport — see the module doc comment above).
+ * Uses rgba(0,0,0,opacity) against an effectively-dark palette or
+ * rgba(255,255,255,opacity) against an effectively-light one, so the panel
+ * darkens/lightens the same direction the surrounding page already leans,
+ * rather than always defaulting to the original desklet's hardcoded black
+ * (which read fine against the desklet's own always-dark corner widget,
+ * but would look wrong pinned under light-theme text here).
+ */
+export function applyPanelOpacity(el, state) {
+    if (!el) return;
+    let raw = state && state["bg-opacity"];
+    let opacity = typeof raw === "number" ? raw : parseFloat(raw);
+    if (!Number.isFinite(opacity)) opacity = 0;
+    opacity = Math.max(0, Math.min(1, opacity));
+    if (opacity <= 0) {
+        el.style.backgroundColor = "";
+        return;
+    }
+    let rgb = isEffectiveDarkTheme(state) ? "0, 0, 0" : "255, 255, 255";
+    el.style.backgroundColor = "rgba(" + rgb + ", " + opacity + ")";
+}
+
 /**
  * Set (or clear) `data-theme` on `root` (normally `document.documentElement`)
  * from the "theme-mode" setting.
@@ -799,8 +874,9 @@ export function applyThemeMode(root, state) {
     }
 }
 
-const BACKGROUND_STYLES = ["theme-default", "solid-color", "gradient", "custom-image-url"];
+const BACKGROUND_STYLES = ["theme-default", "solid-color", "gradient", "custom-image-url", "firefox-theme"];
 const VALID_GRADIENTS = new Set(Object.values(BACKGROUND_GRADIENT_OPTIONS));
+const GRADIENT_ORDER = Object.values(BACKGROUND_GRADIENT_OPTIONS);
 
 /** Very small allowlist: only http(s) and data:image/* URLs may ever reach a CSS background-image. */
 function isSafeBackgroundImageUrl(url) {
@@ -812,17 +888,44 @@ function isSafeBackgroundImageUrl(url) {
 }
 
 /**
+ * Parse the (possibly multi-line) "background-image-url" setting into a
+ * list of individually-validated URLs — one per non-blank line. Invalid
+ * lines are skipped individually (never rejects the whole list), matching
+ * the field's tooltip in settings/schema.js.
+ */
+export function parseImageUrlList(raw) {
+    if (!raw || typeof raw !== "string") return [];
+    return raw.split("\n")
+        .map((line) => line.trim())
+        .filter((line) => isSafeBackgroundImageUrl(line));
+}
+
+/**
  * Apply the "background-style" setting (and its paired color/gradient/url
  * setting) to `el` (normally `document.body` on the New Tab / homepage /
  * full-view pages — the toolbar popup intentionally never calls this, see
  * popup.js, so its background always just follows the plain theme
  * palette from applyThemeMode/newtab.css).
  *
+ * `rotateStep` (default 0) selects which candidate to show when
+ * "background-rotate" is enabled: for "gradient" it indexes into
+ * BACKGROUND_GRADIENT_OPTIONS' value order; for "custom-image-url" it
+ * indexes into the parsed multi-line URL list (parseImageUrlList). This
+ * function stays a pure, synchronous, single-shot "paint the current
+ * step" operation — the actual timer that increments rotateStep over time
+ * lives in newtab.js (see scheduleBackgroundRotation there), exactly like
+ * every other tick-driven concern (clock, Wikipedia rotation) is kept out
+ * of this module.
+ *
+ * "firefox-theme" only toggles the CSS class here — its actual colors/
+ * image come from `browser.theme.getCurrent()`, an async API, so they're
+ * applied separately by applyFirefoxThemeBackground() (see below).
+ *
  * Only ever reaches the DOM via `el.classList` and `el.style.*` property
  * assignment (CSSOM), never `innerHTML`/`eval` — see isSafeBackgroundImageUrl
  * for the custom-image-url allowlist.
  */
-export function applyBackground(el, state) {
+export function applyBackground(el, state, rotateStep = 0) {
     if (!el) return;
     let style = (state && state["background-style"]) || "theme-default";
     if (BACKGROUND_STYLES.indexOf(style) === -1) style = "theme-default";
@@ -839,13 +942,92 @@ export function applyBackground(el, state) {
         if (/^#[0-9a-fA-F]{3,8}$/.test(color)) el.style.backgroundColor = color;
     } else if (style === "gradient") {
         let name = (state && state["background-gradient"]) || "sunset";
+        if (state && state["background-rotate"] && GRADIENT_ORDER.length > 0) {
+            name = GRADIENT_ORDER[Math.abs(rotateStep || 0) % GRADIENT_ORDER.length];
+        }
         if (!VALID_GRADIENTS.has(name)) name = "sunset";
         el.classList.add("calendarium-bg-gradient-" + name);
     } else if (style === "custom-image-url") {
-        let url = ((state && state["background-image-url"]) || "").trim();
-        if (isSafeBackgroundImageUrl(url)) {
-            el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
+        let urls = parseImageUrlList(state && state["background-image-url"]);
+        let url = null;
+        if (urls.length > 0) {
+            url = (state && state["background-rotate"] && urls.length > 1)
+                ? urls[Math.abs(rotateStep || 0) % urls.length]
+                : urls[0];
         }
+        if (url) el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
+    }
+    // "firefox-theme": nothing more to do here — see applyFirefoxThemeBackground().
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// "firefox-theme" background-style — reads the ACTIVE, INSTALLED Firefox
+// Theme's colors/background image via browser.theme.getCurrent(), a real,
+// documented WebExtension API (https://developer.mozilla.org/docs/Mozilla/
+// Add-ons/WebExtensions/API/theme). This is genuinely different from, and
+// NOT the same subsystem as, the built-in New Tab page's own
+// Activity-Stream wallpaper picker — that one has no public WebExtension
+// API and cannot be read or set by an extension (see applyBackground's
+// doc comment / README's Background section for that distinction). Do not
+// conflate the two: "Firefox Themes" (browser.theme) are the things
+// installed from addons.mozilla.org/themes and switchable under
+// about:addons > Themes; the New Tab wallpaper picker is a separate,
+// inaccessible, built-in feature of about:newtab itself.
+// ══════════════════════════════════════════════════════════════════════
+
+/** Coerce a ThemeColor (CSS string, or [r,g,b]/[r,g,b,a] array) into a CSS color string, or null. */
+function normalizeThemeColor(c) {
+    if (!c) return null;
+    if (typeof c === "string") return c;
+    if (Array.isArray(c)) {
+        if (c.length === 4) return "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", " + c[3] + ")";
+        if (c.length === 3) return "rgb(" + c[0] + ", " + c[1] + ", " + c[2] + ")";
+    }
+    return null;
+}
+
+const THEME_COLOR_KEYS = ["ntp_background", "frame", "toolbar"];
+
+/**
+ * Apply the active Firefox Theme's colors/background image to `el`
+ * (normally `document.body`). Guarded exactly like background.js's
+ * ensureMenu() guards `browser.menus`: feature-detect `browser.theme`
+ * before calling it, and never let a throw/rejection here break the rest
+ * of rendering. Degrades gracefully in every case —
+ *   - `browser.theme` unavailable (e.g. Firefox for Android): no-op,
+ *     leaving the `calendarium-bg-firefox-theme` CSS class (which simply
+ *     resolves to var(--cal-page-bg), i.e. the same as theme-default) as
+ *     the only thing in effect.
+ *   - `browser.theme.getCurrent()` throws/rejects: same fallback.
+ *   - the active theme has no useful `colors`/`images` (e.g. Firefox's own
+ *     default theme): same fallback — no inline color/image is set, so
+ *     the CSS class's theme-default-equivalent background shows through.
+ */
+export async function applyFirefoxThemeBackground(el) {
+    if (!el) return;
+    el.style.backgroundColor = "";
+    el.style.backgroundImage = "";
+    if (typeof browser === "undefined" || !browser.theme || !browser.theme.getCurrent) return;
+    try {
+        let theme = await browser.theme.getCurrent();
+        let colors = theme && theme.colors;
+        if (colors) {
+            for (let key of THEME_COLOR_KEYS) {
+                let css = normalizeThemeColor(colors[key]);
+                if (css) { el.style.backgroundColor = css; break; }
+            }
+        }
+        let images = theme && theme.images;
+        let img = images && (images.theme_frame ||
+            (Array.isArray(images.additional_backgrounds) && images.additional_backgrounds[0]));
+        if (img) {
+            el.style.backgroundImage = "url(" + JSON.stringify(img) + ")";
+            el.style.backgroundSize = "cover";
+            el.style.backgroundPosition = "center";
+        }
+    } catch (_e) {
+        el.style.backgroundColor = "";
+        el.style.backgroundImage = "";
     }
 }
 

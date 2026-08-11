@@ -23,7 +23,8 @@ import { DEFAULTS } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
     renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
-    resolveLocale, applyThemeMode, applyBackground
+    resolveLocale, applyThemeMode, applyBackground,
+    applyIconSize, applyPanelOpacity, applyFirefoxThemeBackground
 } from "./lib/render.js";
 
 async function loadSettings() {
@@ -56,6 +57,8 @@ function initApp() {
     let state = Object.assign({}, DEFAULTS);
     let fullTimer = null;
     let clockTimer = null;
+    let bgRotateTimer = null;
+    let bgRotateStep = 0;
 
     initSearchBox(els, resolveOwnTabId);
 
@@ -73,6 +76,26 @@ function initApp() {
                 renderCityTimes(els, state);
             }, 1000);
         }
+    }
+
+    /**
+     * "background-rotate" timer — cycles the gradient (or, for
+     * custom-image-url, the parsed multi-line URL list) over time. Purely
+     * a per-tab visual effect (nothing needs to survive the page being
+     * closed), so this is a plain setInterval alongside the clock/refresh
+     * timers above, not a browser.alarms entry in the background script.
+     * Follows the same isHidden()/visibilitychange pause pattern as those.
+     */
+    function scheduleBackgroundRotation() {
+        if (bgRotateTimer) { clearInterval(bgRotateTimer); bgRotateTimer = null; }
+        if (isHidden()) return;
+        let style = state["background-style"];
+        if (!state["background-rotate"] || (style !== "gradient" && style !== "custom-image-url")) return;
+        let minutes = Math.max(1, state["background-rotate-minutes"] || 30);
+        bgRotateTimer = setInterval(() => {
+            bgRotateStep++;
+            applyBackground(document.body, state, bgRotateStep);
+        }, minutes * 60000);
     }
 
     async function scheduleWikipedia(now) {
@@ -123,7 +146,12 @@ function initApp() {
     async function reload() {
         state = await loadSettings();
         applyThemeMode(document.documentElement, state);
-        applyBackground(document.body, state);
+        applyIconSize(els.container, state);
+        applyPanelOpacity(els.container, state);
+        bgRotateStep = 0;
+        applyBackground(document.body, state, bgRotateStep);
+        if (state["background-style"] === "firefox-theme") applyFirefoxThemeBackground(document.body);
+        scheduleBackgroundRotation();
         data = Object.assign(data, await loadLocaleData(state));
         data.wikiRotateStep = 0;
         data.wikiOnThisDay = null;
@@ -134,22 +162,40 @@ function initApp() {
         browser.storage.onChanged.addListener(() => reload());
     }
 
-    // Pause the 60s/1s timers while this tab is hidden (backgrounded), so a
-    // pile of unfocused New Tab pages don't keep ticking for nothing; catch
-    // up immediately when it becomes visible again. Data loading (reload())
-    // always runs once up front regardless of visibility.
+    // Live-update the "Firefox theme colors" background style when the
+    // user switches their active Firefox Theme while this page stays
+    // open — feature-detected the same defensive way as everywhere else
+    // browser.theme is touched (see applyFirefoxThemeBackground's doc
+    // comment). Registered once, not per-reload, since the setting it
+    // reacts to (state["background-style"]) is re-read on every firing.
+    if (typeof browser !== "undefined" && browser.theme && browser.theme.onUpdated
+        && typeof browser.theme.onUpdated.addListener === "function") {
+        try {
+            browser.theme.onUpdated.addListener(() => {
+                if (state["background-style"] === "firefox-theme") applyFirefoxThemeBackground(document.body);
+            });
+        } catch (_e) { /* ignore — e.g. unsupported platform */ }
+    }
+
+    // Pause the 60s/1s/background-rotation timers while this tab is hidden
+    // (backgrounded), so a pile of unfocused New Tab pages don't keep
+    // ticking for nothing; catch up immediately when it becomes visible
+    // again. Data loading (reload()) always runs once up front regardless
+    // of visibility.
     if (typeof document !== "undefined" && "hidden" in document) {
         document.addEventListener("visibilitychange", () => {
             if (document.hidden) {
                 if (fullTimer) { clearTimeout(fullTimer); fullTimer = null; }
                 if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+                if (bgRotateTimer) { clearInterval(bgRotateTimer); bgRotateTimer = null; }
             } else {
                 refresh();
+                scheduleBackgroundRotation();
             }
         });
     }
 
-    reload();
+    return reload();
 }
 
 if (typeof document !== "undefined" && typeof browser !== "undefined" && browser.runtime && browser.runtime.id) {
@@ -159,3 +205,5 @@ if (typeof document !== "undefined" && typeof browser !== "undefined" && browser
         initApp();
     }
 }
+
+export { initApp };

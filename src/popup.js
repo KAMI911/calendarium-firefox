@@ -23,7 +23,7 @@ import { DEFAULTS } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
     renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
-    resolveLocale, applyThemeMode
+    resolveLocale, applyThemeMode, applyIconSize, applyPanelOpacity
 } from "./lib/render.js";
 
 async function loadSettings() {
@@ -82,11 +82,22 @@ async function initApp() {
     let els = getEls(document);
     let state = await loadSettings();
     // Theme mode (light/dark/auto) applies everywhere, including the popup;
-    // background-style (solid color / gradient / custom image) intentionally
-    // does not — the popup always uses the plain theme palette, since a
-    // background image/gradient behind a ~380px-wide scrollable box adds
-    // visual noise without much payoff. See applyBackground's doc comment.
+    // background-style (solid color / gradient / custom image / Firefox
+    // theme colors) intentionally does not — the popup always uses the
+    // plain theme palette, since a background image/gradient behind a
+    // ~380px-wide scrollable box adds visual noise without much payoff.
+    // See applyBackground's doc comment. Background *rotation* is
+    // therefore also inapplicable here (nothing to rotate).
+    //
+    // icon-size and bg-opacity are different: both apply only to the
+    // widget's own #calendarium-container (never document.body / the
+    // popup's outer chrome), so they're safe and consistent to apply here
+    // too — a user who picked "Large" icons or a panel opacity presumably
+    // wants that everywhere the widget renders, not just on the New Tab
+    // page.
     applyThemeMode(document.documentElement, state);
+    applyIconSize(els.container, state);
+    applyPanelOpacity(els.container, state);
     let localeData = await loadLocaleData(state);
     let data = Object.assign({ wikiOnThisDay: null, wikiFeatured: null, wikiRotateStep: 0 }, localeData);
 

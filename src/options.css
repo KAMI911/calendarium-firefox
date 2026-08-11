@@ -96,7 +96,8 @@ h1 { font-size: 1.4em; margin-bottom: 4px; }
 
 .options-field input[type="text"],
 .options-field input[type="number"],
-.options-field select {
+.options-field select,
+.options-field textarea {
   background: var(--field-bg);
   color: var(--fg);
   border: 1px solid var(--border);
@@ -104,6 +105,13 @@ h1 { font-size: 1.4em; margin-bottom: 4px; }
   padding: 5px 8px;
   min-width: 160px;
   font-size: 0.95em;
+}
+
+.options-field textarea {
+  min-width: 260px;
+  font-family: "DejaVu Sans Mono", "Consolas", monospace;
+  font-size: 0.85em;
+  resize: vertical;
 }
 
 .options-field input[type="checkbox"] { width: 18px; height: 18px; }

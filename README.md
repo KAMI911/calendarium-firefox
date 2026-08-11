@@ -66,19 +66,23 @@ significant way:
   mobile.
 - **API availability guards:** `browser.menus`/`browser.contextMenus`
   (used for the toolbar button's "Open full view in a new tab" context
-  menu) has historically had limited/no support on Android, and
+  menu) has historically had limited/no support on Android,
   `browser.search.search()` (used for the optional search box) may
-  likewise be unavailable on a given platform/build. Both call sites
+  likewise be unavailable on a given platform/build, and the same is true
+  of `browser.theme` (used for the `firefox-theme` background-style — see
+  the settings-mapping section above). All three call sites
   (`src/background.js`'s `ensureMenu()`, `src/lib/render.js`'s
-  `submitSearch()`) feature-detect the API before calling it and wrap
-  the actual call in try/catch, so a missing or rejecting API degrades
-  silently (no menu item / no-op search submit) instead of throwing and
+  `submitSearch()` and `applyFirefoxThemeBackground()`) feature-detect the
+  API before calling it and wrap the actual call in try/catch, so a
+  missing or rejecting API degrades silently (no menu item / no-op search
+  submit / theme-default-equivalent background) instead of throwing and
   breaking the rest of initialization or rendering.
 
 This has been verified via `web-ext lint` and the automated test suite
-(which mocks `browser.menus`/`browser.search` as `undefined` to simulate
-Android — see `tests/unit/background.test.js` and
-`tests/unit/search-box.test.js`), not by sideloading on a physical
+(which mocks `browser.menus`/`browser.search`/`browser.theme` as
+`undefined` to simulate Android — see `tests/unit/background.test.js`,
+`tests/unit/search-box.test.js`, and `tests/unit/theme-background.test.js`),
+not by sideloading on a physical
 Android device; if you're deploying to Android, it's worth confirming
 the popup/options/full-view flow manually on-device at least once.
 
@@ -180,31 +184,97 @@ equivalent:
   `data-theme="light"`/`data-theme="dark"` on `<html>`, which
   `newtab.css` gives priority over the `prefers-color-scheme` media
   query in both directions.
+- `icon-size` (General > Appearance), a combobox — `small` (14px) /
+  `medium` (20px, default) / `large` (30px), matching the original
+  desklet's own pixel values. Sets a `--cal-icon-size` CSS custom property
+  on `#calendarium-container` via `src/lib/render.js`'s `applyIconSize()`,
+  which the moon-phase symbol (`#cal-moon-icon`) and the western/Chinese
+  zodiac symbols (`.calendarium-zodiac-icon`, in `newtab.css`) read from.
+  Applies on all three surfaces, including the popup — it only affects
+  elements inside the widget's own container, never the page chrome.
+- `bg-opacity` (General > Appearance), a scale from `0.0` (default,
+  fully transparent) to `1.0` (fully opaque). **Not** the same thing as
+  `background-style` below — this is an older, distinct setting ported
+  from the original desklet: a semi-transparent panel color painted only
+  behind `#calendarium-container` (the element holding the date/time/
+  moon/etc. rows), via `src/lib/render.js`'s `applyPanelOpacity()`. The
+  panel color itself is light/dark-theme-aware (`rgba(0,0,0,…)` against an
+  effectively-dark palette, `rgba(255,255,255,…)` against an effectively-
+  light one — see `isEffectiveDarkTheme()`) rather than the original
+  desklet's hardcoded black, since this port also supports a light theme.
+  Applies on all three surfaces, including the popup, for the same reason
+  as `icon-size` above.
 - `background-style` (General > Background), a combobox — `theme-default`
   (default, follows `theme-mode`'s palette) / `solid-color` / `gradient`
-  (one of 6 built-in CSS gradients, no image assets) / `custom-image-url`.
-  Three paired settings only take effect for the matching style, via the
-  same `dependency`/`indent` mechanism as e.g. `date-format-preset` →
-  `date-format-custom`, extended with an optional `dependencyValue` for
-  value-equality (not just truthy) dependencies: `background-color` (a
-  `<input type="color">`-backed hex value, shown only when
-  `background-style` is `solid-color`), `background-gradient` (shown only
-  for `gradient`), and `background-image-url` (a plain HTTPS/`data:image:`
-  URL, shown only for `custom-image-url` — used strictly as a CSS
-  `background-image: url(...)`, never evaluated as script/markup, and
-  validated against an allowlisted scheme before being applied).
-  `background-style` is **independent from `theme-mode`** and **not**
+  (14 built-in CSS gradients, no image assets) / `custom-image-url` /
+  `firefox-theme`. Paired settings only take effect for the matching
+  style, via the same `dependency`/`indent` mechanism as e.g.
+  `date-format-preset` → `date-format-custom`, extended with an optional
+  `dependencyValue` for value-equality (not just truthy) dependencies —
+  `dependencyValue` may also be an array for "applies to more than one
+  option" fields (OR semantics; see `background-rotate` below):
+  - `background-color` — an `<input type="color">`-backed hex value,
+    shown only when `background-style` is `solid-color`.
+  - `background-gradient` — shown only for `gradient`.
+  - `background-image-url` — an `entry-multiline` field (a `<textarea>`,
+    the one field type beyond the desklet's original set), shown only for
+    `custom-image-url`: one or more plain HTTPS/`data:image:` URLs, one
+    per line. Used strictly as a CSS `background-image: url(...)`, never
+    evaluated as script/markup; each line is validated against an
+    allowlisted scheme independently (`parseImageUrlList()` in
+    `lib/render.js`), so one bad line doesn't drop the rest.
+  - `background-rotate` — a checkbox, default `false`, enabled for either
+    `gradient` or `custom-image-url` (the `dependencyValue` array case).
+    For `gradient`, cycles through all 14 built-in gradients in
+    `BACKGROUND_GRADIENT_OPTIONS`' order; for `custom-image-url`, cycles
+    through every valid URL listed above (if more than one). The actual
+    timer lives in `src/newtab.js`'s `scheduleBackgroundRotation()` — a
+    plain `setInterval` alongside the existing clock/refresh timers (not
+    `browser.alarms`, since this is a purely visual per-tab effect that
+    doesn't need to survive the page being closed), paused/resumed by the
+    same `isHidden()`/`visibilitychange` logic as those.
+  - `background-rotate-minutes` — a spinbutton, default `30`, range
+    1–1440, depends (truthily) on `background-rotate`.
+
+  `background-style` is **independent from `theme-mode`** and `theme-
+  default`/`solid-color`/`gradient`/`custom-image-url` are all **not**
   related to Firefox's own New Tab wallpaper picker, which has no public
-  WebExtension API to read or set — this is the extension's own
+  WebExtension API to read or set — those are the extension's own
   background, applied only to the New Tab/homepage/full-view pages via
-  `src/lib/render.js`'s `applyBackground()`; the toolbar popup always
-  keeps the plain theme palette (see `src/popup.css`'s doc comment for
-  why).
+  `src/lib/render.js`'s `applyBackground()`.
+
+  `firefox-theme` is different: it reads colors (`theme.colors.
+  ntp_background`/`frame`/`toolbar`, in that preference order) and/or a
+  background image (`theme.images.theme_frame` or the first of
+  `theme.images.additional_backgrounds`) from the browser's **currently
+  active, installed Firefox Theme** via `browser.theme.getCurrent()` — a
+  real, documented WebExtension API for Firefox Themes (the things
+  installed from addons.mozilla.org/themes and switched under
+  about:addons > Themes). This is a genuinely different subsystem from,
+  and should not be confused with, the New Tab page's own built-in
+  Activity-Stream wallpaper picker mentioned above — that one really has
+  no extension-accessible API; `browser.theme` does. Applied
+  asynchronously by `applyFirefoxThemeBackground()` (separate from the
+  synchronous `applyBackground()` class toggle, since fetching the active
+  theme is inherently async), guarded the same defensive way `background.
+  js`'s `ensureMenu()` guards `browser.menus` — feature-detected before
+  calling, with any throw/rejection/absence falling back silently to the
+  `theme-default`-equivalent palette (e.g. when the active theme is
+  Firefox's own default theme, which has no useful colors/images to read).
+  `browser.theme.onUpdated` (also feature-detected) live-updates the
+  background if the user switches Firefox Themes while a New Tab page
+  stays open. Requires the `"theme"` permission (`src/manifest.json`).
+
+  The toolbar popup always keeps the plain theme palette for all of
+  `background-style`'s options — `popup.js` never calls `applyBackground()`
+  or `applyFirefoxThemeBackground()` (see `src/popup.css`'s doc comment
+  for why) — though it does apply `icon-size`/`bg-opacity`, as noted above.
 
 `src/options.js` renders the same three pages (General, Location,
 Wikipedia) with the same sections as tabs, generically from that schema
-(including the new `color` field type and the `dependencyValue` variant
-of `dependency`), and persists every field to `browser.storage.local`
+(including the `color` and `entry-multiline` field types and the
+`dependencyValue` variant of `dependency`, array-valued or not), and
+persists every field to `browser.storage.local`
 (replacing Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
 
 ## Regenerating translations

@@ -3,6 +3,10 @@
     "message": "02/22/2026                 (%m/%d/%Y)",
     "description": "Source: \"02/22/2026                 (%m/%d/%Y)\""
   },
+  "0_fully_transparent_default_1_a_solid_opaque_panel_behind_the_widget_s_own_text_content_independent_of_the_page_background_below_the_panel_color_follows_the_light_dark_theme_so_text_always_stays_legible": {
+    "message": "0 = fully transparent (default), 1 = a solid opaque panel behind the widget's own text content, independent of the page background below. The panel color follows the light/dark theme so text always stays legible.",
+    "description": "Source: \"0 = fully transparent (default), 1 = a solid opaque panel behind the widget's own text content, independent of the page background below. The panel color follows the light/dark theme so text always stays legible.\""
+  },
   "0_fully_transparent_wallpaper_shows_through_1_solid_black_background": {
     "message": "0 = fully transparent (wallpaper shows through), 1 = solid black background",
     "description": "Source: \"0 = fully transparent (wallpaper shows through), 1 = solid black background\""
@@ -191,6 +195,10 @@
     "message": "Custom background image URL",
     "description": "Source: \"Custom background image URL\""
   },
+  "custom_background_image_url_s": {
+    "message": "Custom background image URL(s)",
+    "description": "Source: \"Custom background image URL(s)\""
+  },
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Custom date format (strftime) — only active when 'Custom' is selected above",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
@@ -299,6 +307,10 @@
     "message": "Folk saying language",
     "description": "Source: \"Folk saying language\""
   },
+  "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_cycles_through_every_url_listed_above_if_more_than_one_has_no_effect_for_the_other_background_styles": {
+    "message": "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\", cycles through every URL listed above (if more than one). Has no effect for the other background styles.",
+    "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\", cycles through every URL listed above (if more than one). Has no effect for the other background styles.\""
+  },
   "french": {
     "message": "French",
     "description": "Source: \"French\""
@@ -366,6 +378,10 @@
   "how_often_to_advance_to_the_next_set_of_items_set_to_1_to_rotate_every_minute": {
     "message": "How often to advance to the next set of items. Set to 1 to rotate every minute.",
     "description": "Source: \"How often to advance to the next set of items. Set to 1 to rotate every minute.\""
+  },
+  "how_often_to_switch_to_the_next_background_while_rotation_is_enabled": {
+    "message": "How often to switch to the next background while rotation is enabled.",
+    "description": "Source: \"How often to switch to the next background while rotation is enabled.\""
   },
   "hungarian": {
     "message": "Hungarian",
@@ -515,6 +531,10 @@
     "message": "Old Hungarian",
     "description": "Source: \"Old Hungarian\""
   },
+  "one_or_more_direct_https_or_data_image_image_urls_one_per_line_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup_invalid_lines_are_skipped_individually_rather_than_rejecting_the_whole_list_with_more_than_one_url_and_rotate_backgrounds_enabled_below_they_rotate_the_same_way_the_built_in_gradients_do": {
+    "message": "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.",
+    "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
+  },
   "ox": {
     "message": "Ox",
     "description": "Source: \"Ox\""
@@ -559,6 +579,14 @@
     "message": "Rooster",
     "description": "Source: \"Rooster\""
   },
+  "rotate_backgrounds_automatically": {
+    "message": "Rotate backgrounds automatically",
+    "description": "Source: \"Rotate backgrounds automatically\""
+  },
+  "rotate_every": {
+    "message": "Rotate every",
+    "description": "Source: \"Rotate every\""
+  },
   "rotate_items_every_n_minutes": {
     "message": "Rotate items every N minutes",
     "description": "Source: \"Rotate items every N minutes\""
@@ -566,10 +594,6 @@
   "sagittarius": {
     "message": "Sagittarius",
     "description": "Source: \"Sagittarius\""
-  },
-  "scale_all_text_in_the_desklet_up_or_down": {
-    "message": "Scale all text in the desklet up or down.",
-    "description": "Source: \"Scale all text in the desklet up or down.\""
   },
   "scorpio": {
     "message": "Scorpio",
@@ -767,9 +791,9 @@
     "message": "Text only",
     "description": "Source: \"Text only\""
   },
-  "text_scale_factor": {
-    "message": "Text scale factor",
-    "description": "Source: \"Text scale factor\""
+  "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
+    "message": "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. The toolbar popup always uses the plain theme palette, regardless of this setting.",
+    "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
   },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.",
