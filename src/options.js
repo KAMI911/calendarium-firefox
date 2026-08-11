@@ -68,6 +68,13 @@ function buildFieldControl(field) {
             input.addEventListener("input", () => onFieldChanged(field, input.value));
             break;
         }
+        case "color": {
+            input = document.createElement("input");
+            input.type = "color";
+            input.value = state[field.id] || field.default;
+            input.addEventListener("input", () => onFieldChanged(field, input.value));
+            break;
+        }
         case "spinbutton": {
             input = document.createElement("input");
             input.type = "number";

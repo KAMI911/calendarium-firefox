@@ -38,8 +38,8 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 67 fields: the 66 ported from the source settings-schema.json plus 'show-search-box' (a Firefox-only extra, not present in the Cinnamon desklet)", () => {
-        expect(Object.keys(FIELDS).length).toBe(67);
+    it("has 72 fields: the 66 ported from the source settings-schema.json, 'show-search-box' (a Firefox-only extra, not present in the Cinnamon desklet), and 5 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url')", () => {
+        expect(Object.keys(FIELDS).length).toBe(72);
     });
 
     it("field.id always matches its own key in FIELDS", () => {
@@ -49,7 +49,7 @@ describe("settings/schema.js structural integrity", () => {
     });
 
     it("every field has a recognized type", () => {
-        let known = new Set(["checkbox", "combobox", "entry", "spinbutton", "scale"]);
+        let known = new Set(["checkbox", "combobox", "entry", "spinbutton", "scale", "color"]);
         for (let field of Object.values(FIELDS)) {
             expect(known.has(field.type), `unknown type '${field.type}' on '${field.id}'`).toBe(true);
         }
@@ -106,6 +106,29 @@ describe("isFieldEnabled", () => {
         expect(field.dependency).toBe("show-period-upcoming");
         expect(isFieldEnabled(field, { "show-period-upcoming": true })).toBe(true);
         expect(isFieldEnabled(field, { "show-period-upcoming": false })).toBe(false);
+    });
+
+    describe("dependencyValue (value-equality dependency, e.g. background-color only applies when background-style === 'solid-color')", () => {
+        it("background-color is only enabled when background-style is exactly 'solid-color'", () => {
+            let field = FIELDS["background-color"];
+            expect(field.dependency).toBe("background-style");
+            expect(field.dependencyValue).toBe("solid-color");
+            expect(isFieldEnabled(field, { "background-style": "solid-color" })).toBe(true);
+            expect(isFieldEnabled(field, { "background-style": "gradient" })).toBe(false);
+            expect(isFieldEnabled(field, { "background-style": "theme-default" })).toBe(false);
+        });
+
+        it("background-gradient is only enabled when background-style is exactly 'gradient'", () => {
+            let field = FIELDS["background-gradient"];
+            expect(isFieldEnabled(field, { "background-style": "gradient" })).toBe(true);
+            expect(isFieldEnabled(field, { "background-style": "solid-color" })).toBe(false);
+        });
+
+        it("background-image-url is only enabled when background-style is exactly 'custom-image-url'", () => {
+            let field = FIELDS["background-image-url"];
+            expect(isFieldEnabled(field, { "background-style": "custom-image-url" })).toBe(true);
+            expect(isFieldEnabled(field, { "background-style": "gradient" })).toBe(false);
+        });
     });
 });
 

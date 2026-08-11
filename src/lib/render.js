@@ -30,6 +30,7 @@ import { Holidays } from "./holidays.js";
 import { Solstice } from "./solstice.js";
 import { Calendars } from "./calendars.js";
 import { _, slug } from "./i18n.js";
+import { BACKGROUND_GRADIENT_OPTIONS } from "../settings/schema.js";
 
 export { _, slug };
 
@@ -760,6 +761,92 @@ export function renderAll(els, state, data, now) {
     renderAltCal(els, state, now);
     renderWikiOnThisDay(els, state, data.wikiOnThisDay, data.wikiRotateStep || 0);
     renderWikiFeatured(els, state, data.wikiFeatured);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Theme mode (light / dark / auto) and background-style application
+//
+// Both are driven by settings/schema.js keys ("theme-mode",
+// "background-style" + its paired "background-color" /
+// "background-gradient" / "background-image-url") and applied here so the
+// logic is written and tested once, exactly like every render<Section>
+// function above.
+// ══════════════════════════════════════════════════════════════════════
+
+/**
+ * Set (or clear) `data-theme` on `root` (normally `document.documentElement`)
+ * from the "theme-mode" setting.
+ *
+ * Cascade, by design:
+ *   - "auto" (default): no `data-theme` attribute is set at all, so the
+ *     CSS `@media (prefers-color-scheme: dark)` block — guarded with
+ *     `:root:not([data-theme="light"])` — is the only thing deciding the
+ *     palette, i.e. the OS/browser preference wins.
+ *   - "light" / "dark": `data-theme` is set explicitly. newtab.css then
+ *     keys its dark-mode custom-property overrides off
+ *     `:root[data-theme="dark"]` in addition to the prefers-color-scheme
+ *     media query, and guards that media query with `:not([data-theme="light"])`
+ *     — so an explicit choice always wins over the OS preference in both
+ *     directions (forced light on a dark OS, forced dark on a light OS).
+ */
+export function applyThemeMode(root, state) {
+    if (!root) return;
+    let mode = state && state["theme-mode"];
+    if (mode === "light" || mode === "dark") {
+        root.setAttribute("data-theme", mode);
+    } else {
+        root.removeAttribute("data-theme");
+    }
+}
+
+const BACKGROUND_STYLES = ["theme-default", "solid-color", "gradient", "custom-image-url"];
+const VALID_GRADIENTS = new Set(Object.values(BACKGROUND_GRADIENT_OPTIONS));
+
+/** Very small allowlist: only http(s) and data:image/* URLs may ever reach a CSS background-image. */
+function isSafeBackgroundImageUrl(url) {
+    if (!url || typeof url !== "string") return false;
+    let trimmed = url.trim();
+    if (/^https?:\/\/\S+$/i.test(trimmed)) return true;
+    if (/^data:image\/[a-z0-9.+-]+;base64,[a-z0-9+/=]+$/i.test(trimmed)) return true;
+    return false;
+}
+
+/**
+ * Apply the "background-style" setting (and its paired color/gradient/url
+ * setting) to `el` (normally `document.body` on the New Tab / homepage /
+ * full-view pages — the toolbar popup intentionally never calls this, see
+ * popup.js, so its background always just follows the plain theme
+ * palette from applyThemeMode/newtab.css).
+ *
+ * Only ever reaches the DOM via `el.classList` and `el.style.*` property
+ * assignment (CSSOM), never `innerHTML`/`eval` — see isSafeBackgroundImageUrl
+ * for the custom-image-url allowlist.
+ */
+export function applyBackground(el, state) {
+    if (!el) return;
+    let style = (state && state["background-style"]) || "theme-default";
+    if (BACKGROUND_STYLES.indexOf(style) === -1) style = "theme-default";
+
+    for (let s of BACKGROUND_STYLES) el.classList.remove("calendarium-bg-" + s);
+    for (let g of VALID_GRADIENTS) el.classList.remove("calendarium-bg-gradient-" + g);
+    el.classList.add("calendarium-bg-" + style);
+
+    el.style.backgroundColor = "";
+    el.style.backgroundImage = "";
+
+    if (style === "solid-color") {
+        let color = (state && state["background-color"]) || "#1b1b1f";
+        if (/^#[0-9a-fA-F]{3,8}$/.test(color)) el.style.backgroundColor = color;
+    } else if (style === "gradient") {
+        let name = (state && state["background-gradient"]) || "sunset";
+        if (!VALID_GRADIENTS.has(name)) name = "sunset";
+        el.classList.add("calendarium-bg-gradient-" + name);
+    } else if (style === "custom-image-url") {
+        let url = ((state && state["background-image-url"]) || "").trim();
+        if (isSafeBackgroundImageUrl(url)) {
+            el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
+        }
+    }
 }
 
 // ══════════════════════════════════════════════════════════════════════

@@ -5,6 +5,16 @@
  * fork ~300 lines of visual language for a smaller box) and overrides
  * only what a popup needs: a fixed compact width instead of viewport
  * centering, a capped scrollable height, and tighter spacing/font sizes.
+ *
+ * Theme mode (light/dark/auto, the "theme-mode" setting) applies here too,
+ * via the same --cal-* custom properties imported from newtab.css and the
+ * same applyThemeMode() call in popup.js. Background-style (solid color /
+ * gradient / custom image, the "background-style" setting) intentionally
+ * does NOT apply to the popup — popup.js never calls applyBackground(), so
+ * body always just shows var(--cal-page-bg) from the active theme palette.
+ * A background image/gradient behind a ~380px scrollable box adds visual
+ * noise without much payoff; see src/lib/render.js's applyBackground() doc
+ * comment for the full rationale.
  */
 
 @import url("newtab.css");
@@ -37,7 +47,7 @@ html, body {
 .calendarium-popup-link {
   background: none;
   border: none;
-  color: #88aaff;
+  color: var(--cal-link-color);
   cursor: pointer;
   font-size: 0.85em;
   padding: 4px 0;

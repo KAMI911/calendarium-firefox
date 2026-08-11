@@ -17,7 +17,13 @@
  *                  base — see _locales/en/messages.json "settings_<id>" keys)
  *     tooltip:     optional help text
  *     dependency:  optional storage key that must be truthy for this field
- *                  to be enabled/shown
+ *                  to be enabled/shown; if `dependencyValue` is also set,
+ *                  the dependency key's current value must strictly equal
+ *                  it instead of merely being truthy (used for fields that
+ *                  only apply to one combobox option among several, e.g.
+ *                  "background-color" only when "background-style" is
+ *                  "solid-color")
+ *     dependencyValue: optional — see `dependency` above
  *     indent:      optional bool, purely a UI hint (nest under dependency)
  *     options:     for combobox — { label: value, ... } (label order preserved)
  *     min/max/step/units: for spinbutton/scale
@@ -33,7 +39,7 @@ export const LAYOUT = {
             "section-search", "section-datetime", "section-progress", "section-traditional",
             "section-folkdays", "section-holidays", "section-moon",
             "section-sun", "section-zodiac", "section-namedays",
-            "section-altcal", "section-appearance"
+            "section-altcal", "section-appearance", "section-background"
         ]
     },
     "page-location": {
@@ -74,12 +80,32 @@ export const LAYOUT = {
             "wikipedia-rotate-minutes", "wikipedia-cache-hours"
         ]
     },
-    "section-appearance":   { title: "Appearance", keys: ["icon-size", "text-scale", "bg-opacity"] }
+    "section-appearance":   { title: "Appearance", keys: ["theme-mode", "icon-size", "text-scale", "bg-opacity"] },
+    "section-background":   {
+        title: "Background",
+        keys: ["background-style", "background-color", "background-gradient", "background-image-url"]
+    }
 };
 
 const LOCALE_OPTIONS_SYSTEM = { "System language": "auto", "Hungarian": "hu", "German": "de", "English": "en", "French": "fr", "Spanish": "es", "Italian": "it" };
 const WIKI_LOCALE_OPTIONS   = { "System language": "auto", "English": "en", "German": "de", "Hungarian": "hu", "French": "fr", "Spanish": "es", "Italian": "it" };
 const DISPLAY_MODE_OPTIONS  = { "Icon and text": "icon-and-text", "Icon only": "icon-only", "Text only": "text-only", "None (hidden)": "none" };
+
+/**
+ * Named CSS gradients offered by the "background-gradient" combobox — the
+ * values are also the CSS class-name suffixes used by newtab.css
+ * (`.calendarium-bg-gradient-<value>`) and are validated against by
+ * lib/render.js's applyBackground() before being written to a class name,
+ * so keep the two lists in sync if you add/remove one here.
+ */
+export const BACKGROUND_GRADIENT_OPTIONS = {
+    "Sunset": "sunset",
+    "Ocean": "ocean",
+    "Forest": "forest",
+    "Aurora": "aurora",
+    "Candy": "candy",
+    "Slate": "slate"
+};
 
 export const FIELDS = {
     "show-search-box": { id: "show-search-box", type: "checkbox", default: false, description: "Show a search box (uses your default search engine)" },
@@ -188,9 +214,43 @@ export const FIELDS = {
     "wikipedia-rotate-minutes": { id: "wikipedia-rotate-minutes", type: "spinbutton", default: 5, min: 1, max: 60, step: 1, units: "minutes", description: "Rotate items every N minutes", tooltip: "How often to advance to the next set of items. Set to 1 to rotate every minute.", dependency: "show-wikipedia", indent: true },
     "wikipedia-cache-hours":    { id: "wikipedia-cache-hours", type: "spinbutton", default: 12, min: 1, max: 48, step: 1, units: "hours", description: "Cache duration for Wikipedia data", tooltip: "How long to keep Wikipedia data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage.", dependency: "show-wikipedia", indent: true },
 
+    "theme-mode": {
+        id: "theme-mode", type: "combobox", default: "auto",
+        description: "Color theme",
+        tooltip: "\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.",
+        options: { "Match system": "auto", "Light": "light", "Dark": "dark" }
+    },
     "icon-size":  { id: "icon-size", type: "combobox", default: "medium", description: "Icon and symbol size", tooltip: "Controls the display size of moon phase and zodiac symbols.", options: { "Small": "small", "Medium": "medium", "Large": "large" } },
     "text-scale": { id: "text-scale", type: "spinbutton", default: 1.0, min: 0.5, max: 3.0, step: 0.05, units: "×", description: "Text scale factor", tooltip: "Scale all text in the desklet up or down." },
     "bg-opacity": { id: "bg-opacity", type: "scale", default: 0.0, min: 0.0, max: 1.0, step: 0.05, description: "Background opacity", tooltip: "0 = fully transparent (wallpaper shows through), 1 = solid black background" },
+
+    "background-style": {
+        id: "background-style", type: "combobox", default: "theme-default",
+        description: "Page background (New Tab / homepage / full view)",
+        tooltip: "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.",
+        options: {
+            "Theme default": "theme-default",
+            "Solid color": "solid-color",
+            "Gradient": "gradient",
+            "Custom image URL": "custom-image-url"
+        }
+    },
+    "background-color": {
+        id: "background-color", type: "color", default: "#1b1b1f", indent: true,
+        dependency: "background-style", dependencyValue: "solid-color",
+        description: "Background color"
+    },
+    "background-gradient": {
+        id: "background-gradient", type: "combobox", default: "sunset", indent: true,
+        dependency: "background-style", dependencyValue: "gradient",
+        description: "Gradient", options: BACKGROUND_GRADIENT_OPTIONS
+    },
+    "background-image-url": {
+        id: "background-image-url", type: "entry", default: "", indent: true,
+        dependency: "background-style", dependencyValue: "custom-image-url",
+        description: "Custom background image URL",
+        tooltip: "A direct https:// (or data:image/...) image URL. Used only as a CSS background-image — never evaluated as script or markup."
+    },
 
     "show-julian":  { id: "show-julian", type: "checkbox", default: false, description: "Show Julian calendar date" },
     "show-hebrew":  { id: "show-hebrew", type: "checkbox", default: false, description: "Show Hebrew calendar date" },
@@ -206,6 +266,7 @@ export const DEFAULTS = Object.freeze(
 /** Return true if `field` should be enabled given the current settings object. */
 export function isFieldEnabled(field, settings) {
     if (!field.dependency) return true;
+    if (field.dependencyValue !== undefined) return settings[field.dependency] === field.dependencyValue;
     return !!settings[field.dependency];
 }
 

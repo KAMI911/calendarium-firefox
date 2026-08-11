@@ -124,13 +124,47 @@ npm run lint          # eslint (flat config) + web-ext lint --source-dir=src
 `src/settings/schema.js` is a straight transcription of the desklet's
 `settings-schema.json` — same storage keys (kebab-case, e.g. `show-date`),
 same defaults, same `dependency`/`indent` relationships, same combobox
-option sets — plus one Firefox-only key with no desklet equivalent:
-`show-search-box` (General > Search), a checkbox, default `false`, that
-toggles the search box rendered at the top of the widget. `src/options.js`
-renders the same three pages (General, Location, Wikipedia) with the same
-sections as tabs, generically from that schema, and persists every field
-to `browser.storage.local` (replacing
-Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
+option sets — plus a handful of Firefox-only keys with no desklet
+equivalent:
+
+- `show-search-box` (General > Search), a checkbox, default `false`, that
+  toggles the search box rendered at the top of the widget.
+- `theme-mode` (General > Appearance), a combobox — `auto` (default) /
+  `light` / `dark`. Controls the widget's light/dark color palette
+  (`src/newtab.css`'s `--cal-*` custom properties, imported by
+  `popup.css` too) on all three surfaces — New Tab/homepage, popup, and
+  full view. `auto` follows the OS/browser's `prefers-color-scheme`;
+  `light`/`dark` force that palette regardless of the OS preference by
+  having `src/lib/render.js`'s `applyThemeMode()` stamp
+  `data-theme="light"`/`data-theme="dark"` on `<html>`, which
+  `newtab.css` gives priority over the `prefers-color-scheme` media
+  query in both directions.
+- `background-style` (General > Background), a combobox — `theme-default`
+  (default, follows `theme-mode`'s palette) / `solid-color` / `gradient`
+  (one of 6 built-in CSS gradients, no image assets) / `custom-image-url`.
+  Three paired settings only take effect for the matching style, via the
+  same `dependency`/`indent` mechanism as e.g. `date-format-preset` →
+  `date-format-custom`, extended with an optional `dependencyValue` for
+  value-equality (not just truthy) dependencies: `background-color` (a
+  `<input type="color">`-backed hex value, shown only when
+  `background-style` is `solid-color`), `background-gradient` (shown only
+  for `gradient`), and `background-image-url` (a plain HTTPS/`data:image:`
+  URL, shown only for `custom-image-url` — used strictly as a CSS
+  `background-image: url(...)`, never evaluated as script/markup, and
+  validated against an allowlisted scheme before being applied).
+  `background-style` is **independent from `theme-mode`** and **not**
+  related to Firefox's own New Tab wallpaper picker, which has no public
+  WebExtension API to read or set — this is the extension's own
+  background, applied only to the New Tab/homepage/full-view pages via
+  `src/lib/render.js`'s `applyBackground()`; the toolbar popup always
+  keeps the plain theme palette (see `src/popup.css`'s doc comment for
+  why).
+
+`src/options.js` renders the same three pages (General, Location,
+Wikipedia) with the same sections as tabs, generically from that schema
+(including the new `color` field type and the `dependencyValue` variant
+of `dependency`), and persists every field to `browser.storage.local`
+(replacing Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
 
 ## Regenerating translations
 

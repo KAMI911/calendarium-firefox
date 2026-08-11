@@ -23,7 +23,7 @@ import { DEFAULTS } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
     renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
-    resolveLocale
+    resolveLocale, applyThemeMode, applyBackground
 } from "./lib/render.js";
 
 async function loadSettings() {
@@ -117,6 +117,8 @@ function initApp() {
 
     async function reload() {
         state = await loadSettings();
+        applyThemeMode(document.documentElement, state);
+        applyBackground(document.body, state);
         data = Object.assign(data, await loadLocaleData(state));
         data.wikiRotateStep = 0;
         data.wikiOnThisDay = null;

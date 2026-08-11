@@ -4,7 +4,211 @@
  * kept the same where sensible so the two stylesheets stay easy to
  * cross-reference. The desklet rendered a small transparent-background
  * corner widget; here it fills the New Tab page instead.
+ *
+ * ── Theming ──────────────────────────────────────────────────────────
+ * Every color is a CSS custom property defined on :root. The light
+ * palette below is the base/default. A `prefers-color-scheme: dark`
+ * media query overrides it for users whose OS/browser prefers dark —
+ * guarded with `:not([data-theme="light"])` so it never fights an
+ * explicit user choice. The "theme-mode" setting (General > Appearance)
+ * lets a user force light or dark regardless of the OS preference; when
+ * set, src/lib/render.js's applyThemeMode() stamps `data-theme="light"`
+ * or `data-theme="dark"` on <html>, and the `[data-theme="dark"]` block
+ * below re-applies the dark palette unconditionally so it always wins.
+ * "auto" (the default) removes `data-theme` entirely, leaving the media
+ * query as the only thing deciding the palette.
+ *
+ * ── Background ───────────────────────────────────────────────────────
+ * The "background-style" setting (General > Background) is unrelated to
+ * theme-mode and unrelated to Firefox's own New-Tab wallpaper picker
+ * (which extensions cannot read or set — this is the extension's own,
+ * independent background). src/lib/render.js's applyBackground() toggles
+ * a `calendarium-bg-<style>` class (and, for gradients, an additional
+ * `calendarium-bg-gradient-<name>` class) on <body>, plus an inline
+ * `background-color`/`background-image` for the solid-color/custom-image
+ * variants. This only applies on the New Tab / homepage / full-view
+ * pages — popup.js never calls applyBackground(), so the toolbar popup
+ * always uses --cal-page-bg from the theme palette.
  */
+
+:root {
+  color-scheme: light dark;
+
+  /* Page / surface */
+  --cal-page-bg: #f0f0f3;
+
+  /* Date / time / name-day (brightest text) */
+  --cal-date-color: #1c1c1f;
+  --cal-time-color: #0e0e12;
+  --cal-nameday-color: #0e0e12;
+
+  /* Calendar highlights */
+  --cal-progress-color: #1f6fa8;
+  --cal-newyear-color: #b23a3a;
+
+  /* Traditional month name / holiday (muted italic gray) */
+  --cal-traditional-color: #5a5a5a;
+  --cal-holiday-color: #5a5a5a;
+
+  /* Folk calendar saying */
+  --cal-folkday-color: #7a5a3c;
+
+  /* Moon */
+  --cal-moon-color: #4b4bb5;
+  --cal-moon-age-color: #55558f;
+
+  /* Sun */
+  --cal-sun-color: #a3720a;
+
+  /* Extra cities */
+  --cal-city-name-color: #8a6a1f;
+  --cal-city-time-color: #a3651a;
+  --cal-city-tz-color: #7a5f3f;
+
+  /* Zodiac */
+  --cal-zodiac-western-color: #1f8a5f;
+  --cal-zodiac-chinese-color: #1c7a55;
+
+  /* Name days (secondary rows) */
+  --cal-nameday-sub-color: #666666;
+
+  /* Holidays */
+  --cal-holiday-public-color: #a86a00;
+  --cal-holiday-upcoming-color: #7a6034;
+
+  /* Seasonal periods */
+  --cal-period-color: #7a4f95;
+  --cal-period-upcoming-color: #6d4d85;
+
+  /* Equinox / solstice */
+  --cal-solstice-color: #167a4f;
+
+  /* Alternate calendars */
+  --cal-altcal-color: #52527a;
+
+  /* Wikipedia */
+  --cal-wiki-header-color: #6b6b6b;
+  --cal-wiki-text-color: #4a4a4a;
+  --cal-wiki-featured-color: #333333;
+
+  /* Search box + popup footer link */
+  --cal-link-color: #2255cc;
+  --cal-input-bg: rgba(0, 0, 0, 0.04);
+  --cal-input-border: rgba(0, 0, 0, 0.16);
+  --cal-input-border-focus: var(--cal-link-color);
+  --cal-input-text: #1c1c1f;
+  --cal-input-placeholder: #767676;
+  --cal-input-hover-bg: rgba(0, 0, 0, 0.07);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --cal-page-bg: #1b1b1f;
+
+    --cal-date-color: #eeeeee;
+    --cal-time-color: #ffffff;
+    --cal-nameday-color: #ffffff;
+
+    --cal-progress-color: #aaddff;
+    --cal-newyear-color: #ffaaaa;
+
+    --cal-traditional-color: #aaaaaa;
+    --cal-holiday-color: #aaaaaa;
+
+    --cal-folkday-color: #ccbbaa;
+
+    --cal-moon-color: #ccccff;
+    --cal-moon-age-color: #9999cc;
+
+    --cal-sun-color: #ffdd88;
+
+    --cal-city-name-color: #ddbb66;
+    --cal-city-time-color: #ffcc88;
+    --cal-city-tz-color: #997744;
+
+    --cal-zodiac-western-color: #88ffcc;
+    --cal-zodiac-chinese-color: #66ddaa;
+
+    --cal-nameday-sub-color: #bbbbbb;
+
+    --cal-holiday-public-color: #ffcc44;
+    --cal-holiday-upcoming-color: #aa9966;
+
+    --cal-period-color: #ccaadd;
+    --cal-period-upcoming-color: #bb99cc;
+
+    --cal-solstice-color: #aaffcc;
+
+    --cal-altcal-color: #aaaacc;
+
+    --cal-wiki-header-color: #777777;
+    --cal-wiki-text-color: #bbbbbb;
+    --cal-wiki-featured-color: #dddddd;
+
+    --cal-link-color: #88aaff;
+    --cal-input-bg: rgba(255, 255, 255, 0.08);
+    --cal-input-border: rgba(255, 255, 255, 0.2);
+    --cal-input-border-focus: var(--cal-link-color);
+    --cal-input-text: #eeeeee;
+    --cal-input-placeholder: #999999;
+    --cal-input-hover-bg: rgba(255, 255, 255, 0.16);
+  }
+}
+
+/* Explicit "Dark" theme-mode choice — wins over prefers-color-scheme in
+   either direction, since applyThemeMode() only ever sets data-theme
+   when the user picked "light" or "dark" explicitly (never for "auto"). */
+:root[data-theme="dark"] {
+  --cal-page-bg: #1b1b1f;
+
+  --cal-date-color: #eeeeee;
+  --cal-time-color: #ffffff;
+  --cal-nameday-color: #ffffff;
+
+  --cal-progress-color: #aaddff;
+  --cal-newyear-color: #ffaaaa;
+
+  --cal-traditional-color: #aaaaaa;
+  --cal-holiday-color: #aaaaaa;
+
+  --cal-folkday-color: #ccbbaa;
+
+  --cal-moon-color: #ccccff;
+  --cal-moon-age-color: #9999cc;
+
+  --cal-sun-color: #ffdd88;
+
+  --cal-city-name-color: #ddbb66;
+  --cal-city-time-color: #ffcc88;
+  --cal-city-tz-color: #997744;
+
+  --cal-zodiac-western-color: #88ffcc;
+  --cal-zodiac-chinese-color: #66ddaa;
+
+  --cal-nameday-sub-color: #bbbbbb;
+
+  --cal-holiday-public-color: #ffcc44;
+  --cal-holiday-upcoming-color: #aa9966;
+
+  --cal-period-color: #ccaadd;
+  --cal-period-upcoming-color: #bb99cc;
+
+  --cal-solstice-color: #aaffcc;
+
+  --cal-altcal-color: #aaaacc;
+
+  --cal-wiki-header-color: #777777;
+  --cal-wiki-text-color: #bbbbbb;
+  --cal-wiki-featured-color: #dddddd;
+
+  --cal-link-color: #88aaff;
+  --cal-input-bg: rgba(255, 255, 255, 0.08);
+  --cal-input-border: rgba(255, 255, 255, 0.2);
+  --cal-input-border-focus: var(--cal-link-color);
+  --cal-input-text: #eeeeee;
+  --cal-input-placeholder: #999999;
+  --cal-input-hover-bg: rgba(255, 255, 255, 0.16);
+}
 
 * { box-sizing: border-box; }
 
@@ -16,11 +220,29 @@ body {
   min-height: 100vh;
   width: 100%;
   margin: 0;
-  background: #1b1b1f;
+  background: var(--cal-page-bg);
   display: grid;
   place-items: center;
   font-family: "DejaVu Sans", "Segoe UI", Arial, sans-serif;
 }
+
+/* ── Background style (General > Background setting, applyBackground()) ── */
+.calendarium-bg-theme-default { background: var(--cal-page-bg); }
+.calendarium-bg-solid-color    { /* background-color set inline by applyBackground() */ }
+.calendarium-bg-gradient       { /* actual gradient comes from the calendarium-bg-gradient-<name> class below */ }
+.calendarium-bg-custom-image-url {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-image set inline by applyBackground() after URL validation */
+}
+
+.calendarium-bg-gradient-sunset { background: linear-gradient(135deg, #ff9a56, #ff6f91, #6a5acd); }
+.calendarium-bg-gradient-ocean  { background: linear-gradient(135deg, #1f3b57, #2b5876, #4e9cad); }
+.calendarium-bg-gradient-forest { background: linear-gradient(135deg, #134e5e, #4c8c5b, #a8e063); }
+.calendarium-bg-gradient-aurora { background: linear-gradient(135deg, #00c9ff, #6a5acd, #92fe9d); }
+.calendarium-bg-gradient-candy  { background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1); }
+.calendarium-bg-gradient-slate  { background: linear-gradient(135deg, #232526, #414345, #5c6265); }
 
 .calendarium-container {
   font-size: 15px;
@@ -42,7 +264,7 @@ body {
 .calendarium-date {
   font-size: 1.15em;
   font-weight: bold;
-  color: #eeeeee;
+  color: var(--cal-date-color);
   padding-bottom: 1px;
 }
 
@@ -50,7 +272,7 @@ body {
 .calendarium-time {
   font-size: 2.6em;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--cal-time-color);
   font-family: "DejaVu Sans Mono", "Consolas", monospace;
 }
 
@@ -63,14 +285,14 @@ body {
 
 .calendarium-progress {
   font-size: 0.92em;
-  color: #aaddff;
+  color: var(--cal-progress-color);
 }
 
 /* ── Traditional month name ───────────────────────── */
 .calendarium-traditional {
   font-size: 0.85em;
   font-style: italic;
-  color: #aaaaaa;
+  color: var(--cal-traditional-color);
   padding-bottom: 4px;
 }
 
@@ -78,7 +300,7 @@ body {
 .calendarium-folkday {
   font-size: 0.85em;
   font-style: italic;
-  color: #ccbbaa;
+  color: var(--cal-folkday-color);
   padding-bottom: 4px;
   white-space: pre-line;
 }
@@ -93,18 +315,18 @@ body {
 
 #cal-moon-icon {
   font-size: 20px;
-  color: #ccccff;
+  color: var(--cal-moon-color);
   padding-right: 5px;
 }
 
 .calendarium-moon {
   font-size: 1.08em;
-  color: #ccccff;
+  color: var(--cal-moon-color);
 }
 
 .calendarium-moon-age {
   font-size: 0.85em;
-  color: #9999cc;
+  color: var(--cal-moon-age-color);
 }
 
 /* ── Sun ──────────────────────────────────────────── */
@@ -116,7 +338,7 @@ body {
 
 .calendarium-sun {
   font-size: 1.00em;
-  color: #ffdd88;
+  color: var(--cal-sun-color);
 }
 
 /* ── Additional cities ────────────────────────────── */
@@ -131,24 +353,24 @@ body {
 
 .calendarium-city-name {
   font-size: 0.92em;
-  color: #ddbb66;
+  color: var(--cal-city-name-color);
   font-weight: bold;
 }
 
 .calendarium-city {
   font-size: 0.92em;
-  color: #ddbb66;
+  color: var(--cal-city-name-color);
 }
 
 .calendarium-city-time {
   font-size: 0.92em;
-  color: #ffcc88;
+  color: var(--cal-city-time-color);
   font-family: "DejaVu Sans Mono", monospace;
 }
 
 .calendarium-city-tz {
   font-size: 0.77em;
-  color: #997744;
+  color: var(--cal-city-tz-color);
 }
 
 /* ── Zodiac ───────────────────────────────────────── */
@@ -166,12 +388,12 @@ body {
 
 .calendarium-zodiac-western {
   font-size: 1.00em;
-  color: #88ffcc;
+  color: var(--cal-zodiac-western-color);
 }
 
 .calendarium-zodiac-chinese {
   font-size: 1.00em;
-  color: #66ddaa;
+  color: var(--cal-zodiac-chinese-color);
 }
 
 /* ── Name days ────────────────────────────────────── */
@@ -188,30 +410,30 @@ body {
 
 .calendarium-nameday {
   font-size: 1.00em;
-  color: #ffffff;
+  color: var(--cal-nameday-color);
   padding-top: 4px;
 }
 
 .calendarium-nameday-sub {
   font-size: 0.85em;
-  color: #bbbbbb;
+  color: var(--cal-nameday-sub-color);
 }
 
 /* ── National holidays ────────────────────────────── */
 .calendarium-holiday {
   font-size: 0.85em;
-  color: #aaaaaa;
+  color: var(--cal-holiday-color);
 }
 
 .calendarium-holiday-public {
   font-size: 0.92em;
   font-weight: bold;
-  color: #ffcc44;
+  color: var(--cal-holiday-public-color);
 }
 
 .calendarium-holiday-upcoming {
   font-size: 0.85em;
-  color: #aa9966;
+  color: var(--cal-holiday-upcoming-color);
   white-space: pre-line;
   margin: 0;
   font-family: inherit;
@@ -221,7 +443,7 @@ body {
 .calendarium-period {
   font-size: 0.85em;
   font-style: italic;
-  color: #ccaadd;
+  color: var(--cal-period-color);
   padding-top: 2px;
   white-space: pre-line;
   margin: 0;
@@ -230,7 +452,7 @@ body {
 
 .calendarium-period-upcoming {
   font-size: 0.85em;
-  color: #bb99cc;
+  color: var(--cal-period-upcoming-color);
   white-space: pre-line;
   margin: 0;
   font-family: inherit;
@@ -245,20 +467,20 @@ body {
 
 .calendarium-moontime {
   font-size: 1.00em;
-  color: #ccccff;
+  color: var(--cal-moon-color);
 }
 
 /* ── Equinox and solstice ─────────────────────────── */
 .calendarium-solstice {
   font-size: 0.92em;
-  color: #aaffcc;
+  color: var(--cal-solstice-color);
   padding-top: 2px;
 }
 
 /* ── Alternate calendar dates ─────────────────────── */
 .calendarium-altcal {
   font-size: 0.85em;
-  color: #aaaacc;
+  color: var(--cal-altcal-color);
   padding-top: 4px;
   white-space: pre-line;
   margin: 0;
@@ -268,20 +490,20 @@ body {
 /* ── New Year countdown ───────────────────────────── */
 .calendarium-newyear {
   font-size: 0.92em;
-  color: #ffaaaa;
+  color: var(--cal-newyear-color);
 }
 
 /* ── Wikipedia section ────────────────────────────── */
 .calendarium-wiki-header {
   font-size: 0.77em;
-  color: #777777;
+  color: var(--cal-wiki-header-color);
   padding-top: 6px;
   text-transform: uppercase;
 }
 
 .calendarium-wiki {
   font-size: 0.85em;
-  color: #bbbbbb;
+  color: var(--cal-wiki-text-color);
   white-space: pre-line;
   margin: 0;
   font-family: inherit;
@@ -289,7 +511,7 @@ body {
 
 .calendarium-wiki-featured {
   font-size: 0.85em;
-  color: #dddddd;
+  color: var(--cal-wiki-featured-color);
   font-style: italic;
   white-space: pre-line;
   margin: 0;
@@ -306,26 +528,26 @@ body {
 .calendarium-search-input {
   flex: 1 1 auto;
   min-width: 0;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--cal-input-bg);
+  border: 1px solid var(--cal-input-border);
   border-radius: 6px;
-  color: #eeeeee;
+  color: var(--cal-input-text);
   font-size: 0.95em;
   padding: 6px 10px;
 }
-.calendarium-search-input::placeholder { color: #999999; }
+.calendarium-search-input::placeholder { color: var(--cal-input-placeholder); }
 .calendarium-search-input:focus {
   outline: none;
-  border-color: #88aaff;
+  border-color: var(--cal-input-border-focus);
 }
 
 .calendarium-search-submit {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--cal-input-bg);
+  border: 1px solid var(--cal-input-border);
   border-radius: 6px;
-  color: #eeeeee;
+  color: var(--cal-input-text);
   cursor: pointer;
   font-size: 0.95em;
   padding: 6px 10px;
 }
-.calendarium-search-submit:hover { background: rgba(255, 255, 255, 0.16); }
+.calendarium-search-submit:hover { background: var(--cal-input-hover-bg); }

@@ -108,6 +108,13 @@ h1 { font-size: 1.4em; margin-bottom: 4px; }
 
 .options-field input[type="checkbox"] { width: 18px; height: 18px; }
 .options-field input[type="range"] { width: 180px; }
+.options-field input[type="color"] {
+  min-width: 0;
+  width: 48px;
+  height: 30px;
+  padding: 2px;
+  cursor: pointer;
+}
 
 .options-status {
   color: var(--accent);
