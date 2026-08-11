@@ -1,0 +1,25 @@
+{
+  "name": "calendarium-firefox",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Firefox New Tab extension port of the calendarium@kami911 Cinnamon desklet.",
+  "type": "module",
+  "scripts": {
+    "dev": "web-ext run -t firefox-desktop --source-dir=src",
+    "build": "web-ext build --source-dir=src --artifacts-dir=dist",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . && web-ext lint --source-dir=src",
+    "po:generate": "node scripts/po-to-webext-locales.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "eslint": "^9.13.0",
+    "gettext-parser": "^8.0.0",
+    "globals": "^15.11.0",
+    "jsdom": "^25.0.1",
+    "vitest": "^2.1.0",
+    "web-ext": "^8.3.0"
+  }
+}

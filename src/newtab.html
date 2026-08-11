@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Calendarium</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <main id="calendarium-container" class="calendarium-container">
+
+    <div id="cal-date" class="calendarium-date"></div>
+    <div id="cal-time" class="calendarium-time"></div>
+
+    <div id="cal-progress-row1" class="calendarium-progress-row">
+      <span id="cal-day-of-year" class="calendarium-progress" tabindex="0"></span>
+      <span id="cal-new-year" class="calendarium-newyear" tabindex="0"></span>
+    </div>
+    <div id="cal-progress-row2" class="calendarium-progress-row">
+      <span id="cal-week-number" class="calendarium-progress" tabindex="0"></span>
+      <span id="cal-month-progress" class="calendarium-progress" tabindex="0"></span>
+    </div>
+
+    <div id="cal-traditional" class="calendarium-traditional"></div>
+    <div id="cal-folkday" class="calendarium-folkday"></div>
+
+    <div id="cal-holiday" class="calendarium-holiday"></div>
+    <pre id="cal-holiday-upcoming" class="calendarium-holiday-upcoming"></pre>
+    <pre id="cal-period" class="calendarium-period"></pre>
+    <pre id="cal-period-upcoming" class="calendarium-period-upcoming"></pre>
+
+    <div id="cal-moon-row" class="calendarium-moon-row">
+      <span id="cal-moon-icon" class="calendarium-moon-icon" tabindex="0"></span>
+      <span id="cal-moon-text" class="calendarium-moon"></span>
+      <span id="cal-moon-age" class="calendarium-moon-age" tabindex="0"></span>
+    </div>
+
+    <div id="cal-moonrise-row" class="calendarium-moontime-row">
+      <span id="cal-moonrise" class="calendarium-moontime" tabindex="0"></span>
+      <span id="cal-moonset" class="calendarium-moontime" tabindex="0"></span>
+    </div>
+
+    <div id="cal-sun-row" class="calendarium-sun-row">
+      <span id="cal-sunrise" class="calendarium-sun" tabindex="0"></span>
+      <span id="cal-sunset" class="calendarium-sun" tabindex="0"></span>
+    </div>
+
+    <div id="cal-city-grid" class="calendarium-city-grid"></div>
+
+    <div id="cal-zodiac-row" class="calendarium-zodiac-row">
+      <span id="cal-zodiac-western-part" class="calendarium-zodiac-part">
+        <span id="cal-zodiac-western-icon" tabindex="0"></span>
+        <span id="cal-zodiac-western-text" class="calendarium-zodiac-western"></span>
+      </span>
+      <span id="cal-zodiac-chinese-part" class="calendarium-zodiac-part">
+        <span id="cal-zodiac-chinese-icon" tabindex="0"></span>
+        <span id="cal-zodiac-chinese-text" class="calendarium-zodiac-chinese"></span>
+      </span>
+    </div>
+
+    <div id="cal-solstice" class="calendarium-solstice"></div>
+
+    <div id="cal-nameday-today" class="calendarium-nameday"></div>
+    <div id="cal-nameday-future" class="calendarium-nameday-future"></div>
+
+    <div id="cal-wiki-events-header" class="calendarium-wiki-header"></div>
+    <pre id="cal-wiki-events" class="calendarium-wiki"></pre>
+    <div id="cal-wiki-births-header" class="calendarium-wiki-header"></div>
+    <pre id="cal-wiki-births" class="calendarium-wiki"></pre>
+    <div id="cal-wiki-deaths-header" class="calendarium-wiki-header"></div>
+    <pre id="cal-wiki-deaths" class="calendarium-wiki"></pre>
+    <div id="cal-wiki-featured-header" class="calendarium-wiki-header"></div>
+    <pre id="cal-wiki-featured" class="calendarium-wiki-featured"></pre>
+
+    <pre id="cal-altcal" class="calendarium-altcal"></pre>
+
+  </main>
+  <script type="module" src="newtab.js"></script>
+</body>
+</html>

@@ -1,0 +1,774 @@
+{
+  "0_fully_transparent_wallpaper_shows_through_1_solid_black_background": {
+    "message": "0 = entièrement transparent (le fond d'écran est visible), 1 = fond noir opaque",
+    "description": "Source: \"0 = fully transparent (wallpaper shows through), 1 = solid black background\""
+  },
+  "12_hour_am_pm": {
+    "message": "12 heures (AM/PM)",
+    "description": "Source: \"12-hour (AM/PM)\""
+  },
+  "24_hour": {
+    "message": "24 heures",
+    "description": "Source: \"24-hour\""
+  },
+  "a_rich_calendar_desklet_with_moon_phase_sunrise_sunset_zodiac_name_days_traditional_month_names_and_optional_wikipedia_features": {
+    "message": "Un desklet de calendrier complet avec phase lunaire, lever/coucher du soleil, zodiaque, fêtes, noms traditionnels des mois et fonctions Wikipedia optionnelles.",
+    "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
+  },
+  "alternate_calendars": {
+    "message": "Calendriers alternatifs",
+    "description": "Source: \"Alternate Calendars\""
+  },
+  "appearance": {
+    "message": "Apparence",
+    "description": "Source: \"Appearance\""
+  },
+  "aquarius": {
+    "message": "Verseau",
+    "description": "Source: \"Aquarius\""
+  },
+  "aries": {
+    "message": "Bélier",
+    "description": "Source: \"Aries\""
+  },
+  "article_of_the_day": {
+    "message": "Article du jour",
+    "description": "Source: \"Article of the day\""
+  },
+  "autumn_equinox": {
+    "message": "Équinoxe d'automne",
+    "description": "Source: \"Autumn equinox\""
+  },
+  "background_opacity": {
+    "message": "Opacité de l'arrière-plan",
+    "description": "Source: \"Background opacity\""
+  },
+  "births_on_this_day": {
+    "message": "Naissances de ce jour",
+    "description": "Source: \"Births on this day\""
+  },
+  "cache_duration_for_wikipedia_data": {
+    "message": "Durée du cache des données Wikipédia",
+    "description": "Source: \"Cache duration for Wikipedia data\""
+  },
+  "calendar_highlights": {
+    "message": "Actualités du calendrier",
+    "description": "Source: \"Calendar Highlights\""
+  },
+  "calendarium": {
+    "message": "Calendarium",
+    "description": "Source: \"Calendarium\""
+  },
+  "cancer": {
+    "message": "Cancer",
+    "description": "Source: \"Cancer\""
+  },
+  "capricorn": {
+    "message": "Capricorne",
+    "description": "Source: \"Capricorn\""
+  },
+  "chinese_zodiac": {
+    "message": "Zodiaque chinois",
+    "description": "Source: \"Chinese zodiac\""
+  },
+  "chinese_zodiac_display": {
+    "message": "Affichage du zodiaque chinois",
+    "description": "Source: \"Chinese zodiac display\""
+  },
+  "choose_what_to_show_for_the_chinese_zodiac_year_animal_and_element": {
+    "message": "Choisissez ce qu'il faut afficher pour l'année du zodiaque chinois (animal et élément).Choisissez ce qui s'affiche pour l'année du zodiaque chinois (animal et élément).Choisissez ce qu'il faut afficher pour l'année du zodiaque chinois (animal et élément).",
+    "description": "Source: \"Choose what to show for the Chinese zodiac year (animal and element).\""
+  },
+  "choose_what_to_show_for_the_western_zodiac_sign": {
+    "message": "Choisissez ce qu'il faut afficher pour le signe du zodiaque occidental.Choisissez ce qui s'affiche pour le signe du zodiaque occidental.Choisissez ce qu'il faut afficher pour le signe du zodiaque occidental.",
+    "description": "Source: \"Choose what to show for the western zodiac sign.\""
+  },
+  "city_1_latitude": {
+    "message": "Latitude de la ville 1",
+    "description": "Source: \"City 1 latitude\""
+  },
+  "city_1_longitude": {
+    "message": "Longitude de la ville 1",
+    "description": "Source: \"City 1 longitude\""
+  },
+  "city_1_name_leave_empty_to_disable": {
+    "message": "Nom de la ville 1 (laisser vide pour désactiver)",
+    "description": "Source: \"City 1 name (leave empty to disable)\""
+  },
+  "city_1_timezone_iana_e_g_europe_vienna": {
+    "message": "Fuseau horaire de la ville 1 (IANA, ex. Europe/Vienna)",
+    "description": "Source: \"City 1 timezone (IANA, e.g. Europe/Vienna)\""
+  },
+  "city_2_latitude": {
+    "message": "Latitude de la ville 2",
+    "description": "Source: \"City 2 latitude\""
+  },
+  "city_2_longitude": {
+    "message": "Longitude de la ville 2",
+    "description": "Source: \"City 2 longitude\""
+  },
+  "city_2_name_leave_empty_to_disable": {
+    "message": "Nom de la ville 2 (laisser vide pour désactiver)",
+    "description": "Source: \"City 2 name (leave empty to disable)\""
+  },
+  "city_2_timezone_iana_e_g_america_new_york": {
+    "message": "Fuseau horaire de la ville 2 (IANA, ex. America/New_York)",
+    "description": "Source: \"City 2 timezone (IANA, e.g. America/New_York)\""
+  },
+  "city_3_latitude": {
+    "message": "Latitude de la ville 3",
+    "description": "Source: \"City 3 latitude\""
+  },
+  "city_3_longitude": {
+    "message": "Longitude de la ville 3",
+    "description": "Source: \"City 3 longitude\""
+  },
+  "city_3_name_leave_empty_to_disable": {
+    "message": "Nom de la ville 3 (laisser vide pour désactiver)",
+    "description": "Source: \"City 3 name (leave empty to disable)\""
+  },
+  "city_3_timezone_iana_e_g_asia_tokyo": {
+    "message": "Fuseau horaire de la ville 3 (IANA, ex. Asia/Tokyo)",
+    "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
+  },
+  "controls_the_display_size_of_moon_phase_and_zodiac_symbols": {
+    "message": "Contrôle la taille d'affichage des symboles de phase lunaire et du zodiaque.",
+    "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
+  },
+  "current_date": {
+    "message": "Date actuelle",
+    "description": "Source: \"Current date\""
+  },
+  "current_time": {
+    "message": "Heure actuelle",
+    "description": "Source: \"Current time\""
+  },
+  "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
+    "message": "Format de date personnalisé (strftime) — actif uniquement quand 'Personnalisé' est sélectionnéFormat de date personnalisé (strftime) — actif uniquement quand « Personnalisé » est sélectionné ci-dessus",
+    "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "date_and_time": {
+    "message": "Date et heure",
+    "description": "Source: \"Date and Time\""
+  },
+  "date_format": {
+    "message": "Format de date",
+    "description": "Source: \"Date format\""
+  },
+  "day_n_of_n": {
+    "message": "Jour %d sur %d",
+    "description": "Source: \"Day %d of %d\""
+  },
+  "day_of_year": {
+    "message": "Jour de l'année",
+    "description": "Source: \"Day of year\""
+  },
+  "days": {
+    "message": "jours",
+    "description": "Source: \"days\""
+  },
+  "days_left": {
+    "message": "jours restants",
+    "description": "Source: \"days left\""
+  },
+  "days_until_new_year": {
+    "message": "jours jusqu'au Nouvel An",
+    "description": "Source: \"days until New Year\""
+  },
+  "deaths_on_this_day": {
+    "message": "Décès de ce jour",
+    "description": "Source: \"Deaths on this day\""
+  },
+  "dog": {
+    "message": "Chien",
+    "description": "Source: \"Dog\""
+  },
+  "dragon": {
+    "message": "Dragon",
+    "description": "Source: \"Dragon\""
+  },
+  "earth": {
+    "message": "Terre",
+    "description": "Source: \"Earth\""
+  },
+  "enable_wikipedia_features_requires_internet": {
+    "message": "Activer les fonctionnalités Wikipédia (Internet requis)",
+    "description": "Source: \"Enable Wikipedia features (requires Internet)\""
+  },
+  "english": {
+    "message": "Anglais",
+    "description": "Source: \"English\""
+  },
+  "equinox_and_solstice": {
+    "message": "Équinoxe et solstice",
+    "description": "Source: \"Equinox and Solstice\""
+  },
+  "events_on_this_day": {
+    "message": "Événements de ce jour",
+    "description": "Source: \"Events on this day\""
+  },
+  "extension_description": {
+    "message": "A rich New Tab page with date, moon phase, sun times, zodiac, name days, holidays, folk sayings, alternate calendars and optional Wikipedia \"on this day\" content — ported from the calendarium@kami911 Cinnamon desklet.",
+    "description": "Extension description shown in about:addons"
+  },
+  "extension_name": {
+    "message": "Calendarium",
+    "description": "Extension name shown in about:addons"
+  },
+  "filled_automatically_when_using_city_search_you_can_also_enter_an_iana_timezone_name_manually": {
+    "message": "Rempli automatiquement lors de la recherche de ville. Vous pouvez aussi saisir manuellement un nom de fuseau horaire IANA.",
+    "description": "Source: \"Filled automatically when using city search. You can also enter an IANA timezone name manually.\""
+  },
+  "filled_automatically_when_using_city_search_you_can_also_enter_an_iana_timezone_name_manually_e_g_america_new_york": {
+    "message": "Rempli automatiquement lors de la recherche de ville. Vous pouvez aussi saisir manuellement un nom de fuseau horaire IANA, ex. America/New_York.",
+    "description": "Source: \"Filled automatically when using city search. You can also enter an IANA timezone name manually, e.g. America/New_York.\""
+  },
+  "fire": {
+    "message": "Feu",
+    "description": "Source: \"Fire\""
+  },
+  "first_quarter": {
+    "message": "Premier quartier",
+    "description": "Source: \"First Quarter\""
+  },
+  "folk_calendar_sayings": {
+    "message": "Proverbes du calendrier populaire",
+    "description": "Source: \"Folk Calendar Sayings\""
+  },
+  "folk_saying_language": {
+    "message": "Langue du proverbe populaire",
+    "description": "Source: \"Folk saying language\""
+  },
+  "french": {
+    "message": "Français",
+    "description": "Source: \"French\""
+  },
+  "full_moon": {
+    "message": "Pleine lune",
+    "description": "Source: \"Full Moon\""
+  },
+  "gemini": {
+    "message": "Gémeaux",
+    "description": "Source: \"Gemini\""
+  },
+  "general": {
+    "message": "Général",
+    "description": "Source: \"General\""
+  },
+  "german": {
+    "message": "Allemand",
+    "description": "Source: \"German\""
+  },
+  "goat": {
+    "message": "Chèvre",
+    "description": "Source: \"Goat\""
+  },
+  "hebrew_date": {
+    "message": "Date hébraïque",
+    "description": "Source: \"Hebrew date\""
+  },
+  "holiday_calendar": {
+    "message": "Calendrier des jours fériés",
+    "description": "Source: \"Holiday calendar\""
+  },
+  "horse": {
+    "message": "Cheval",
+    "description": "Source: \"Horse\""
+  },
+  "hours": {
+    "message": "heures",
+    "description": "Source: \"hours\""
+  },
+  "how_long_to_keep_wikipedia_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage": {
+    "message": "Durée de conservation des données Wikipedia dans le cache local avant de télécharger de nouvelles données. Des valeurs plus basses actualisent plus souvent ; des valeurs plus hautes réduisent l'utilisation du réseau.Combien de temps conserver les données Wikipédia dans le cache local avant d'en obtenir de nouvelles. Des valeurs faibles actualisent plus souvent ; des valeurs élevées réduisent l'utilisation du réseau.",
+    "description": "Source: \"How long to keep Wikipedia data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage.\""
+  },
+  "how_many_births_deaths_and_events_to_display_at_a_time_the_list_rotates_periodically_cycling_through_all_available_entries_from_the_cache": {
+    "message": "Combien de naissances, décès et événements afficher à la fois. La liste tourne périodiquement, parcourant toutes les entrées disponibles dans le cache.",
+    "description": "Source: \"How many births, deaths, and events to display at a time. The list rotates periodically, cycling through all available entries from the cache.\""
+  },
+  "how_often_to_advance_to_the_next_set_of_items_set_to_1_to_rotate_every_minute": {
+    "message": "À quelle fréquence passer au groupe d'éléments suivant. Mettre 1 pour tourner chaque minute.",
+    "description": "Source: \"How often to advance to the next set of items. Set to 1 to rotate every minute.\""
+  },
+  "hungarian": {
+    "message": "Hongrois",
+    "description": "Source: \"Hungarian\""
+  },
+  "icon_and_symbol_size": {
+    "message": "Taille des icônes et symboles",
+    "description": "Source: \"Icon and symbol size\""
+  },
+  "icon_and_text": {
+    "message": "Icône et texte",
+    "description": "Source: \"Icon and text\""
+  },
+  "icon_only": {
+    "message": "Icône uniquement",
+    "description": "Source: \"Icon only\""
+  },
+  "islamic_date": {
+    "message": "Date islamique",
+    "description": "Source: \"Islamic date\""
+  },
+  "italian": {
+    "message": "Italien",
+    "description": "Source: \"Italian\""
+  },
+  "items_shown_per_section": {
+    "message": "Éléments affichés par section",
+    "description": "Source: \"Items shown per section\""
+  },
+  "julian_date": {
+    "message": "Date julienne",
+    "description": "Source: \"Julian date\""
+  },
+  "label_for_an_additional_city_leave_empty_to_hide": {
+    "message": "Étiquette pour une ville supplémentaire. Laisser vide pour masquer.",
+    "description": "Source: \"Label for an additional city. Leave empty to hide.\""
+  },
+  "large": {
+    "message": "Grand",
+    "description": "Source: \"Large\""
+  },
+  "last_quarter": {
+    "message": "Dernier quartier",
+    "description": "Source: \"Last Quarter\""
+  },
+  "latitude_positive_north": {
+    "message": "Latitude (positif = Nord)",
+    "description": "Source: \"Latitude (positive = North)\""
+  },
+  "leo": {
+    "message": "Lion",
+    "description": "Source: \"Leo\""
+  },
+  "libra": {
+    "message": "Balance",
+    "description": "Source: \"Libra\""
+  },
+  "local_time": {
+    "message": "Heure locale",
+    "description": "Source: \"Local time\""
+  },
+  "location": {
+    "message": "Emplacement",
+    "description": "Source: \"Location\""
+  },
+  "longitude_positive_east": {
+    "message": "Longitude (positif = Est)",
+    "description": "Source: \"Longitude (positive = East)\""
+  },
+  "medium": {
+    "message": "Moyen",
+    "description": "Source: \"Medium\""
+  },
+  "metal": {
+    "message": "Métal",
+    "description": "Source: \"Metal\""
+  },
+  "monkey": {
+    "message": "Singe",
+    "description": "Source: \"Monkey\""
+  },
+  "month_highlights": {
+    "message": "Actualité du mois",
+    "description": "Source: \"Month highlights\""
+  },
+  "moon_age": {
+    "message": "Âge de la lune",
+    "description": "Source: \"Moon age\""
+  },
+  "moon_phase": {
+    "message": "Phase lunaire",
+    "description": "Source: \"Moon Phase\""
+  },
+  "moonrise": {
+    "message": "Lever de lune",
+    "description": "Source: \"Moonrise\""
+  },
+  "moonset": {
+    "message": "Coucher de lune",
+    "description": "Source: \"Moonset\""
+  },
+  "name_day_calendar": {
+    "message": "Calendrier des fêtes",
+    "description": "Source: \"Name day calendar\""
+  },
+  "name_days": {
+    "message": "Fêtes",
+    "description": "Source: \"Name Days\""
+  },
+  "national_holidays": {
+    "message": "Fêtes nationales",
+    "description": "Source: \"National Holidays\""
+  },
+  "new_moon": {
+    "message": "Nouvelle lune",
+    "description": "Source: \"New Moon\""
+  },
+  "no_data": {
+    "message": "Pas de données",
+    "description": "Source: \"No data\""
+  },
+  "none_hidden": {
+    "message": "Aucun (masqué)",
+    "description": "Source: \"None (hidden)\""
+  },
+  "old_english_anglo_saxon": {
+    "message": "Vieil anglais (anglo-saxon)",
+    "description": "Source: \"Old English (Anglo-Saxon)\""
+  },
+  "old_german": {
+    "message": "Vieil allemand",
+    "description": "Source: \"Old German\""
+  },
+  "old_hungarian": {
+    "message": "Hongrois ancien",
+    "description": "Source: \"Old Hungarian\""
+  },
+  "ox": {
+    "message": "Bœuf",
+    "description": "Source: \"Ox\""
+  },
+  "persian_date": {
+    "message": "Date persane",
+    "description": "Source: \"Persian date\""
+  },
+  "pig": {
+    "message": "Cochon",
+    "description": "Source: \"Pig\""
+  },
+  "pisces": {
+    "message": "Poissons",
+    "description": "Source: \"Pisces\""
+  },
+  "polar_day": {
+    "message": "Jour polaire",
+    "description": "Source: \"Polar day\""
+  },
+  "polar_night": {
+    "message": "Nuit polaire",
+    "description": "Source: \"Polar night\""
+  },
+  "public_holiday": {
+    "message": "jour férié",
+    "description": "Source: \"public holiday\""
+  },
+  "rabbit": {
+    "message": "Lapin",
+    "description": "Source: \"Rabbit\""
+  },
+  "rat": {
+    "message": "Rat",
+    "description": "Source: \"Rat\""
+  },
+  "rooster": {
+    "message": "Coq",
+    "description": "Source: \"Rooster\""
+  },
+  "rotate_items_every_n_minutes": {
+    "message": "Faire tourner les éléments toutes les N minutes",
+    "description": "Source: \"Rotate items every N minutes\""
+  },
+  "sagittarius": {
+    "message": "Sagittaire",
+    "description": "Source: \"Sagittarius\""
+  },
+  "scale_all_text_in_the_desklet_up_or_down": {
+    "message": "Agrandir ou réduire tout le texte du desklet.",
+    "description": "Source: \"Scale all text in the desklet up or down.\""
+  },
+  "scorpio": {
+    "message": "Scorpion",
+    "description": "Source: \"Scorpio\""
+  },
+  "search_city_to_auto_fill_coordinates": {
+    "message": "Rechercher une ville pour remplir les coordonnées automatiquement",
+    "description": "Source: \"Search city to auto-fill coordinates\""
+  },
+  "select_a_predefined_date_format_or_choose_custom_to_enter_your_own_strftime_string_below": {
+    "message": "Sélectionnez un format de date prédéfini, ou choisissez Personnalisé pour saisir votre propre chaîne strftime ci-dessous.Sélectionnez un format de date prédéfini, ou choisissez Personnalisé pour saisir votre propre code strftime ci-dessous.",
+    "description": "Source: \"Select a predefined date format, or choose Custom to enter your own strftime string below.\""
+  },
+  "separator_character_between_calendar_items": {
+    "message": "Caractère séparateur entre les éléments du calendrier",
+    "description": "Source: \"Separator character between calendar items\""
+  },
+  "show_article_of_the_day": {
+    "message": "Afficher l'article du jour",
+    "description": "Source: \"Show article of the day\""
+  },
+  "show_current_local_time_for_each_city": {
+    "message": "Afficher l'heure locale actuelle pour chaque ville",
+    "description": "Source: \"Show current local time for each city\""
+  },
+  "show_date": {
+    "message": "Afficher la date",
+    "description": "Source: \"Show date\""
+  },
+  "show_day_of_year_e_g_day_52_of_365": {
+    "message": "Afficher le jour de l'année (ex. Jour 52 sur 365)",
+    "description": "Source: \"Show day of year (e.g. Day 52 of 365)\""
+  },
+  "show_days_until_new_year": {
+    "message": "Afficher les jours jusqu'au Nouvel An",
+    "description": "Source: \"Show days until New Year\""
+  },
+  "show_equinox_and_solstice": {
+    "message": "Afficher les équinoxes et solstices",
+    "description": "Source: \"Show equinox and solstice\""
+  },
+  "show_folk_calendar_saying_for_today": {
+    "message": "Afficher le proverbe populaire du jour",
+    "description": "Source: \"Show folk calendar saying for today\""
+  },
+  "show_future_name_days_in_two_columns": {
+    "message": "Afficher les prochaines fêtes en deux colonnes",
+    "description": "Source: \"Show future name days in two columns\""
+  },
+  "show_hebrew_calendar_date": {
+    "message": "Afficher la date du calendrier hébreu",
+    "description": "Source: \"Show Hebrew calendar date\""
+  },
+  "show_islamic_calendar_date": {
+    "message": "Afficher la date du calendrier islamique",
+    "description": "Source: \"Show Islamic calendar date\""
+  },
+  "show_iso_week_number": {
+    "message": "Afficher le numéro de semaine ISO",
+    "description": "Source: \"Show ISO week number\""
+  },
+  "show_julian_calendar_date": {
+    "message": "Afficher la date du calendrier julien",
+    "description": "Source: \"Show Julian calendar date\""
+  },
+  "show_month_highlights_day_days_in_month": {
+    "message": "Afficher l'actualité du mois (jour / jours dans le mois)",
+    "description": "Source: \"Show month highlights (day / days in month)\""
+  },
+  "show_moon_age_days_since_new_moon": {
+    "message": "Afficher l'âge de la lune (jours depuis la nouvelle lune)",
+    "description": "Source: \"Show moon age (days since new moon)\""
+  },
+  "show_moon_phase": {
+    "message": "Afficher la phase lunaire",
+    "description": "Source: \"Show moon phase\""
+  },
+  "show_moon_phase_name": {
+    "message": "Afficher le nom de la phase lunaire",
+    "description": "Source: \"Show moon phase name\""
+  },
+  "show_moonrise_and_moonset_times": {
+    "message": "Afficher le lever et le coucher de lune",
+    "description": "Source: \"Show moonrise and moonset times\""
+  },
+  "show_name_days": {
+    "message": "Afficher les fêtes",
+    "description": "Source: \"Show name days\""
+  },
+  "show_national_holidays_and_weekends": {
+    "message": "Afficher les jours fériés nationaux et les week-ends",
+    "description": "Source: \"Show national holidays and weekends\""
+  },
+  "show_notable_births_on_this_day": {
+    "message": "Afficher les naissances notables de ce jour",
+    "description": "Source: \"Show notable births on this day\""
+  },
+  "show_notable_deaths_on_this_day": {
+    "message": "Afficher les décès notables de ce jour",
+    "description": "Source: \"Show notable deaths on this day\""
+  },
+  "show_notable_events_on_this_day": {
+    "message": "Afficher les événements notables de ce jour",
+    "description": "Source: \"Show notable events on this day\""
+  },
+  "show_persian_calendar_date": {
+    "message": "Afficher la date du calendrier persan",
+    "description": "Source: \"Show Persian calendar date\""
+  },
+  "show_seconds": {
+    "message": "Afficher les secondes",
+    "description": "Source: \"Show seconds\""
+  },
+  "show_sunrise_and_sunset_times": {
+    "message": "Afficher les heures de lever et coucher du soleil",
+    "description": "Source: \"Show sunrise and sunset times\""
+  },
+  "show_time": {
+    "message": "Afficher l'heure",
+    "description": "Source: \"Show time\""
+  },
+  "show_traditional_month_name": {
+    "message": "Afficher le nom de mois traditionnel",
+    "description": "Source: \"Show traditional month name\""
+  },
+  "show_upcoming_holidays_days_ahead": {
+    "message": "Afficher les prochains jours fériés (jours à l'avance)",
+    "description": "Source: \"Show upcoming holidays (days ahead)\""
+  },
+  "show_upcoming_name_days_days_ahead": {
+    "message": "Afficher les prochaines fêtes (jours à l'avance)",
+    "description": "Source: \"Show upcoming name days (days ahead)\""
+  },
+  "show_upcoming_seasonal_periods_days_ahead": {
+    "message": "Afficher les périodes saisonnières à venir (jours à l'avance)",
+    "description": "Source: \"Show upcoming seasonal periods (days ahead)\""
+  },
+  "show_utc_offset_for_each_city_e_g_utc_1": {
+    "message": "Afficher le décalage UTC pour chaque ville (ex. UTC+1)",
+    "description": "Source: \"Show UTC offset for each city (e.g. UTC+1)\""
+  },
+  "small": {
+    "message": "Petit",
+    "description": "Source: \"Small\""
+  },
+  "snake": {
+    "message": "Serpent",
+    "description": "Source: \"Snake\""
+  },
+  "spanish": {
+    "message": "Espagnol",
+    "description": "Source: \"Spanish\""
+  },
+  "spring_equinox": {
+    "message": "Équinoxe de printemps",
+    "description": "Source: \"Spring equinox\""
+  },
+  "strftime_codes_a_full_weekday_a_short_weekday_n_day_b_full_month_b_short_month_y_4_digit_year_y_2_digit_year_m_month_number_j_day_of_year_h_hour_24h_i_hour_12h_m_minute_p_am_pm_example_y_b_n_a": {
+    "message": "Codes strftime : %A=jour de la semaine complet  %a=jour de la semaine court  %d=jour  %B=mois complet  %b=mois court  %Y=année sur 4 chiffres  %y=année sur 2 chiffres  %m=numéro du mois  %j=jour de l'année  %H=heure(24h)  %I=heure(12h)  %M=minute  %p=AM/PM.  Exemple : %Y. %B %d., %A",
+    "description": "Source: \"strftime codes: %A=full weekday  %a=short weekday  %d=day  %B=full month  %b=short month  %Y=4-digit year  %y=2-digit year  %m=month number  %j=day of year  %H=hour(24h)  %I=hour(12h)  %M=minute  %p=AM/PM.  Example: %Y. %B %d., %A\""
+  },
+  "summer_solstice": {
+    "message": "Solstice d'été",
+    "description": "Source: \"Summer solstice\""
+  },
+  "sunrise": {
+    "message": "Lever du soleil",
+    "description": "Source: \"Sunrise\""
+  },
+  "sunrise_and_sunset": {
+    "message": "Lever et coucher du soleil",
+    "description": "Source: \"Sunrise and Sunset\""
+  },
+  "sunset": {
+    "message": "Coucher du soleil",
+    "description": "Source: \"Sunset\""
+  },
+  "system_language": {
+    "message": "Langue du système",
+    "description": "Source: \"System language\""
+  },
+  "taurus": {
+    "message": "Taureau",
+    "description": "Source: \"Taurus\""
+  },
+  "text_only": {
+    "message": "Texte uniquement",
+    "description": "Source: \"Text only\""
+  },
+  "text_scale_factor": {
+    "message": "Facteur d'échelle du texte",
+    "description": "Source: \"Text scale factor\""
+  },
+  "tiger": {
+    "message": "Tigre",
+    "description": "Source: \"Tiger\""
+  },
+  "time_format": {
+    "message": "Format de l'heure",
+    "description": "Source: \"Time format\""
+  },
+  "tomorrow": {
+    "message": "Demain",
+    "description": "Source: \"Tomorrow\""
+  },
+  "traditional_month_name_tradition": {
+    "message": "Tradition du nom de mois",
+    "description": "Source: \"Traditional month name tradition\""
+  },
+  "traditional_month_names": {
+    "message": "Noms de mois traditionnels",
+    "description": "Source: \"Traditional Month Names\""
+  },
+  "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
+    "message": "Tapez un nom de ville — les coordonnées se remplissent automatiquement après 1,5 seconde.",
+    "description": "Source: \"Type a city name — coordinates are filled in automatically after 1.5 seconds.\""
+  },
+  "upcoming_periods_lookahead_days": {
+    "message": "Anticipation des périodes à venir (jours)",
+    "description": "Source: \"Upcoming periods lookahead (days)\""
+  },
+  "use_manual_location_default_budapest_hungary": {
+    "message": "Utiliser un emplacement manuel (par défaut : Budapest, Hongrie)",
+    "description": "Source: \"Use manual location (default: Budapest, Hungary)\""
+  },
+  "virgo": {
+    "message": "Vierge",
+    "description": "Source: \"Virgo\""
+  },
+  "waning_crescent": {
+    "message": "Dernier croissant",
+    "description": "Source: \"Waning Crescent\""
+  },
+  "waning_gibbous": {
+    "message": "Gibbeuse décroissante",
+    "description": "Source: \"Waning Gibbous\""
+  },
+  "water": {
+    "message": "Eau",
+    "description": "Source: \"Water\""
+  },
+  "waxing_crescent": {
+    "message": "Premier croissant",
+    "description": "Source: \"Waxing Crescent\""
+  },
+  "waxing_gibbous": {
+    "message": "Gibbeuse croissante",
+    "description": "Source: \"Waxing Gibbous\""
+  },
+  "week_n": {
+    "message": "Semaine %d",
+    "description": "Source: \"Week %d\""
+  },
+  "week_number": {
+    "message": "Numéro de semaine",
+    "description": "Source: \"Week number\""
+  },
+  "weekend": {
+    "message": "week-end",
+    "description": "Source: \"weekend\""
+  },
+  "western_zodiac": {
+    "message": "Zodiaque occidental",
+    "description": "Source: \"Western zodiac\""
+  },
+  "western_zodiac_display": {
+    "message": "Affichage du zodiaque occidental",
+    "description": "Source: \"Western zodiac display\""
+  },
+  "wikipedia": {
+    "message": "Wikipédia",
+    "description": "Source: \"Wikipedia\""
+  },
+  "wikipedia_internet_required": {
+    "message": "Wikipédia (Internet requis)",
+    "description": "Source: \"Wikipedia (Internet Required)\""
+  },
+  "wikipedia_language": {
+    "message": "Langue de Wikipédia",
+    "description": "Source: \"Wikipedia language\""
+  },
+  "winter_solstice": {
+    "message": "Solstice d'hiver",
+    "description": "Source: \"Winter solstice\""
+  },
+  "wood": {
+    "message": "Bois",
+    "description": "Source: \"Wood\""
+  },
+  "zodiac": {
+    "message": "Zodiaque",
+    "description": "Source: \"Zodiac\""
+  }
+}

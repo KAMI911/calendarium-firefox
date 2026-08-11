@@ -1,0 +1,834 @@
+{
+  "02_22_2026_m_n_y": {
+    "message": "02/22/2026                 (%m/%d/%Y)",
+    "description": "Source: \"02/22/2026                 (%m/%d/%Y)\""
+  },
+  "0_fully_transparent_wallpaper_shows_through_1_solid_black_background": {
+    "message": "0 = teljesen átlátszó (áttűnik a háttérkép), 1 = tömör fekete háttér",
+    "description": "Source: \"0 = fully transparent (wallpaper shows through), 1 = solid black background\""
+  },
+  "12_hour_am_pm": {
+    "message": "12 órás (AM/PM)",
+    "description": "Source: \"12-hour (AM/PM)\""
+  },
+  "2026_02_22_y_m_n": {
+    "message": "2026. 02. 22.              (%Y. %m. %d.)",
+    "description": "Source: \"2026. 02. 22.              (%Y. %m. %d.)\""
+  },
+  "2026_february_22_friday_y_b_n_a": {
+    "message": "2026. február 22., péntek  (%Y. %B %d., %A)",
+    "description": "Source: \"2026. February 22., Friday (%Y. %B %d., %A)\""
+  },
+  "2026_february_22_y_b_n": {
+    "message": "2026. február 22.          (%Y. %B %d.)",
+    "description": "Source: \"2026. February 22.         (%Y. %B %d.)\""
+  },
+  "22_02_2026_n_m_y": {
+    "message": "22.02.2026                 (%d.%m.%Y)",
+    "description": "Source: \"22.02.2026                 (%d.%m.%Y)\""
+  },
+  "22_feb_2026_n_b_y": {
+    "message": "22 Feb 2026                (%d %b %Y)",
+    "description": "Source: \"22 Feb 2026                (%d %b %Y)\""
+  },
+  "22_february_2026_n_b_y": {
+    "message": "22. február 2026          (%d. %B %Y)",
+    "description": "Source: \"22. February 2026          (%d. %B %Y)\""
+  },
+  "24_hour": {
+    "message": "24 órás",
+    "description": "Source: \"24-hour\""
+  },
+  "a_rich_calendar_desklet_with_moon_phase_sunrise_sunset_zodiac_name_days_traditional_month_names_and_optional_wikipedia_features": {
+    "message": "Egy gazdag funkcionalitású naptár-asztalkalmazás, amely tartalmazza a holdfázisokat, a napkelte és napnyugta időpontját, a csillagjegyeket, a névnapokat, a hagyományos hónapneveket, valamint opcionálisan Wikipédia-funkciókat is.",
+    "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
+  },
+  "alternate_calendars": {
+    "message": "Alternatív naptárak",
+    "description": "Source: \"Alternate Calendars\""
+  },
+  "appearance": {
+    "message": "Megjelenés",
+    "description": "Source: \"Appearance\""
+  },
+  "aquarius": {
+    "message": "Vízöntő",
+    "description": "Source: \"Aquarius\""
+  },
+  "aries": {
+    "message": "Kos",
+    "description": "Source: \"Aries\""
+  },
+  "article_of_the_day": {
+    "message": "A nap cikke",
+    "description": "Source: \"Article of the day\""
+  },
+  "autumn_equinox": {
+    "message": "Őszi napéjegyenlőség",
+    "description": "Source: \"Autumn equinox\""
+  },
+  "background_opacity": {
+    "message": "Háttér átlátszósága",
+    "description": "Source: \"Background opacity\""
+  },
+  "births_on_this_day": {
+    "message": "Ezen a napon születtek",
+    "description": "Source: \"Births on this day\""
+  },
+  "cache_duration_for_wikipedia_data": {
+    "message": "Wikipédia adatok gyorsítótár-időtartama",
+    "description": "Source: \"Cache duration for Wikipedia data\""
+  },
+  "calendar_highlights": {
+    "message": "Naptár aktualitás",
+    "description": "Source: \"Calendar Highlights\""
+  },
+  "calendarium": {
+    "message": "Kalendárium",
+    "description": "Source: \"Calendarium\""
+  },
+  "cancer": {
+    "message": "Rák",
+    "description": "Source: \"Cancer\""
+  },
+  "capricorn": {
+    "message": "Bak",
+    "description": "Source: \"Capricorn\""
+  },
+  "chinese_zodiac": {
+    "message": "Kínai horoszkóp",
+    "description": "Source: \"Chinese zodiac\""
+  },
+  "chinese_zodiac_display": {
+    "message": "Kínai horoszkóp megjelenítése",
+    "description": "Source: \"Chinese zodiac display\""
+  },
+  "choose_what_to_show_for_the_chinese_zodiac_year_animal_and_element": {
+    "message": "Válaszd ki, mit jelenítsen meg a kínai állatövi évnél (állat és elem).",
+    "description": "Source: \"Choose what to show for the Chinese zodiac year (animal and element).\""
+  },
+  "choose_what_to_show_for_the_western_zodiac_sign": {
+    "message": "Válaszd ki, mit jelenítsen meg a nyugati állatövi jelnél.",
+    "description": "Source: \"Choose what to show for the western zodiac sign.\""
+  },
+  "city_1_latitude": {
+    "message": "1. város szélességi foka",
+    "description": "Source: \"City 1 latitude\""
+  },
+  "city_1_longitude": {
+    "message": "1. város hosszúsági foka",
+    "description": "Source: \"City 1 longitude\""
+  },
+  "city_1_name_leave_empty_to_disable": {
+    "message": "1. város neve (üresen hagyva kikapcsolt)",
+    "description": "Source: \"City 1 name (leave empty to disable)\""
+  },
+  "city_1_timezone_iana_e_g_europe_vienna": {
+    "message": "1. város időzónája (IANA, pl. Europe/Vienna)",
+    "description": "Source: \"City 1 timezone (IANA, e.g. Europe/Vienna)\""
+  },
+  "city_2_latitude": {
+    "message": "2. város szélességi foka",
+    "description": "Source: \"City 2 latitude\""
+  },
+  "city_2_longitude": {
+    "message": "2. város hosszúsági foka",
+    "description": "Source: \"City 2 longitude\""
+  },
+  "city_2_name_leave_empty_to_disable": {
+    "message": "2. város neve (üresen hagyva kikapcsolt)",
+    "description": "Source: \"City 2 name (leave empty to disable)\""
+  },
+  "city_2_timezone_iana_e_g_america_new_york": {
+    "message": "2. város időzónája (IANA, pl. America/New_York)",
+    "description": "Source: \"City 2 timezone (IANA, e.g. America/New_York)\""
+  },
+  "city_3_latitude": {
+    "message": "3. város szélességi foka",
+    "description": "Source: \"City 3 latitude\""
+  },
+  "city_3_longitude": {
+    "message": "3. város hosszúsági foka",
+    "description": "Source: \"City 3 longitude\""
+  },
+  "city_3_name_leave_empty_to_disable": {
+    "message": "3. város neve (üresen hagyva kikapcsolt)",
+    "description": "Source: \"City 3 name (leave empty to disable)\""
+  },
+  "city_3_timezone_iana_e_g_asia_tokyo": {
+    "message": "3. város időzónája (IANA, pl. Asia/Tokyo)",
+    "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
+  },
+  "controls_the_display_size_of_moon_phase_and_zodiac_symbols": {
+    "message": "Szabályozza a holdfázis és állatövi szimbólumok megjelenítési méretét.",
+    "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
+  },
+  "current_date": {
+    "message": "Mai dátum",
+    "description": "Source: \"Current date\""
+  },
+  "current_time": {
+    "message": "Jelenlegi idő",
+    "description": "Source: \"Current time\""
+  },
+  "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
+    "message": "Egyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztvaEgyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztva",
+    "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "date_and_time": {
+    "message": "Dátum és idő",
+    "description": "Source: \"Date and Time\""
+  },
+  "date_format": {
+    "message": "Dátumformátum",
+    "description": "Source: \"Date format\""
+  },
+  "day_n_of_n": {
+    "message": "Az év %d. napja (összesen: %d)",
+    "description": "Source: \"Day %d of %d\""
+  },
+  "day_of_year": {
+    "message": "Év napja",
+    "description": "Source: \"Day of year\""
+  },
+  "days": {
+    "message": "nap",
+    "description": "Source: \"days\""
+  },
+  "days_left": {
+    "message": "nap van hátra",
+    "description": "Source: \"days left\""
+  },
+  "days_until_new_year": {
+    "message": "nap az újévig",
+    "description": "Source: \"days until New Year\""
+  },
+  "deaths_on_this_day": {
+    "message": "Ezen a napon haltak meg",
+    "description": "Source: \"Deaths on this day\""
+  },
+  "degrees": {
+    "message": "fok",
+    "description": "Source: \"degrees\""
+  },
+  "dog": {
+    "message": "Kutya",
+    "description": "Source: \"Dog\""
+  },
+  "dragon": {
+    "message": "Sárkány",
+    "description": "Source: \"Dragon\""
+  },
+  "earth": {
+    "message": "Föld",
+    "description": "Source: \"Earth\""
+  },
+  "enable_wikipedia_features_requires_internet": {
+    "message": "Wikipédia-funkciók engedélyezése (Internet szükséges)",
+    "description": "Source: \"Enable Wikipedia features (requires Internet)\""
+  },
+  "english": {
+    "message": "Angol",
+    "description": "Source: \"English\""
+  },
+  "equinox_and_solstice": {
+    "message": "Napéjegyenlőség és napforduló",
+    "description": "Source: \"Equinox and Solstice\""
+  },
+  "events_on_this_day": {
+    "message": "Ezen a napon történt",
+    "description": "Source: \"Events on this day\""
+  },
+  "extension_description": {
+    "message": "A rich New Tab page with date, moon phase, sun times, zodiac, name days, holidays, folk sayings, alternate calendars and optional Wikipedia \"on this day\" content — ported from the calendarium@kami911 Cinnamon desklet.",
+    "description": "Extension description shown in about:addons"
+  },
+  "extension_name": {
+    "message": "Calendarium",
+    "description": "Extension name shown in about:addons"
+  },
+  "feb_22_2026_b_n_y": {
+    "message": "Feb 22, 2026               (%b %d, %Y)",
+    "description": "Source: \"Feb 22, 2026               (%b %d, %Y)\""
+  },
+  "february_22_2026_b_n_y": {
+    "message": "február 22, 2026          (%B %d, %Y)",
+    "description": "Source: \"February 22, 2026          (%B %d, %Y)\""
+  },
+  "filled_automatically_when_using_city_search_you_can_also_enter_an_iana_timezone_name_manually": {
+    "message": "Városkeresés esetén automatikusan kitöltődik. Manuálisan is megadható IANA időzónanév.",
+    "description": "Source: \"Filled automatically when using city search. You can also enter an IANA timezone name manually.\""
+  },
+  "filled_automatically_when_using_city_search_you_can_also_enter_an_iana_timezone_name_manually_e_g_america_new_york": {
+    "message": "Városkeresés esetén automatikusan kitöltődik. Manuálisan is megadható IANA időzónanév, pl. America/New_York.",
+    "description": "Source: \"Filled automatically when using city search. You can also enter an IANA timezone name manually, e.g. America/New_York.\""
+  },
+  "fire": {
+    "message": "Tűz",
+    "description": "Source: \"Fire\""
+  },
+  "first_quarter": {
+    "message": "Első negyed",
+    "description": "Source: \"First Quarter\""
+  },
+  "folk_calendar_sayings": {
+    "message": "Népi naptárregulák",
+    "description": "Source: \"Folk Calendar Sayings\""
+  },
+  "folk_saying_language": {
+    "message": "Népi regula nyelve",
+    "description": "Source: \"Folk saying language\""
+  },
+  "french": {
+    "message": "Francia",
+    "description": "Source: \"French\""
+  },
+  "fri_22_feb_2026_a_n_b_y": {
+    "message": "Fri, 22 Feb 2026           (%a, %d %b %Y)",
+    "description": "Source: \"Fri, 22 Feb 2026           (%a, %d %b %Y)\""
+  },
+  "friday_22_february_2026_a_n_b_y": {
+    "message": "Péntek, 22. február 2026  (%A, %d. %B %Y)",
+    "description": "Source: \"Friday, 22. February 2026  (%A, %d. %B %Y)\""
+  },
+  "friday_february_22_2026_a_b_n_y": {
+    "message": "Péntek, február 22, 2026  (%A, %B %d, %Y)",
+    "description": "Source: \"Friday, February 22, 2026  (%A, %B %d, %Y)\""
+  },
+  "full_moon": {
+    "message": "Telihold",
+    "description": "Source: \"Full Moon\""
+  },
+  "gemini": {
+    "message": "Ikrek",
+    "description": "Source: \"Gemini\""
+  },
+  "general": {
+    "message": "Általános",
+    "description": "Source: \"General\""
+  },
+  "german": {
+    "message": "Német",
+    "description": "Source: \"German\""
+  },
+  "goat": {
+    "message": "Kecske",
+    "description": "Source: \"Goat\""
+  },
+  "hebrew_date": {
+    "message": "Héber dátum",
+    "description": "Source: \"Hebrew date\""
+  },
+  "holiday_calendar": {
+    "message": "Ünnepi naptár",
+    "description": "Source: \"Holiday calendar\""
+  },
+  "horse": {
+    "message": "Ló",
+    "description": "Source: \"Horse\""
+  },
+  "hours": {
+    "message": "óra",
+    "description": "Source: \"hours\""
+  },
+  "how_long_to_keep_wikipedia_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage": {
+    "message": "Mennyi ideig tárolja a Wikipédia adatokat a helyi gyorsítótárban, mielőtt újat tölt le. Alacsonyabb értéknél sűrűbben frissít; magasabb értéknél csökkenti a hálózathasználatot.Mennyi ideig tárolja a Wikipédia adatokat a helyi gyorsítótárban, mielőtt újat tölt le. Alacsonyabb értéknél sűrűbben frissít; magasabb értéknél csökkenti a hálózathasználatot.",
+    "description": "Source: \"How long to keep Wikipedia data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage.\""
+  },
+  "how_many_births_deaths_and_events_to_display_at_a_time_the_list_rotates_periodically_cycling_through_all_available_entries_from_the_cache": {
+    "message": "Hány születést, halálozást és eseményt mutasson egyszerre. A lista időközönként rotál, végigpörög az összes gyorsítótárban lévő bejegyzésen.",
+    "description": "Source: \"How many births, deaths, and events to display at a time. The list rotates periodically, cycling through all available entries from the cache.\""
+  },
+  "how_often_to_advance_to_the_next_set_of_items_set_to_1_to_rotate_every_minute": {
+    "message": "Milyen gyakran lépjen a következő elemekre. 1-re állítva percenként rotál.",
+    "description": "Source: \"How often to advance to the next set of items. Set to 1 to rotate every minute.\""
+  },
+  "hungarian": {
+    "message": "Magyar",
+    "description": "Source: \"Hungarian\""
+  },
+  "icon_and_symbol_size": {
+    "message": "Ikon- és szimbólumméret",
+    "description": "Source: \"Icon and symbol size\""
+  },
+  "icon_and_text": {
+    "message": "Ikon és szöveg",
+    "description": "Source: \"Icon and text\""
+  },
+  "icon_only": {
+    "message": "Csak ikon",
+    "description": "Source: \"Icon only\""
+  },
+  "islamic_date": {
+    "message": "Iszlám dátum",
+    "description": "Source: \"Islamic date\""
+  },
+  "italian": {
+    "message": "Olasz",
+    "description": "Source: \"Italian\""
+  },
+  "items": {
+    "message": "elem",
+    "description": "Source: \"items\""
+  },
+  "items_shown_per_section": {
+    "message": "Szekciónként megjelenített elemek száma",
+    "description": "Source: \"Items shown per section\""
+  },
+  "julian_date": {
+    "message": "Julián dátum",
+    "description": "Source: \"Julian date\""
+  },
+  "label_for_an_additional_city_leave_empty_to_hide": {
+    "message": "Egy további város felirata. Üresen hagyva elrejtve.",
+    "description": "Source: \"Label for an additional city. Leave empty to hide.\""
+  },
+  "large": {
+    "message": "Nagy",
+    "description": "Source: \"Large\""
+  },
+  "last_quarter": {
+    "message": "Utolsó negyed",
+    "description": "Source: \"Last Quarter\""
+  },
+  "latitude_positive_north": {
+    "message": "Szélességi fok (pozitív = Észak)",
+    "description": "Source: \"Latitude (positive = North)\""
+  },
+  "leo": {
+    "message": "Oroszlán",
+    "description": "Source: \"Leo\""
+  },
+  "libra": {
+    "message": "Mérleg",
+    "description": "Source: \"Libra\""
+  },
+  "local_time": {
+    "message": "Helyi idő",
+    "description": "Source: \"Local time\""
+  },
+  "location": {
+    "message": "Helyszín",
+    "description": "Source: \"Location\""
+  },
+  "longitude_positive_east": {
+    "message": "Hosszúsági fok (pozitív = Kelet)",
+    "description": "Source: \"Longitude (positive = East)\""
+  },
+  "medium": {
+    "message": "Közepes",
+    "description": "Source: \"Medium\""
+  },
+  "metal": {
+    "message": "Fém",
+    "description": "Source: \"Metal\""
+  },
+  "minutes": {
+    "message": "perc",
+    "description": "Source: \"minutes\""
+  },
+  "monkey": {
+    "message": "Majom",
+    "description": "Source: \"Monkey\""
+  },
+  "month_highlights": {
+    "message": "Havi aktualitás",
+    "description": "Source: \"Month highlights\""
+  },
+  "moon_age": {
+    "message": "Hold kora",
+    "description": "Source: \"Moon age\""
+  },
+  "moon_phase": {
+    "message": "Holdfázis",
+    "description": "Source: \"Moon Phase\""
+  },
+  "moonrise": {
+    "message": "Holdkelte",
+    "description": "Source: \"Moonrise\""
+  },
+  "moonset": {
+    "message": "Holdnyugta",
+    "description": "Source: \"Moonset\""
+  },
+  "name_day_calendar": {
+    "message": "Névnap-naptár",
+    "description": "Source: \"Name day calendar\""
+  },
+  "name_days": {
+    "message": "Névnapok",
+    "description": "Source: \"Name Days\""
+  },
+  "national_holidays": {
+    "message": "Nemzeti ünnepek",
+    "description": "Source: \"National Holidays\""
+  },
+  "new_moon": {
+    "message": "Újhold",
+    "description": "Source: \"New Moon\""
+  },
+  "no_data": {
+    "message": "Nincs adat",
+    "description": "Source: \"No data\""
+  },
+  "none_hidden": {
+    "message": "Nincs (rejtett)",
+    "description": "Source: \"None (hidden)\""
+  },
+  "old_english_anglo_saxon": {
+    "message": "Régi angol (angolszász)",
+    "description": "Source: \"Old English (Anglo-Saxon)\""
+  },
+  "old_german": {
+    "message": "Régi német",
+    "description": "Source: \"Old German\""
+  },
+  "old_hungarian": {
+    "message": "Régi magyar",
+    "description": "Source: \"Old Hungarian\""
+  },
+  "ox": {
+    "message": "Ökör",
+    "description": "Source: \"Ox\""
+  },
+  "persian_date": {
+    "message": "Perzsa dátum",
+    "description": "Source: \"Persian date\""
+  },
+  "pig": {
+    "message": "Disznó",
+    "description": "Source: \"Pig\""
+  },
+  "pisces": {
+    "message": "Halak",
+    "description": "Source: \"Pisces\""
+  },
+  "polar_day": {
+    "message": "Sarki nap",
+    "description": "Source: \"Polar day\""
+  },
+  "polar_night": {
+    "message": "Sarki éj",
+    "description": "Source: \"Polar night\""
+  },
+  "public_holiday": {
+    "message": "munkaszüneti nap",
+    "description": "Source: \"public holiday\""
+  },
+  "rabbit": {
+    "message": "Nyúl",
+    "description": "Source: \"Rabbit\""
+  },
+  "rat": {
+    "message": "Patkány",
+    "description": "Source: \"Rat\""
+  },
+  "rooster": {
+    "message": "Kakas",
+    "description": "Source: \"Rooster\""
+  },
+  "rotate_items_every_n_minutes": {
+    "message": "Elemek rotálása minden N percben",
+    "description": "Source: \"Rotate items every N minutes\""
+  },
+  "sagittarius": {
+    "message": "Nyilas",
+    "description": "Source: \"Sagittarius\""
+  },
+  "scale_all_text_in_the_desklet_up_or_down": {
+    "message": "Az összes szöveg nagyítása vagy kicsinyítése a deskletben.",
+    "description": "Source: \"Scale all text in the desklet up or down.\""
+  },
+  "scorpio": {
+    "message": "Skorpió",
+    "description": "Source: \"Scorpio\""
+  },
+  "search_city_to_auto_fill_coordinates": {
+    "message": "Város keresése a koordináták automatikus kitöltéséhez",
+    "description": "Source: \"Search city to auto-fill coordinates\""
+  },
+  "select_a_predefined_date_format_or_choose_custom_to_enter_your_own_strftime_string_below": {
+    "message": "Válassz egy előre beállított dátumformátumot, vagy válaszd az Egyénit, hogy alább megadd a saját strftime-kódodat.Válassz egy előre beállított dátumformátumot, vagy válaszd az Egyénit, hogy alább megadd a saját strftime-kódodat.",
+    "description": "Source: \"Select a predefined date format, or choose Custom to enter your own strftime string below.\""
+  },
+  "separator_character_between_calendar_items": {
+    "message": "Elválasztó karakter a naptár aktualitások között",
+    "description": "Source: \"Separator character between calendar items\""
+  },
+  "show_article_of_the_day": {
+    "message": "A nap cikkének megjelenítése",
+    "description": "Source: \"Show article of the day\""
+  },
+  "show_current_local_time_for_each_city": {
+    "message": "Az aktuális helyi idő megjelenítése minden városhoz",
+    "description": "Source: \"Show current local time for each city\""
+  },
+  "show_date": {
+    "message": "Dátum megjelenítése",
+    "description": "Source: \"Show date\""
+  },
+  "show_day_of_year_e_g_day_52_of_365": {
+    "message": "Az év napjának megjelenítése (pl. 52. nap, 365-ből)",
+    "description": "Source: \"Show day of year (e.g. Day 52 of 365)\""
+  },
+  "show_days_until_new_year": {
+    "message": "Újévig hátralévő napok megjelenítése",
+    "description": "Source: \"Show days until New Year\""
+  },
+  "show_equinox_and_solstice": {
+    "message": "Napéjegyenlőség és napforduló megjelenítése",
+    "description": "Source: \"Show equinox and solstice\""
+  },
+  "show_folk_calendar_saying_for_today": {
+    "message": "Mai népi naptárregula megjelenítése",
+    "description": "Source: \"Show folk calendar saying for today\""
+  },
+  "show_future_name_days_in_two_columns": {
+    "message": "Jövőbeli névnapok megjelenítése két oszlopban",
+    "description": "Source: \"Show future name days in two columns\""
+  },
+  "show_hebrew_calendar_date": {
+    "message": "Héber naptár dátumának megjelenítése",
+    "description": "Source: \"Show Hebrew calendar date\""
+  },
+  "show_islamic_calendar_date": {
+    "message": "Iszlám naptár dátumának megjelenítése",
+    "description": "Source: \"Show Islamic calendar date\""
+  },
+  "show_iso_week_number": {
+    "message": "ISO hétszám megjelenítése",
+    "description": "Source: \"Show ISO week number\""
+  },
+  "show_julian_calendar_date": {
+    "message": "Julián naptár dátumának megjelenítése",
+    "description": "Source: \"Show Julian calendar date\""
+  },
+  "show_month_highlights_day_days_in_month": {
+    "message": "Hónap aktualitásának megjelenítése (nap / napok a hónapban)",
+    "description": "Source: \"Show month highlights (day / days in month)\""
+  },
+  "show_moon_age_days_since_new_moon": {
+    "message": "Hold korának megjelenítése (napok az újhold óta)",
+    "description": "Source: \"Show moon age (days since new moon)\""
+  },
+  "show_moon_phase": {
+    "message": "Holdfázis megjelenítése",
+    "description": "Source: \"Show moon phase\""
+  },
+  "show_moon_phase_name": {
+    "message": "Holdfázis nevének megjelenítése",
+    "description": "Source: \"Show moon phase name\""
+  },
+  "show_moonrise_and_moonset_times": {
+    "message": "Holdkelte és holdnyugta megjelenítése",
+    "description": "Source: \"Show moonrise and moonset times\""
+  },
+  "show_name_days": {
+    "message": "Névnapok megjelenítése",
+    "description": "Source: \"Show name days\""
+  },
+  "show_national_holidays_and_weekends": {
+    "message": "Nemzeti ünnepek és hétvégék jelzése",
+    "description": "Source: \"Show national holidays and weekends\""
+  },
+  "show_notable_births_on_this_day": {
+    "message": "Ezen a napon született személyek megjelenítése",
+    "description": "Source: \"Show notable births on this day\""
+  },
+  "show_notable_deaths_on_this_day": {
+    "message": "Ezen a napon elhunyt személyek megjelenítése",
+    "description": "Source: \"Show notable deaths on this day\""
+  },
+  "show_notable_events_on_this_day": {
+    "message": "Ezen a napon történt esemény megjelenítése",
+    "description": "Source: \"Show notable events on this day\""
+  },
+  "show_persian_calendar_date": {
+    "message": "Perzsa naptár dátumának megjelenítése",
+    "description": "Source: \"Show Persian calendar date\""
+  },
+  "show_seconds": {
+    "message": "Másodpercek megjelenítése",
+    "description": "Source: \"Show seconds\""
+  },
+  "show_sunrise_and_sunset_times": {
+    "message": "Napkelte és napnyugta időpontjának megjelenítése",
+    "description": "Source: \"Show sunrise and sunset times\""
+  },
+  "show_time": {
+    "message": "Idő megjelenítése",
+    "description": "Source: \"Show time\""
+  },
+  "show_traditional_month_name": {
+    "message": "Hagyományos hónapnév megjelenítése",
+    "description": "Source: \"Show traditional month name\""
+  },
+  "show_upcoming_holidays_days_ahead": {
+    "message": "Közelgő ünnepnapok megjelenítése (napok előre)",
+    "description": "Source: \"Show upcoming holidays (days ahead)\""
+  },
+  "show_upcoming_name_days_days_ahead": {
+    "message": "Közelgő névnapok megjelenítése (előre napokban)",
+    "description": "Source: \"Show upcoming name days (days ahead)\""
+  },
+  "show_upcoming_seasonal_periods_days_ahead": {
+    "message": "Közelgő évszaki időszakok megjelenítése (napok előre)",
+    "description": "Source: \"Show upcoming seasonal periods (days ahead)\""
+  },
+  "show_utc_offset_for_each_city_e_g_utc_1": {
+    "message": "UTC eltolás megjelenítése minden városhoz (pl. UTC+1)",
+    "description": "Source: \"Show UTC offset for each city (e.g. UTC+1)\""
+  },
+  "small": {
+    "message": "Kicsi",
+    "description": "Source: \"Small\""
+  },
+  "snake": {
+    "message": "Kígyó",
+    "description": "Source: \"Snake\""
+  },
+  "spanish": {
+    "message": "Spanyol",
+    "description": "Source: \"Spanish\""
+  },
+  "spring_equinox": {
+    "message": "Tavaszi napéjegyenlőség",
+    "description": "Source: \"Spring equinox\""
+  },
+  "strftime_codes_a_full_weekday_a_short_weekday_n_day_b_full_month_b_short_month_y_4_digit_year_y_2_digit_year_m_month_number_j_day_of_year_h_hour_24h_i_hour_12h_m_minute_p_am_pm_example_y_b_n_a": {
+    "message": "strftime kódok: %A = hét napjának teljes neve %a = hét napjának rövid neve %d = nap %B = hónap teljes neve %b = hónap rövid neve %Y = 4 számjegyű év %y = 2 számjegyű év %m = hónap száma %j = az év napja %H = óra (24 órás formátum) %I = óra (12 órás formátum) %M = perc %p = de./du. Példa: %Y. %B %d., %A",
+    "description": "Source: \"strftime codes: %A=full weekday  %a=short weekday  %d=day  %B=full month  %b=short month  %Y=4-digit year  %y=2-digit year  %m=month number  %j=day of year  %H=hour(24h)  %I=hour(12h)  %M=minute  %p=AM/PM.  Example: %Y. %B %d., %A\""
+  },
+  "summer_solstice": {
+    "message": "Nyári napforduló",
+    "description": "Source: \"Summer solstice\""
+  },
+  "sunrise": {
+    "message": "Napkelte",
+    "description": "Source: \"Sunrise\""
+  },
+  "sunrise_and_sunset": {
+    "message": "Napkelte és napnyugta",
+    "description": "Source: \"Sunrise and Sunset\""
+  },
+  "sunset": {
+    "message": "Napnyugta",
+    "description": "Source: \"Sunset\""
+  },
+  "system_language": {
+    "message": "Rendszer nyelve",
+    "description": "Source: \"System language\""
+  },
+  "taurus": {
+    "message": "Bika",
+    "description": "Source: \"Taurus\""
+  },
+  "text_only": {
+    "message": "Csak szöveg",
+    "description": "Source: \"Text only\""
+  },
+  "text_scale_factor": {
+    "message": "Szöveg nagyítási aránya",
+    "description": "Source: \"Text scale factor\""
+  },
+  "tiger": {
+    "message": "Tigris",
+    "description": "Source: \"Tiger\""
+  },
+  "time_format": {
+    "message": "Időformátum",
+    "description": "Source: \"Time format\""
+  },
+  "tomorrow": {
+    "message": "Holnap",
+    "description": "Source: \"Tomorrow\""
+  },
+  "traditional_month_name_tradition": {
+    "message": "Hagyományos hónapnév hagyomány",
+    "description": "Source: \"Traditional month name tradition\""
+  },
+  "traditional_month_names": {
+    "message": "Hagyományos hónapnevek",
+    "description": "Source: \"Traditional Month Names\""
+  },
+  "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
+    "message": "Írj be egy városnevet — a koordináták 1,5 másodperc után automatikusan kitöltődnek.",
+    "description": "Source: \"Type a city name — coordinates are filled in automatically after 1.5 seconds.\""
+  },
+  "upcoming_periods_lookahead_days": {
+    "message": "Előretekintés közelgő időszakokhoz (napok)",
+    "description": "Source: \"Upcoming periods lookahead (days)\""
+  },
+  "use_manual_location_default_budapest_hungary": {
+    "message": "Manuális helyszín megadása (alap: Budapest, Magyarország)",
+    "description": "Source: \"Use manual location (default: Budapest, Hungary)\""
+  },
+  "virgo": {
+    "message": "Szűz",
+    "description": "Source: \"Virgo\""
+  },
+  "waning_crescent": {
+    "message": "Fogyó holdsarló",
+    "description": "Source: \"Waning Crescent\""
+  },
+  "waning_gibbous": {
+    "message": "Fogyó telihold után",
+    "description": "Source: \"Waning Gibbous\""
+  },
+  "water": {
+    "message": "Víz",
+    "description": "Source: \"Water\""
+  },
+  "waxing_crescent": {
+    "message": "Növekvő holdsarló",
+    "description": "Source: \"Waxing Crescent\""
+  },
+  "waxing_gibbous": {
+    "message": "Növekvő telihold előtt",
+    "description": "Source: \"Waxing Gibbous\""
+  },
+  "week_n": {
+    "message": "%d. hét",
+    "description": "Source: \"Week %d\""
+  },
+  "week_number": {
+    "message": "Hét száma",
+    "description": "Source: \"Week number\""
+  },
+  "weekend": {
+    "message": "hétvége",
+    "description": "Source: \"weekend\""
+  },
+  "western_zodiac": {
+    "message": "Nyugati horoszkóp",
+    "description": "Source: \"Western zodiac\""
+  },
+  "western_zodiac_display": {
+    "message": "Nyugati horoszkóp megjelenítése",
+    "description": "Source: \"Western zodiac display\""
+  },
+  "wikipedia": {
+    "message": "Wikipédia",
+    "description": "Source: \"Wikipedia\""
+  },
+  "wikipedia_internet_required": {
+    "message": "Wikipédia (Internet szükséges)",
+    "description": "Source: \"Wikipedia (Internet Required)\""
+  },
+  "wikipedia_language": {
+    "message": "Wikipédia nyelve",
+    "description": "Source: \"Wikipedia language\""
+  },
+  "winter_solstice": {
+    "message": "Téli napforduló",
+    "description": "Source: \"Winter solstice\""
+  },
+  "wood": {
+    "message": "Fa",
+    "description": "Source: \"Wood\""
+  },
+  "zodiac": {
+    "message": "Horoszkóp",
+    "description": "Source: \"Zodiac\""
+  }
+}

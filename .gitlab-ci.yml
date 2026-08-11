@@ -1,0 +1,87 @@
+image: node:20
+
+stages:
+  - install
+  - lint
+  - test
+  - build
+  - sign
+
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+cache: &node_modules_cache
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - node_modules/
+    - .npm/
+
+install:
+  stage: install
+  cache:
+    <<: *node_modules_cache
+    policy: pull-push
+  script:
+    - npm ci --prefer-offline
+
+lint:
+  stage: lint
+  cache:
+    <<: *node_modules_cache
+    policy: pull
+  script:
+    - npm run lint
+
+test:
+  stage: test
+  cache:
+    <<: *node_modules_cache
+    policy: pull
+  script:
+    - npx vitest run --coverage
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+    expire_in: 1 week
+
+build:
+  stage: build
+  cache:
+    <<: *node_modules_cache
+    policy: pull
+  script:
+    - npx web-ext build --source-dir=src --artifacts-dir=dist
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 month
+
+sign:
+  stage: sign
+  cache:
+    <<: *node_modules_cache
+    policy: pull
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  script:
+    - node scripts/set-version.mjs
+    - npx web-ext sign --source-dir=src --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET --channel=listed --artifacts-dir=dist-signed
+  artifacts:
+    paths:
+      - dist-signed/
+    expire_in: never
+
+release:
+  stage: sign
+  needs: ["sign"]
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  script:
+    - echo "Creating GitLab release for $CI_COMMIT_TAG"
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    description: "Calendarium $CI_COMMIT_TAG — signed .xpi attached from the sign job artifacts."

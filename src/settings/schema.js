@@ -1,0 +1,207 @@
+/*
+ * settings/schema.js — Settings schema for the Calendarium Firefox extension
+ *
+ * Transcribed from the calendarium@kami911 Cinnamon desklet's
+ * settings-schema.json (66 keys). Storage keys are kept identical
+ * (kebab-case, e.g. "show-date") so options.js / newtab.js / background.js
+ * share one source of truth via browser.storage.local.
+ *
+ * Field shape:
+ *   {
+ *     id:          storage key (kebab-case, matches settings-schema.json)
+ *     type:        "checkbox" | "combobox" | "entry" | "spinbutton" | "scale"
+ *     default:     default value
+ *     description: label text (English; also used as the i18n message key
+ *                  base — see _locales/en/messages.json "settings_<id>" keys)
+ *     tooltip:     optional help text
+ *     dependency:  optional storage key that must be truthy for this field
+ *                  to be enabled/shown
+ *     indent:      optional bool, purely a UI hint (nest under dependency)
+ *     options:     for combobox — { label: value, ... } (label order preserved)
+ *     min/max/step/units: for spinbutton/scale
+ *   }
+ */
+
+export const LAYOUT = {
+    pages: ["page-general", "page-location", "page-wikipedia"],
+
+    "page-general": {
+        title: "General",
+        sections: [
+            "section-datetime", "section-progress", "section-traditional",
+            "section-folkdays", "section-holidays", "section-moon",
+            "section-sun", "section-zodiac", "section-namedays",
+            "section-altcal", "section-appearance"
+        ]
+    },
+    "page-location": {
+        title: "Location",
+        sections: ["section-location"]
+    },
+    "page-wikipedia": {
+        title: "Wikipedia",
+        sections: ["section-wikipedia"]
+    },
+
+    "section-datetime":     { title: "Date and Time", keys: ["show-date", "date-format-preset", "date-format-custom", "show-time", "time-format", "show-seconds"] },
+    "section-progress":     { title: "Calendar Highlights", keys: ["show-day-of-year", "show-week-number", "show-month-progress", "show-new-year-countdown", "progress-separator"] },
+    "section-traditional":  { title: "Traditional Month Names", keys: ["show-traditional", "traditional-lang"] },
+    "section-folkdays":     { title: "Folk Calendar Sayings", keys: ["show-folkdays", "folkday-locale"] },
+    "section-holidays":     { title: "National Holidays", keys: ["show-holidays", "holiday-locale", "holiday-lookahead", "show-period-upcoming", "period-upcoming-lookahead"] },
+    "section-moon":         { title: "Moon Phase", keys: ["show-moon", "show-moon-name", "show-moon-age", "show-moonrise"] },
+    "section-sun":          { title: "Sunrise and Sunset", keys: ["show-sun", "show-solstice"] },
+    "section-altcal":       { title: "Alternate Calendars", keys: ["show-julian", "show-hebrew", "show-islamic", "show-persian"] },
+    "section-location":     {
+        title: "Location",
+        keys: [
+            "use-manual-location", "location-search", "latitude", "longitude",
+            "city1-name", "city1-lat", "city1-lon", "city1-tz",
+            "city2-name", "city2-lat", "city2-lon", "city2-tz",
+            "city3-name", "city3-lat", "city3-lon", "city3-tz",
+            "show-city-time", "show-city-tz-offset"
+        ]
+    },
+    "section-zodiac":       { title: "Zodiac", keys: ["zodiac-western-display", "zodiac-chinese-display"] },
+    "section-namedays":     { title: "Name Days", keys: ["show-namedays", "nameday-locale", "nameday-lookahead", "nameday-two-columns"] },
+    "section-wikipedia":    {
+        title: "Wikipedia (Internet Required)",
+        keys: [
+            "show-wikipedia", "wikipedia-lang", "show-wiki-events", "show-wiki-births",
+            "show-wiki-deaths", "show-wiki-featured", "wikipedia-items-count",
+            "wikipedia-rotate-minutes", "wikipedia-cache-hours"
+        ]
+    },
+    "section-appearance":   { title: "Appearance", keys: ["icon-size", "text-scale", "bg-opacity"] }
+};
+
+const LOCALE_OPTIONS_SYSTEM = { "System language": "auto", "Hungarian": "hu", "German": "de", "English": "en", "French": "fr", "Spanish": "es", "Italian": "it" };
+const WIKI_LOCALE_OPTIONS   = { "System language": "auto", "English": "en", "German": "de", "Hungarian": "hu", "French": "fr", "Spanish": "es", "Italian": "it" };
+const DISPLAY_MODE_OPTIONS  = { "Icon and text": "icon-and-text", "Icon only": "icon-only", "Text only": "text-only", "None (hidden)": "none" };
+
+export const FIELDS = {
+    "show-date":          { id: "show-date", type: "checkbox", default: true,  description: "Show date" },
+    "date-format-preset": {
+        id: "date-format-preset", type: "combobox", default: "%A, %d. %B %Y",
+        description: "Date format",
+        tooltip: "Select a predefined date format, or choose Custom to enter your own strftime string below.",
+        options: {
+            "Friday, 22. February 2026  (%A, %d. %B %Y)":    "%A, %d. %B %Y",
+            "22. February 2026          (%d. %B %Y)":        "%d. %B %Y",
+            "22. Feb 2026               (%d. %b %Y)":        "%d. %b %Y",
+            "22 Feb 2026                (%d %b %Y)":         "%d %b %Y",
+            "Fri, 22 Feb 2026           (%a, %d %b %Y)":     "%a, %d %b %Y",
+            "Friday, February 22, 2026  (%A, %B %d, %Y)":    "%A, %B %d, %Y",
+            "February 22, 2026          (%B %d, %Y)":        "%B %d, %Y",
+            "Feb 22, 2026               (%b %d, %Y)":        "%b %d, %Y",
+            "2026-02-22                 (%Y-%m-%d)":         "%Y-%m-%d",
+            "22/02/2026                 (%d/%m/%Y)":         "%d/%m/%Y",
+            "02/22/2026                 (%m/%d/%Y)":         "%m/%d/%Y",
+            "22.02.2026                 (%d.%m.%Y)":         "%d.%m.%Y",
+            "2026. February 22., Friday (%Y. %B %d., %A)":   "%Y. %B %d., %A",
+            "2026. February 22.         (%Y. %B %d.)":       "%Y. %B %d.",
+            "2026. 02. 22.              (%Y. %m. %d.)":      "%Y. %m. %d.",
+            "Custom (enter strftime string below)":          "custom"
+        }
+    },
+    "date-format-custom": {
+        id: "date-format-custom", type: "entry", default: "%A, %d. %B %Y", indent: true,
+        description: "Custom date format (strftime) — only active when 'Custom' is selected above",
+        tooltip: "strftime codes: %A=full weekday  %a=short weekday  %d=day  %B=full month  %b=short month  %Y=4-digit year  %y=2-digit year  %m=month number  %j=day of year  %H=hour(24h)  %I=hour(12h)  %M=minute  %p=AM/PM.  Example: %Y. %B %d., %A"
+    },
+    "show-time":    { id: "show-time", type: "checkbox", default: true, description: "Show time" },
+    "time-format":  { id: "time-format", type: "combobox", default: "24h", description: "Time format", options: { "24-hour": "24h", "12-hour (AM/PM)": "12h" } },
+    "show-seconds": { id: "show-seconds", type: "checkbox", default: false, description: "Show seconds" },
+
+    "show-day-of-year":         { id: "show-day-of-year", type: "checkbox", default: true, description: "Show day of year (e.g. Day 52 of 365)" },
+    "show-week-number":         { id: "show-week-number", type: "checkbox", default: true, description: "Show ISO week number" },
+    "show-month-progress":      { id: "show-month-progress", type: "checkbox", default: true, description: "Show month highlights (day / days in month)" },
+    "show-new-year-countdown":  { id: "show-new-year-countdown", type: "checkbox", default: true, description: "Show days until New Year" },
+    "progress-separator":       { id: "progress-separator", type: "entry", default: "·", description: "Separator character between calendar items" },
+
+    "show-traditional": { id: "show-traditional", type: "checkbox", default: false, description: "Show traditional month name" },
+    "traditional-lang": {
+        id: "traditional-lang", type: "combobox", default: "auto", dependency: "show-traditional", indent: true,
+        description: "Traditional month name tradition",
+        options: { "System language": "auto", "Old Hungarian": "hu", "Old English (Anglo-Saxon)": "en", "Old German": "de" }
+    },
+
+    "show-folkdays":  { id: "show-folkdays", type: "checkbox", default: false, description: "Show folk calendar saying for today" },
+    "folkday-locale": { id: "folkday-locale", type: "combobox", default: "auto", dependency: "show-folkdays", indent: true, description: "Folk saying language", options: LOCALE_OPTIONS_SYSTEM },
+
+    "show-holidays":  { id: "show-holidays", type: "checkbox", default: true, description: "Show national holidays and weekends" },
+    "holiday-locale": { id: "holiday-locale", type: "combobox", default: "auto", dependency: "show-holidays", indent: true, description: "Holiday calendar", options: LOCALE_OPTIONS_SYSTEM },
+    "holiday-lookahead": { id: "holiday-lookahead", type: "spinbutton", default: 10, min: 0, max: 30, step: 1, units: "days", description: "Show upcoming holidays (days ahead)", dependency: "show-holidays", indent: true },
+    "show-period-upcoming": { id: "show-period-upcoming", type: "checkbox", default: false, description: "Show upcoming seasonal periods (days ahead)", dependency: "show-holidays", indent: true },
+    "period-upcoming-lookahead": { id: "period-upcoming-lookahead", type: "spinbutton", default: 30, min: 1, max: 90, step: 1, units: "days", description: "Upcoming periods lookahead (days)", dependency: "show-period-upcoming", indent: true },
+
+    "show-moon":      { id: "show-moon", type: "checkbox", default: true, description: "Show moon phase" },
+    "show-moon-name": { id: "show-moon-name", type: "checkbox", default: true, description: "Show moon phase name", dependency: "show-moon", indent: true },
+    "show-moon-age":  { id: "show-moon-age", type: "checkbox", default: true, description: "Show moon age (days since new moon)", dependency: "show-moon", indent: true },
+    "show-moonrise":  { id: "show-moonrise", type: "checkbox", default: false, description: "Show moonrise and moonset times" },
+
+    "show-sun":      { id: "show-sun", type: "checkbox", default: true, description: "Show sunrise and sunset times" },
+    "show-solstice": { id: "show-solstice", type: "checkbox", default: false, description: "Show equinox and solstice" },
+
+    "use-manual-location": { id: "use-manual-location", type: "checkbox", default: false, description: "Use manual location (default: Budapest, Hungary)" },
+    "location-search": { id: "location-search", type: "entry", default: "", dependency: "use-manual-location", indent: true, description: "Search city to auto-fill coordinates", tooltip: "Type a city name — coordinates are filled in automatically after 1.5 seconds." },
+    "latitude":  { id: "latitude", type: "spinbutton", default: 47.4979, min: -90.0, max: 90.0, step: 0.0001, units: "degrees", description: "Latitude (positive = North)", dependency: "use-manual-location", indent: true },
+    "longitude": { id: "longitude", type: "spinbutton", default: 19.0402, min: -180.0, max: 180.0, step: 0.0001, units: "degrees", description: "Longitude (positive = East)", dependency: "use-manual-location", indent: true },
+
+    "city1-name": { id: "city1-name", type: "entry", default: "", description: "City 1 name (leave empty to disable)", tooltip: "Label for an additional city. Leave empty to hide." },
+    "city1-lat":  { id: "city1-lat", type: "spinbutton", default: 0.0, min: -90.0, max: 90.0, step: 0.0001, units: "degrees", description: "City 1 latitude" },
+    "city1-lon":  { id: "city1-lon", type: "spinbutton", default: 0.0, min: -180.0, max: 180.0, step: 0.0001, units: "degrees", description: "City 1 longitude" },
+    "city1-tz":   { id: "city1-tz", type: "entry", default: "", description: "City 1 timezone (IANA, e.g. Europe/Vienna)", tooltip: "Filled automatically when using city search. You can also enter an IANA timezone name manually, e.g. America/New_York." },
+
+    "city2-name": { id: "city2-name", type: "entry", default: "", description: "City 2 name (leave empty to disable)" },
+    "city2-lat":  { id: "city2-lat", type: "spinbutton", default: 0.0, min: -90.0, max: 90.0, step: 0.0001, units: "degrees", description: "City 2 latitude" },
+    "city2-lon":  { id: "city2-lon", type: "spinbutton", default: 0.0, min: -180.0, max: 180.0, step: 0.0001, units: "degrees", description: "City 2 longitude" },
+    "city2-tz":   { id: "city2-tz", type: "entry", default: "", description: "City 2 timezone (IANA, e.g. America/New_York)", tooltip: "Filled automatically when using city search. You can also enter an IANA timezone name manually." },
+
+    "city3-name": { id: "city3-name", type: "entry", default: "", description: "City 3 name (leave empty to disable)" },
+    "city3-lat":  { id: "city3-lat", type: "spinbutton", default: 0.0, min: -90.0, max: 90.0, step: 0.0001, units: "degrees", description: "City 3 latitude" },
+    "city3-lon":  { id: "city3-lon", type: "spinbutton", default: 0.0, min: -180.0, max: 180.0, step: 0.0001, units: "degrees", description: "City 3 longitude" },
+    "city3-tz":   { id: "city3-tz", type: "entry", default: "", description: "City 3 timezone (IANA, e.g. Asia/Tokyo)", tooltip: "Filled automatically when using city search. You can also enter an IANA timezone name manually." },
+
+    "show-city-time":      { id: "show-city-time", type: "checkbox", default: true, description: "Show current local time for each city" },
+    "show-city-tz-offset": { id: "show-city-tz-offset", type: "checkbox", default: false, description: "Show UTC offset for each city (e.g. UTC+1)" },
+
+    "zodiac-western-display": { id: "zodiac-western-display", type: "combobox", default: "icon-and-text", description: "Western zodiac display", tooltip: "Choose what to show for the western zodiac sign.", options: DISPLAY_MODE_OPTIONS },
+    "zodiac-chinese-display": { id: "zodiac-chinese-display", type: "combobox", default: "icon-and-text", description: "Chinese zodiac display", tooltip: "Choose what to show for the Chinese zodiac year (animal and element).", options: DISPLAY_MODE_OPTIONS },
+
+    "show-namedays":       { id: "show-namedays", type: "checkbox", default: true, description: "Show name days" },
+    "nameday-locale":      { id: "nameday-locale", type: "combobox", default: "auto", dependency: "show-namedays", indent: true, description: "Name day calendar", options: LOCALE_OPTIONS_SYSTEM },
+    "nameday-lookahead":   { id: "nameday-lookahead", type: "spinbutton", default: 4, min: 0, max: 10, step: 1, units: "days", description: "Show upcoming name days (days ahead)", dependency: "show-namedays", indent: true },
+    "nameday-two-columns": { id: "nameday-two-columns", type: "checkbox", default: true, description: "Show future name days in two columns", dependency: "show-namedays", indent: true },
+
+    "show-wikipedia": { id: "show-wikipedia", type: "checkbox", default: false, description: "Enable Wikipedia features (requires Internet)" },
+    "wikipedia-lang": { id: "wikipedia-lang", type: "combobox", default: "auto", dependency: "show-wikipedia", indent: true, description: "Wikipedia language", options: WIKI_LOCALE_OPTIONS },
+    "show-wiki-events":   { id: "show-wiki-events", type: "checkbox", default: true, description: "Show notable events on this day", dependency: "show-wikipedia", indent: true },
+    "show-wiki-births":   { id: "show-wiki-births", type: "checkbox", default: true, description: "Show notable births on this day", dependency: "show-wikipedia", indent: true },
+    "show-wiki-deaths":   { id: "show-wiki-deaths", type: "checkbox", default: true, description: "Show notable deaths on this day", dependency: "show-wikipedia", indent: true },
+    "show-wiki-featured": { id: "show-wiki-featured", type: "checkbox", default: false, description: "Show article of the day", dependency: "show-wikipedia", indent: true },
+    "wikipedia-items-count":    { id: "wikipedia-items-count", type: "spinbutton", default: 3, min: 1, max: 10, step: 1, units: "items", description: "Items shown per section", tooltip: "How many births, deaths, and events to display at a time. The list rotates periodically, cycling through all available entries from the cache.", dependency: "show-wikipedia", indent: true },
+    "wikipedia-rotate-minutes": { id: "wikipedia-rotate-minutes", type: "spinbutton", default: 5, min: 1, max: 60, step: 1, units: "minutes", description: "Rotate items every N minutes", tooltip: "How often to advance to the next set of items. Set to 1 to rotate every minute.", dependency: "show-wikipedia", indent: true },
+    "wikipedia-cache-hours":    { id: "wikipedia-cache-hours", type: "spinbutton", default: 12, min: 1, max: 48, step: 1, units: "hours", description: "Cache duration for Wikipedia data", tooltip: "How long to keep Wikipedia data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage.", dependency: "show-wikipedia", indent: true },
+
+    "icon-size":  { id: "icon-size", type: "combobox", default: "medium", description: "Icon and symbol size", tooltip: "Controls the display size of moon phase and zodiac symbols.", options: { "Small": "small", "Medium": "medium", "Large": "large" } },
+    "text-scale": { id: "text-scale", type: "spinbutton", default: 1.0, min: 0.5, max: 3.0, step: 0.05, units: "×", description: "Text scale factor", tooltip: "Scale all text in the desklet up or down." },
+    "bg-opacity": { id: "bg-opacity", type: "scale", default: 0.0, min: 0.0, max: 1.0, step: 0.05, description: "Background opacity", tooltip: "0 = fully transparent (wallpaper shows through), 1 = solid black background" },
+
+    "show-julian":  { id: "show-julian", type: "checkbox", default: false, description: "Show Julian calendar date" },
+    "show-hebrew":  { id: "show-hebrew", type: "checkbox", default: false, description: "Show Hebrew calendar date" },
+    "show-islamic": { id: "show-islamic", type: "checkbox", default: false, description: "Show Islamic calendar date" },
+    "show-persian": { id: "show-persian", type: "checkbox", default: false, description: "Show Persian calendar date" }
+};
+
+/** Flat { "show-date": true, ... } default-value map, derived from FIELDS. */
+export const DEFAULTS = Object.freeze(
+    Object.fromEntries(Object.values(FIELDS).map((f) => [f.id, f.default]))
+);
+
+/** Return true if `field` should be enabled given the current settings object. */
+export function isFieldEnabled(field, settings) {
+    if (!field.dependency) return true;
+    return !!settings[field.dependency];
+}
+
+export default { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled };

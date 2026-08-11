@@ -1,0 +1,297 @@
+/*
+ * newtab.css — adapted from the calendarium@kami911 desklet's stylesheet.css.
+ * St/Clutter BoxLayout classes are replaced with flex/grid; class names are
+ * kept the same where sensible so the two stylesheets stay easy to
+ * cross-reference. The desklet rendered a small transparent-background
+ * corner widget; here it fills the New Tab page instead.
+ */
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #1b1b1f;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DejaVu Sans", "Segoe UI", Arial, sans-serif;
+}
+
+.calendarium-container {
+  font-size: 15px;
+  padding: 22px 30px 26px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 12px;
+  min-width: 360px;
+  max-width: 92vw;
+}
+
+/* Section visibility is controlled explicitly from newtab.js via the
+   native `hidden` attribute (never CSS :empty — some elements, such as
+   rows, contain nested empty children that would otherwise mis-trigger it). */
+[hidden] { display: none !important; }
+
+/* ── Date ─────────────────────────────────────────── */
+.calendarium-date {
+  font-size: 1.15em;
+  font-weight: bold;
+  color: #eeeeee;
+  padding-bottom: 1px;
+}
+
+/* ── Time ─────────────────────────────────────────── */
+.calendarium-time {
+  font-size: 2.6em;
+  font-weight: bold;
+  color: #ffffff;
+  font-family: "DejaVu Sans Mono", "Consolas", monospace;
+}
+
+/* ── Calendar highlights ──────────────────────────── */
+.calendarium-progress-row {
+  display: flex;
+  gap: 10px;
+  padding-top: 3px;
+}
+
+.calendarium-progress {
+  font-size: 0.92em;
+  color: #aaddff;
+}
+
+/* ── Traditional month name ───────────────────────── */
+.calendarium-traditional {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #aaaaaa;
+  padding-bottom: 4px;
+}
+
+/* ── Folk calendar saying ─────────────────────────── */
+.calendarium-folkday {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #ccbbaa;
+  padding-bottom: 4px;
+  white-space: pre-line;
+}
+
+/* ── Moon phase ───────────────────────────────────── */
+.calendarium-moon-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+#cal-moon-icon {
+  font-size: 20px;
+  color: #ccccff;
+  padding-right: 5px;
+}
+
+.calendarium-moon {
+  font-size: 1.08em;
+  color: #ccccff;
+}
+
+.calendarium-moon-age {
+  font-size: 0.85em;
+  color: #9999cc;
+}
+
+/* ── Sun ──────────────────────────────────────────── */
+.calendarium-sun-row {
+  display: flex;
+  gap: 18px;
+  padding-top: 2px;
+}
+
+.calendarium-sun {
+  font-size: 1.00em;
+  color: #ffdd88;
+}
+
+/* ── Additional cities ────────────────────────────── */
+.calendarium-city-grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  column-gap: 8px;
+  row-gap: 1px;
+  padding-top: 2px;
+}
+.calendarium-city-grid:empty { display: none; }
+
+.calendarium-city-name {
+  font-size: 0.92em;
+  color: #ddbb66;
+  font-weight: bold;
+}
+
+.calendarium-city {
+  font-size: 0.92em;
+  color: #ddbb66;
+}
+
+.calendarium-city-time {
+  font-size: 0.92em;
+  color: #ffcc88;
+  font-family: "DejaVu Sans Mono", monospace;
+}
+
+.calendarium-city-tz {
+  font-size: 0.77em;
+  color: #997744;
+}
+
+/* ── Zodiac ───────────────────────────────────────── */
+.calendarium-zodiac-row {
+  display: flex;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.calendarium-zodiac-part {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.calendarium-zodiac-western {
+  font-size: 1.00em;
+  color: #88ffcc;
+}
+
+.calendarium-zodiac-chinese {
+  font-size: 1.00em;
+  color: #66ddaa;
+}
+
+/* ── Name days ────────────────────────────────────── */
+.calendarium-nameday-future {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendarium-nameday-row {
+  display: flex;
+  gap: 14px;
+}
+.calendarium-nameday-row > span { flex: 1 1 0; }
+
+.calendarium-nameday {
+  font-size: 1.00em;
+  color: #ffffff;
+  padding-top: 4px;
+}
+
+.calendarium-nameday-sub {
+  font-size: 0.85em;
+  color: #bbbbbb;
+}
+
+/* ── National holidays ────────────────────────────── */
+.calendarium-holiday {
+  font-size: 0.85em;
+  color: #aaaaaa;
+}
+
+.calendarium-holiday-public {
+  font-size: 0.92em;
+  font-weight: bold;
+  color: #ffcc44;
+}
+
+.calendarium-holiday-upcoming {
+  font-size: 0.85em;
+  color: #aa9966;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
+
+/* ── Seasonal periods ──────────────────────────────── */
+.calendarium-period {
+  font-size: 0.85em;
+  font-style: italic;
+  color: #ccaadd;
+  padding-top: 2px;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
+
+.calendarium-period-upcoming {
+  font-size: 0.85em;
+  color: #bb99cc;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
+
+/* ── Moon rise / set times ────────────────────────── */
+.calendarium-moontime-row {
+  display: flex;
+  gap: 18px;
+  padding-top: 2px;
+}
+
+.calendarium-moontime {
+  font-size: 1.00em;
+  color: #ccccff;
+}
+
+/* ── Equinox and solstice ─────────────────────────── */
+.calendarium-solstice {
+  font-size: 0.92em;
+  color: #aaffcc;
+  padding-top: 2px;
+}
+
+/* ── Alternate calendar dates ─────────────────────── */
+.calendarium-altcal {
+  font-size: 0.85em;
+  color: #aaaacc;
+  padding-top: 4px;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
+
+/* ── New Year countdown ───────────────────────────── */
+.calendarium-newyear {
+  font-size: 0.92em;
+  color: #ffaaaa;
+}
+
+/* ── Wikipedia section ────────────────────────────── */
+.calendarium-wiki-header {
+  font-size: 0.77em;
+  color: #777777;
+  padding-top: 6px;
+  text-transform: uppercase;
+}
+
+.calendarium-wiki {
+  font-size: 0.85em;
+  color: #bbbbbb;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
+
+.calendarium-wiki-featured {
+  font-size: 0.85em;
+  color: #dddddd;
+  font-style: italic;
+  white-space: pre-line;
+  margin: 0;
+  font-family: inherit;
+}
