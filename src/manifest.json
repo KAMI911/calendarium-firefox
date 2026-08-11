@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extension_name__",
   "description": "__MSG_extension_description__",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "default_locale": "en",
   "browser_specific_settings": {
     "gecko": {
@@ -23,6 +23,15 @@
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "Calendarium"
+  },
   "background": {
     "scripts": [
       "background.js"
@@ -35,7 +44,9 @@
   },
   "permissions": [
     "storage",
-    "alarms"
+    "alarms",
+    "search",
+    "menus"
   ],
   "optional_host_permissions": [
     "https://api.wikimedia.org/*"

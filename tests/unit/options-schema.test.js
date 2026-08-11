@@ -38,8 +38,8 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 66 fields, matching the source settings-schema.json key count", () => {
-        expect(Object.keys(FIELDS).length).toBe(66);
+    it("has 67 fields: the 66 ported from the source settings-schema.json plus 'show-search-box' (a Firefox-only extra, not present in the Cinnamon desklet)", () => {
+        expect(Object.keys(FIELDS).length).toBe(67);
     });
 
     it("field.id always matches its own key in FIELDS", () => {

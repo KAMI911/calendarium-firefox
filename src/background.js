@@ -20,6 +20,7 @@ import { DEFAULTS } from "./settings/schema.js";
 
 const WIKI_ALARM_NAME = "calendarium-wikipedia-refresh";
 const WIKI_HOST_PERMISSION = { origins: ["https://api.wikimedia.org/*"] };
+const OPEN_VIEW_MENU_ID = "calendarium-open-full-view";
 
 /** Resolve "auto" locale settings the same way newtab.js does, minimal version for background use. */
 function resolveLang(value, supported, fallback) {
@@ -83,8 +84,38 @@ async function scheduleAlarm() {
     browser.alarms.create(WIKI_ALARM_NAME, { periodInMinutes: periodMinutes, delayInMinutes: 1 });
 }
 
-browser.runtime.onInstalled.addListener(() => { scheduleAlarm(); });
-browser.runtime.onStartup.addListener(() => { scheduleAlarm(); });
+/**
+ * (Re)create the toolbar action's "Open full view in a new tab" context
+ * menu item. Idempotent: removeAll() first so re-running it (e.g. on
+ * every `web-ext run` reload during development, which re-fires
+ * onInstalled without a real reinstall) never hits a duplicate-id error.
+ */
+async function ensureMenu() {
+    if (typeof browser === "undefined" || !browser.menus) return;
+    try {
+        await browser.menus.removeAll();
+    } catch (_e) { /* ignore */ }
+    try {
+        browser.menus.create({
+            id: OPEN_VIEW_MENU_ID,
+            title: "Open full view in a new tab",
+            contexts: ["action"]
+        });
+    } catch (e) {
+        console.error("Calendarium background: failed to create menu: " + e);
+    }
+}
+
+browser.runtime.onInstalled.addListener(() => { scheduleAlarm(); ensureMenu(); });
+browser.runtime.onStartup.addListener(() => { scheduleAlarm(); ensureMenu(); });
+
+if (typeof browser !== "undefined" && browser.menus) {
+    browser.menus.onClicked.addListener((info) => {
+        if (info.menuItemId === OPEN_VIEW_MENU_ID) {
+            browser.tabs.create({ url: browser.runtime.getURL("view.html") });
+        }
+    });
+}
 
 browser.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === WIKI_ALARM_NAME) refreshWikipediaCache();

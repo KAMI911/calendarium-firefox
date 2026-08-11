@@ -1,14 +1,40 @@
 # Calendarium (Firefox New Tab extension)
 
-A Firefox Manifest V3 extension that replaces the New Tab page with a
-rich date/astronomy/calendar widget: date & time, calendar progress (day
-of year, ISO week, month progress, New Year countdown), traditional
-month names, moon phase, sunrise/sunset (+ up to 3 extra cities), Western
-and Chinese zodiac, equinox/solstice, name days, folk-calendar sayings,
-national holidays and seasonal periods, alternate calendar dates
-(Julian/Hebrew/Islamic/Persian), and optional Wikipedia "on this day" /
-"article of the day" content. Every section is individually toggleable
-from the options page.
+A Firefox Manifest V3 extension that shows a rich date/astronomy/calendar
+widget: date & time, calendar progress (day of year, ISO week, month
+progress, New Year countdown), traditional month names, moon phase,
+sunrise/sunset (+ up to 3 extra cities), Western and Chinese zodiac,
+equinox/solstice, name days, folk-calendar sayings, national holidays and
+seasonal periods, alternate calendar dates (Julian/Hebrew/Islamic/Persian),
+an optional search box, and optional Wikipedia "on this day" / "article of
+the day" content. Every section is individually toggleable from the
+options page.
+
+## Three ways to use it
+
+The same widget is available in three places, all sharing one render
+layer (`src/lib/render.js`) and one settings store
+(`browser.storage.local`, configured from the same options page):
+
+- **New Tab page** (`src/newtab.html` + `src/newtab.js`) — overrides
+  Firefox's New Tab page. Full widget, long-lived tick loop (60 s full
+  refresh, 1 s sub-tick, Wikipedia rotation).
+- **Toolbar button popup** (`src/popup.html` + `src/popup.js`) — click
+  the extension's toolbar icon for a compact (≈380px-wide, scrollable)
+  popup rendering of the same sections your settings have enabled. Popup
+  orchestration is deliberately simpler than the New Tab page's: one full
+  render on open, plus a 1 s clock tick only while the popup stays open —
+  no 60 s refresh timer or Wikipedia rotation, since a popup rarely stays
+  open long enough for either to matter. A footer link ("Open full view")
+  jumps to the standalone view below.
+- **Standalone full view** (`src/view.html`) — the same full-size widget
+  as the New Tab page, opened in its own tab. Since `moz-extension://`
+  extension URLs are randomized per install and can't be bookmarked ahead
+  of time, reach it via the toolbar button's right-click context menu →
+  **"Open full view in a new tab"** (or the popup's footer link).
+  `view.html` reuses `newtab.js`/`newtab.css` verbatim — same markup, same
+  orchestration — rather than duplicating either, since it has the exact
+  same long-lived-tab lifecycle as the New Tab page.
 
 `manifest.json` lives inside `src/` (not at the repo root) because
 Firefox/`web-ext` require it at the root of the loadable extension
@@ -31,8 +57,8 @@ since that repo's validation/CI tooling is Cinnamon-specific.
 | `lib/folkdays.js`, `holidays.js`, `namedays.js`, `geocoder.js` | **Parsing/query logic ported verbatim**, I/O swapped from `Gio.File.new_for_path()` to `fetch(browser.runtime.getURL(...))`, and the loaders made Promise-based (still callable with an optional Node-style `callback` for API-shape compatibility). |
 | `data/namedays/*.json`, `data/folkdays/*.json`, `data/holidays/*.json`, `data/cities.json` | **Copied verbatim.** |
 | `lib/wikipedia.js` | **Ported with the same cache policy** (fresh-cache / empty-cache-refetch / network-error-fallback / English pre-warm), `Soup` → `fetch()`, the GLib file cache → `browser.storage.local` entries keyed by `type:lang:mmdd`. Same public API shape (`fetchOnThisDay`, `fetchFeatured`, `CACHE_TTL_SECS`). |
-| `desklet.js` UI layer (GJS/St/Clutter) | **Rewritten** as plain DOM `render<Section>(els, state, ...)` functions in `src/newtab.js`, one per original `_update*` method, with the same tick cadence (60 s full refresh, 1 s sub-tick only when seconds or city time are shown, Wikipedia rotation counter). |
-| `settings-schema.json` | **Transcribed** into `src/settings/schema.js` (all 66 keys, defaults, dependencies, combobox options); `src/options.js` renders the entire options UI generically from this schema. |
+| `desklet.js` UI layer (GJS/St/Clutter) | **Rewritten** as plain DOM `render<Section>(els, state, ...)` functions in `src/lib/render.js`, one per original `_update*` method. `src/newtab.js` and `src/popup.js` each own their own tick orchestration on top of that shared render layer (see "Three ways to use it" above); the New Tab cadence mirrors the desklet's (60 s full refresh, 1 s sub-tick only when seconds or city time are shown, Wikipedia rotation counter). |
+| `settings-schema.json` | **Transcribed** into `src/settings/schema.js` (all 66 keys, defaults, dependencies, combobox options), plus one Firefox-only addition not present in the source desklet: `show-search-box` (see below); `src/options.js` renders the entire options UI generically from this schema. |
 | `po/*.po` + `.pot` | **Converted** to WebExtension `_locales/<lang>/messages.json` via `scripts/po-to-webext-locales.mjs` (re-runnable — see below). No strings were retranslated. |
 
 ### Wikipedia endpoint note
@@ -71,6 +97,14 @@ extension E2E isn't reliably scriptable in CI):
 - Enabling "Enable Wikipedia features" on the Wikipedia tab triggers a
   permission prompt for `api.wikimedia.org`; after granting, the Wikipedia
   section populates on the New Tab page within a few seconds.
+- Clicking the toolbar button opens the compact popup with the same
+  enabled sections; right-clicking it and choosing "Open full view in a
+  new tab" opens `view.html` in a new tab with the full-size widget.
+- Enabling General > Search > "Show a search box" adds a search field at
+  the top of the New Tab / popup / full-view widget; typing a query and
+  submitting it dispatches to your default search engine via
+  `browser.search.search()` (first use may prompt for the `search`
+  permission, depending on Firefox version).
 
 ## Tests & linting
 
@@ -78,7 +112,9 @@ extension E2E isn't reliably scriptable in CI):
 npm test             # vitest run — unit tests for every ported lib
                       # module, the Wikipedia cache-branch matrix
                       # (mocked fetch + storage.local, no real network),
-                      # and the newtab render/toggle matrix (jsdom)
+                      # the shared render/toggle matrix (jsdom, against
+                      # both newtab.html and popup.html markup), popup.js
+                      # init orchestration, and the search-box wiring
 npm run test:coverage
 npm run lint          # eslint (flat config) + web-ext lint --source-dir=src
 ```
@@ -88,9 +124,12 @@ npm run lint          # eslint (flat config) + web-ext lint --source-dir=src
 `src/settings/schema.js` is a straight transcription of the desklet's
 `settings-schema.json` — same storage keys (kebab-case, e.g. `show-date`),
 same defaults, same `dependency`/`indent` relationships, same combobox
-option sets. `src/options.js` renders the same three pages (General,
-Location, Wikipedia) with the same sections as tabs, generically from that
-schema, and persists every field to `browser.storage.local` (replacing
+option sets — plus one Firefox-only key with no desklet equivalent:
+`show-search-box` (General > Search), a checkbox, default `false`, that
+toggles the search box rendered at the top of the widget. `src/options.js`
+renders the same three pages (General, Location, Wikipedia) with the same
+sections as tabs, generically from that schema, and persists every field
+to `browser.storage.local` (replacing
 Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
 
 ## Regenerating translations
@@ -153,4 +192,13 @@ you; you must provision them yourself:
   source desklet — `lib/localization.js` was ported verbatim).
 - `npm run dev` / manual Firefox smoke testing has not been run in this
   environment (no GUI Firefox available); please run it once before
-  relying on this in daily use.
+  relying on this in daily use — in particular the popup/full-view/
+  search-box additions have only been exercised via jsdom unit tests, not
+  a real Firefox window.
+- The "Open full view in a new tab" context menu item's title is a plain
+  English string (`src/background.js`), not run through the `_()` /
+  `browser.i18n` translation layer like the rest of the UI, since
+  `browser.menus` titles are created once at install/startup time outside
+  any page's localized context and the `po/*.po` → `_locales` pipeline
+  doesn't currently have a slot for background-script strings. Worth
+  revisiting if this extension gains more background-originated UI text.

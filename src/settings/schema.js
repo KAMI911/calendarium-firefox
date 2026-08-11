@@ -2,7 +2,9 @@
  * settings/schema.js — Settings schema for the Calendarium Firefox extension
  *
  * Transcribed from the calendarium@kami911 Cinnamon desklet's
- * settings-schema.json (66 keys). Storage keys are kept identical
+ * settings-schema.json (66 keys), plus one Firefox-only addition
+ * ("show-search-box", not present in the source desklet — see
+ * section-search below). Storage keys are kept identical
  * (kebab-case, e.g. "show-date") so options.js / newtab.js / background.js
  * share one source of truth via browser.storage.local.
  *
@@ -28,7 +30,7 @@ export const LAYOUT = {
     "page-general": {
         title: "General",
         sections: [
-            "section-datetime", "section-progress", "section-traditional",
+            "section-search", "section-datetime", "section-progress", "section-traditional",
             "section-folkdays", "section-holidays", "section-moon",
             "section-sun", "section-zodiac", "section-namedays",
             "section-altcal", "section-appearance"
@@ -43,6 +45,7 @@ export const LAYOUT = {
         sections: ["section-wikipedia"]
     },
 
+    "section-search":       { title: "Search", keys: ["show-search-box"] },
     "section-datetime":     { title: "Date and Time", keys: ["show-date", "date-format-preset", "date-format-custom", "show-time", "time-format", "show-seconds"] },
     "section-progress":     { title: "Calendar Highlights", keys: ["show-day-of-year", "show-week-number", "show-month-progress", "show-new-year-countdown", "progress-separator"] },
     "section-traditional":  { title: "Traditional Month Names", keys: ["show-traditional", "traditional-lang"] },
@@ -79,6 +82,8 @@ const WIKI_LOCALE_OPTIONS   = { "System language": "auto", "English": "en", "Ger
 const DISPLAY_MODE_OPTIONS  = { "Icon and text": "icon-and-text", "Icon only": "icon-only", "Text only": "text-only", "None (hidden)": "none" };
 
 export const FIELDS = {
+    "show-search-box": { id: "show-search-box", type: "checkbox", default: false, description: "Show a search box (uses your default search engine)" },
+
     "show-date":          { id: "show-date", type: "checkbox", default: true,  description: "Show date" },
     "date-format-preset": {
         id: "date-format-preset", type: "combobox", default: "%A, %d. %B %Y",

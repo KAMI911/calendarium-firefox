@@ -1,4 +1,19 @@
 <!doctype html>
+<!--
+  view.html — standalone "full view" page.
+
+  Reached from the toolbar action's "Open full view in a new tab" context
+  menu item (wired up in background.js via browser.menus), since
+  moz-extension://<uuid>/... URLs are randomized per install and can't be
+  bookmarked directly by users ahead of time.
+
+  This is intentionally NOT a separate view.js/view.css: the page has the
+  exact same long-lived-tab lifecycle as the New Tab override (full
+  widget, 60s refresh, Wikipedia rotation), so it reuses newtab.js's
+  orchestration and newtab.css's layout verbatim rather than duplicating
+  either — only the markup lives in this file, identical to newtab.html's
+  <body>.
+-->
 <html>
 <head>
   <meta charset="utf-8">

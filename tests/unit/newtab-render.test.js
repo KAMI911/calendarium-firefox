@@ -9,7 +9,7 @@ import {
     renderZodiac, renderNamedays, renderAltCal,
     renderWikiOnThisDay, renderWikiFeatured, renderAll,
     strftime, getISOWeek, wrapText, formatTzOffset, resolveLocale
-} from "../../src/newtab.js";
+} from "../../src/lib/render.js";
 import { DEFAULTS } from "../../src/settings/schema.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
