@@ -1,11 +1,15 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { getEls, renderSearchBox, submitSearch, initSearchBox } from "../../src/lib/render.js";
+import {
+    getEls, renderSearchBox, submitSearch, initSearchBox,
+    getInstalledSearchEngines, populateSearchEngineSelect
+} from "../../src/lib/render.js";
 import { DEFAULTS } from "../../src/settings/schema.js";
 
 function freshDom() {
     document.body.innerHTML = `
       <form id="cal-search-form" hidden>
+        <select id="cal-search-engine-select" hidden></select>
         <input id="cal-search-input" type="search">
         <button type="submit">Search</button>
       </form>
@@ -114,5 +118,84 @@ describe("initSearchBox", () => {
         await Promise.resolve();
 
         expect(searchMock).toHaveBeenCalledWith({ query: "capital of hungary", engine: "Bing" });
+    });
+
+    it("uses the per-search engine picker's current value, overriding getEngine(), when 2+ engines make it visible", async () => {
+        let searchMock = vi.fn(() => Promise.resolve());
+        global.browser = {
+            search: {
+                search: searchMock,
+                get: () => Promise.resolve([{ name: "DuckDuckGo" }, { name: "Bing" }])
+            }
+        };
+        initSearchBox(els, null, () => "default");
+        await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
+
+        expect(els.searchEngineSelect.hasAttribute("hidden")).toBe(false);
+        els.searchEngineSelect.value = "Bing";
+        els.searchInput.value = "weather";
+        els.searchForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+        await Promise.resolve(); await Promise.resolve();
+
+        expect(searchMock).toHaveBeenCalledWith({ query: "weather", engine: "Bing" });
+    });
+});
+
+describe("getInstalledSearchEngines", () => {
+    afterEach(() => { delete global.browser; });
+
+    it("returns [] when browser.search is unavailable", async () => {
+        global.browser = {};
+        expect(await getInstalledSearchEngines()).toEqual([]);
+    });
+
+    it("returns [] when browser.search.get() rejects", async () => {
+        global.browser = { search: { get: () => Promise.reject(new Error("nope")) } };
+        expect(await getInstalledSearchEngines()).toEqual([]);
+    });
+
+    it("returns the engine names, filtering out malformed entries", async () => {
+        global.browser = {
+            search: { get: () => Promise.resolve([{ name: "Google" }, null, { noName: true }, { name: "Bing" }]) }
+        };
+        expect(await getInstalledSearchEngines()).toEqual(["Google", "Bing"]);
+    });
+});
+
+describe("populateSearchEngineSelect", () => {
+    let select;
+    beforeEach(() => {
+        document.body.innerHTML = `<select id="sel" hidden></select>`;
+        select = document.getElementById("sel");
+    });
+    afterEach(() => { delete global.browser; });
+
+    it("stays hidden when fewer than 2 engines are discoverable", async () => {
+        global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }]) } };
+        await populateSearchEngineSelect(select, "default");
+        expect(select.hasAttribute("hidden")).toBe(true);
+    });
+
+    it("populates 'System default' + every engine and unhides when 2+ are discoverable", async () => {
+        global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
+        await populateSearchEngineSelect(select, "default");
+        expect(select.hasAttribute("hidden")).toBe(false);
+        expect([...select.options].map((o) => o.value)).toEqual(["default", "Google", "DuckDuckGo"]);
+    });
+
+    it("pre-selects the persisted default engine when it's among the installed ones", async () => {
+        global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
+        await populateSearchEngineSelect(select, "DuckDuckGo");
+        expect(select.value).toBe("DuckDuckGo");
+    });
+
+    it("falls back to 'default' when the persisted engine isn't among the installed ones", async () => {
+        global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
+        await populateSearchEngineSelect(select, "SomeRemovedEngine");
+        expect(select.value).toBe("default");
+    });
+
+    it("does not throw when selectEl is null", async () => {
+        await expect(populateSearchEngineSelect(null, "default")).resolves.toBeUndefined();
     });
 });

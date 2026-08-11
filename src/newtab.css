@@ -592,6 +592,20 @@ body {
   border-color: var(--cal-input-border-focus);
 }
 
+/* Per-search engine picker — only shown when 2+ engines are installed;
+   overrides the persisted default (Options > Search) for one search only,
+   see populateSearchEngineSelect() in lib/render.js. */
+.calendarium-search-engine-select {
+  flex: 0 0 auto;
+  max-width: 8em;
+  background: var(--cal-input-bg);
+  border: 1px solid var(--cal-input-border);
+  border-radius: 6px;
+  color: var(--cal-input-text);
+  font-size: 0.85em;
+  padding: 6px 4px;
+}
+
 .calendarium-search-submit {
   background: var(--cal-input-bg);
   border: 1px solid var(--cal-input-border);

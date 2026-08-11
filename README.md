@@ -150,12 +150,20 @@ extension E2E isn't reliably scriptable in CI):
   popup — see below); typing a query and submitting it dispatches to
   your default search engine via `browser.search.search()` (first use
   may prompt for the `search` permission, depending on Firefox version).
-  The paired "Search engine" combobox (shown once the search box is
-  enabled) defaults to "System default" but can be set to any engine
-  installed in Firefox — its option list is populated at options-page
-  load time from `browser.search.get()` (not knowable statically, unlike
-  every other combobox in this schema), and the chosen engine is passed
-  as `search.search()`'s `engine` option instead of omitting it.
+  The paired "Search engine" combobox in Options (shown once the search
+  box is enabled) sets the *persistent default*, defaulting to "System
+  default" but selectable to any engine installed in Firefox — its
+  option list is populated at options-page load time from
+  `browser.search.get()` (not knowable statically, unlike every other
+  combobox in this schema). The search box itself also carries a second,
+  *per-search* engine picker right next to the input — a small `<select>`
+  (`lib/render.js`'s `populateSearchEngineSelect()`, sharing the same
+  `getInstalledSearchEngines()` engine-discovery helper as the Options
+  combobox) that starts pre-selected to the persistent default but can be
+  changed for one search only, without writing anything back to storage;
+  it's hidden entirely when fewer than 2 engines are installed, since
+  there'd be nothing to choose between. Either way, the chosen engine is
+  passed as `search.search()`'s `engine` option instead of omitting it.
 
 ## Tests & linting
 

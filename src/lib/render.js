@@ -188,6 +188,7 @@ export function getEls(root = document) {
         container: q("calendarium-container"),
         searchForm: q("cal-search-form"),
         searchInput: q("cal-search-input"),
+        searchEngineSelect: q("cal-search-engine-select"),
         date: q("cal-date"),
         time: q("cal-time"),
         progressRow1: q("cal-progress-row1"),
@@ -1060,19 +1061,76 @@ export async function submitSearch(query, resolveTabId, engine) {
 }
 
 /**
+ * List the search engines Firefox currently has installed, as plain names
+ * (the same identifiers `browser.search.search({engine})` accepts).
+ * Guarded like every other optional-API touch in this codebase — resolves
+ * to `[]` rather than throwing if `browser.search` is unavailable, the
+ * "search" permission isn't granted yet, or the call itself rejects.
+ * Shared by `populateSearchEngineSelect()` below (the in-widget, per-search
+ * picker) and `options.js`'s persistent-default picker, so the engine list
+ * is only ever fetched through one code path.
+ */
+export async function getInstalledSearchEngines() {
+    if (typeof browser === "undefined" || !browser.search || !browser.search.get) return [];
+    try {
+        let engines = await browser.search.get();
+        return Array.isArray(engines) ? engines.filter((e) => e && e.name).map((e) => e.name) : [];
+    } catch (_e) {
+        return [];
+    }
+}
+
+/**
+ * Fill the in-widget search-engine <select> (distinct from options.js's
+ * persistent-default combobox): a "System default" option plus every
+ * installed engine, pre-selected to `defaultEngine` (the persisted
+ * setting) but changeable per search without writing anything back to
+ * storage — see initSearchBox() below, which just reads whatever this
+ * element's current value is at submit time. Hidden entirely when there's
+ * nothing to choose between (no engines discoverable, or exactly one).
+ */
+export async function populateSearchEngineSelect(selectEl, defaultEngine) {
+    if (!selectEl) return;
+    let engines = await getInstalledSearchEngines();
+    if (engines.length < 2) { selectEl.setAttribute("hidden", ""); return; }
+    selectEl.textContent = "";
+    let defaultOpt = document.createElement("option");
+    defaultOpt.value = "default";
+    defaultOpt.textContent = "System default";
+    selectEl.appendChild(defaultOpt);
+    for (let name of engines) {
+        let opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        selectEl.appendChild(opt);
+    }
+    selectEl.value = (defaultEngine && engines.includes(defaultEngine)) ? defaultEngine : "default";
+    selectEl.removeAttribute("hidden");
+}
+
+/**
  * Wire up els.searchForm's submit event to call submitSearch and clear the
- * input. `getEngine` is an optional function returning the currently
- * configured search-engine name (or "default") — a function rather than a
+ * input. `getEngine` is an optional function returning the persisted
+ * default search-engine name (or "default") — a function rather than a
  * plain value because the caller's `state` is reloaded/reassigned after
  * settings change and this listener is registered once up front, before
- * settings have even loaded for the first time.
+ * settings have even loaded for the first time. Also populates and wires
+ * up `els.searchEngineSelect` (if present in the markup) as a per-search
+ * override of that default: whatever it's currently set to at submit time
+ * wins, without persisting the change.
  */
 export function initSearchBox(els, resolveTabId, getEngine) {
     if (!els.searchForm || !els.searchInput) return;
+    if (els.searchEngineSelect) {
+        populateSearchEngineSelect(els.searchEngineSelect, getEngine ? getEngine() : undefined);
+    }
     els.searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
         let query = els.searchInput.value;
         els.searchInput.value = "";
-        submitSearch(query, resolveTabId, getEngine ? getEngine() : undefined);
+        let engine = (els.searchEngineSelect && !els.searchEngineSelect.hasAttribute("hidden"))
+            ? els.searchEngineSelect.value
+            : (getEngine ? getEngine() : undefined);
+        submitSearch(query, resolveTabId, engine);
     });
 }

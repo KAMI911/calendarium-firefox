@@ -11,6 +11,7 @@
 import { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled } from "./settings/schema.js";
 import { Geocoder } from "./lib/geocoder.js";
 import { _ } from "./lib/i18n.js";
+import { getInstalledSearchEngines } from "./lib/render.js";
 
 let state = Object.assign({}, DEFAULTS);
 let fieldEls = {}; // id -> { row, input }
@@ -42,27 +43,20 @@ function applyDependencies() {
 /**
  * Fill an "engine-select" <select> with the user's actually-installed
  * search engines, on top of the static "System default" option already
- * rendered. Guarded like every other optional-API touch in this codebase
- * (browser.search may be unavailable, e.g. before the "search" permission
- * is granted, or on a platform that doesn't support it) — silently leaves
- * just the default option if it fails.
+ * rendered. Uses the same getInstalledSearchEngines() helper as the
+ * in-widget per-search picker in lib/render.js, so there's one code path
+ * for discovering engines, not two — silently leaves just the default
+ * option if none are discoverable (API unavailable, permission not yet
+ * granted, etc.; see that function's own guarding).
  */
 async function populateEngineOptions(selectEl, field) {
-    if (typeof browser === "undefined" || !browser.search || !browser.search.get) return;
-    let engines;
-    try {
-        engines = await browser.search.get();
-    } catch (_e) {
-        return;
-    }
-    if (!Array.isArray(engines) || engines.length === 0) return;
+    let engines = await getInstalledSearchEngines();
     let currentValue = state[field.id];
-    for (let engine of engines) {
-        if (!engine || !engine.name) continue;
+    for (let name of engines) {
         let opt = document.createElement("option");
-        opt.value = engine.name;
-        opt.textContent = engine.name;
-        if (engine.name === currentValue) opt.selected = true;
+        opt.value = name;
+        opt.textContent = name;
+        if (name === currentValue) opt.selected = true;
         selectEl.appendChild(opt);
     }
 }
