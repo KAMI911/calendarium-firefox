@@ -59,8 +59,13 @@ function initApp() {
 
     initSearchBox(els, resolveOwnTabId);
 
+    function isHidden() {
+        return typeof document !== "undefined" && "hidden" in document && document.hidden;
+    }
+
     function scheduleClock() {
         if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+        if (isHidden()) return;
         if ((state["show-time"] && state["show-seconds"]) || state["show-city-time"]) {
             clockTimer = setInterval(() => {
                 let now = new Date();
@@ -111,7 +116,7 @@ function initApp() {
         renderAll(els, state, data, now);
         data.wikiRotateStep = (data.wikiRotateStep || 0) + 1;
         scheduleWikipedia(now);
-        fullTimer = setTimeout(refresh, 60000);
+        if (!isHidden()) fullTimer = setTimeout(refresh, 60000);
         scheduleClock();
     }
 
@@ -127,6 +132,21 @@ function initApp() {
 
     if (typeof browser !== "undefined" && browser.storage) {
         browser.storage.onChanged.addListener(() => reload());
+    }
+
+    // Pause the 60s/1s timers while this tab is hidden (backgrounded), so a
+    // pile of unfocused New Tab pages don't keep ticking for nothing; catch
+    // up immediately when it becomes visible again. Data loading (reload())
+    // always runs once up front regardless of visibility.
+    if (typeof document !== "undefined" && "hidden" in document) {
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                if (fullTimer) { clearTimeout(fullTimer); fullTimer = null; }
+                if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
+            } else {
+                refresh();
+            }
+        });
     }
 
     reload();
