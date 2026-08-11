@@ -607,6 +607,10 @@
     "message": "Search city to auto-fill coordinates",
     "description": "Source: \"Search city to auto-fill coordinates\""
   },
+  "search_engine": {
+    "message": "Search engine",
+    "description": "Source: \"Search engine\""
+  },
   "select_a_predefined_date_format_or_choose_custom_to_enter_your_own_strftime_string_below": {
     "message": "Select a predefined date format, or choose Custom to enter your own strftime string below.",
     "description": "Source: \"Select a predefined date format, or choose Custom to enter your own strftime string below.\""
@@ -778,6 +782,10 @@
   "sunset": {
     "message": "Sunset",
     "description": "Source: \"Sunset\""
+  },
+  "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
+    "message": "\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.",
+    "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
   },
   "system_language": {
     "message": "System language",

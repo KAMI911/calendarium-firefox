@@ -1045,10 +1045,11 @@ export async function applyFirefoxThemeBackground(el) {
  * tab" differently — see newtab.js / popup.js). Silently no-ops if the
  * `browser.search` API or permission is unavailable.
  */
-export async function submitSearch(query, resolveTabId) {
+export async function submitSearch(query, resolveTabId, engine) {
     if (!query || !query.trim()) return;
     if (typeof browser === "undefined" || !browser.search || !browser.search.search) return;
     let searchOptions = { query: query.trim() };
+    if (engine && engine !== "default") searchOptions.engine = engine;
     try {
         let tabId = resolveTabId ? await resolveTabId() : null;
         if (tabId !== null && tabId !== undefined) searchOptions.tabId = tabId;
@@ -1058,13 +1059,20 @@ export async function submitSearch(query, resolveTabId) {
     } catch (_e) { /* ignore — e.g. permission not yet granted */ }
 }
 
-/** Wire up els.searchForm's submit event to call submitSearch and clear the input. */
-export function initSearchBox(els, resolveTabId) {
+/**
+ * Wire up els.searchForm's submit event to call submitSearch and clear the
+ * input. `getEngine` is an optional function returning the currently
+ * configured search-engine name (or "default") — a function rather than a
+ * plain value because the caller's `state` is reloaded/reassigned after
+ * settings change and this listener is registered once up front, before
+ * settings have even loaded for the first time.
+ */
+export function initSearchBox(els, resolveTabId, getEngine) {
     if (!els.searchForm || !els.searchInput) return;
     els.searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
         let query = els.searchInput.value;
         els.searchInput.value = "";
-        submitSearch(query, resolveTabId);
+        submitSearch(query, resolveTabId, getEngine ? getEngine() : undefined);
     });
 }

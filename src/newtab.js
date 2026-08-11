@@ -60,7 +60,7 @@ function initApp() {
     let bgRotateTimer = null;
     let bgRotateStep = 0;
 
-    initSearchBox(els, resolveOwnTabId);
+    initSearchBox(els, resolveOwnTabId, () => state["search-engine"]);
 
     function isHidden() {
         return typeof document !== "undefined" && "hidden" in document && document.hidden;

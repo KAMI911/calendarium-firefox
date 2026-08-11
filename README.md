@@ -146,10 +146,16 @@ extension E2E isn't reliably scriptable in CI):
   enabled sections; right-clicking it and choosing "Open full view in a
   new tab" opens `view.html` in a new tab with the full-size widget.
 - Enabling General > Search > "Show a search box" adds a search field at
-  the top of the New Tab / popup / full-view widget; typing a query and
-  submitting it dispatches to your default search engine via
-  `browser.search.search()` (first use may prompt for the `search`
-  permission, depending on Firefox version).
+  the top of the New Tab / full-view widget (deliberately **not** the
+  popup — see below); typing a query and submitting it dispatches to
+  your default search engine via `browser.search.search()` (first use
+  may prompt for the `search` permission, depending on Firefox version).
+  The paired "Search engine" combobox (shown once the search box is
+  enabled) defaults to "System default" but can be set to any engine
+  installed in Firefox — its option list is populated at options-page
+  load time from `browser.search.get()` (not knowable statically, unlike
+  every other combobox in this schema), and the chosen engine is passed
+  as `search.search()`'s `engine` option instead of omitting it.
 
 ## Tests & linting
 

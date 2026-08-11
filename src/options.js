@@ -39,6 +39,34 @@ function applyDependencies() {
     }
 }
 
+/**
+ * Fill an "engine-select" <select> with the user's actually-installed
+ * search engines, on top of the static "System default" option already
+ * rendered. Guarded like every other optional-API touch in this codebase
+ * (browser.search may be unavailable, e.g. before the "search" permission
+ * is granted, or on a platform that doesn't support it) — silently leaves
+ * just the default option if it fails.
+ */
+async function populateEngineOptions(selectEl, field) {
+    if (typeof browser === "undefined" || !browser.search || !browser.search.get) return;
+    let engines;
+    try {
+        engines = await browser.search.get();
+    } catch (_e) {
+        return;
+    }
+    if (!Array.isArray(engines) || engines.length === 0) return;
+    let currentValue = state[field.id];
+    for (let engine of engines) {
+        if (!engine || !engine.name) continue;
+        let opt = document.createElement("option");
+        opt.value = engine.name;
+        opt.textContent = engine.name;
+        if (engine.name === currentValue) opt.selected = true;
+        selectEl.appendChild(opt);
+    }
+}
+
 function buildFieldControl(field) {
     let input;
     switch (field.type) {
@@ -59,6 +87,26 @@ function buildFieldControl(field) {
                 input.appendChild(opt);
             }
             input.addEventListener("change", () => onFieldChanged(field, input.value));
+            break;
+        }
+        case "engine-select": {
+            // Like "combobox", but the option list isn't known statically —
+            // it's whatever search engines the user has installed, only
+            // discoverable at runtime via browser.search.get(). Render the
+            // schema's static fallback ("System default") immediately so
+            // the field isn't empty while that call is in flight, then
+            // replace the option list once it resolves. See
+            // populateEngineOptions() below.
+            input = document.createElement("select");
+            for (let [label, value] of Object.entries(field.options || {})) {
+                let opt = document.createElement("option");
+                opt.value = value;
+                opt.textContent = label;
+                if (value === state[field.id]) opt.selected = true;
+                input.appendChild(opt);
+            }
+            input.addEventListener("change", () => onFieldChanged(field, input.value));
+            populateEngineOptions(input, field);
             break;
         }
         case "entry": {

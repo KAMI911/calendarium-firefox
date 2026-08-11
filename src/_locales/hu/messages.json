@@ -607,6 +607,10 @@
     "message": "Város keresése a koordináták automatikus kitöltéséhez",
     "description": "Source: \"Search city to auto-fill coordinates\""
   },
+  "search_engine": {
+    "message": "Keresőmotor",
+    "description": "Source: \"Search engine\""
+  },
   "select_a_predefined_date_format_or_choose_custom_to_enter_your_own_strftime_string_below": {
     "message": "Válassz egy előre beállított dátumformátumot, vagy válaszd az Egyénit, hogy alább megadd a saját strftime-kódodat.Válassz egy előre beállított dátumformátumot, vagy válaszd az Egyénit, hogy alább megadd a saját strftime-kódodat.",
     "description": "Source: \"Select a predefined date format, or choose Custom to enter your own strftime string below.\""
@@ -778,6 +782,10 @@
   "sunset": {
     "message": "Napnyugta",
     "description": "Source: \"Sunset\""
+  },
+  "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
+    "message": "A „Rendszer alapértelmezett” azt a keresőmotort használja, ami éppen a Firefox alapértelmezettje. Ha egy konkrétat választasz, mindig azt fogja használni, függetlenül a Firefox alapértelmezettjétől.",
+    "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
   },
   "system_language": {
     "message": "Rendszer nyelve",

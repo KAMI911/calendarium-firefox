@@ -56,7 +56,7 @@ export const LAYOUT = {
         sections: ["section-wikipedia"]
     },
 
-    "section-search":       { title: "Search", keys: ["show-search-box"] },
+    "section-search":       { title: "Search", keys: ["show-search-box", "search-engine"] },
     "section-datetime":     { title: "Date and Time", keys: ["show-date", "date-format-preset", "date-format-custom", "show-time", "time-format", "show-seconds"] },
     "section-progress":     { title: "Calendar Highlights", keys: ["show-day-of-year", "show-week-number", "show-month-progress", "show-new-year-countdown", "progress-separator"] },
     "section-traditional":  { title: "Traditional Month Names", keys: ["show-traditional", "traditional-lang"] },
@@ -130,6 +130,17 @@ export const BACKGROUND_GRADIENT_OPTIONS = {
 
 export const FIELDS = {
     "show-search-box": { id: "show-search-box", type: "checkbox", default: false, description: "Show a search box (uses your default search engine)" },
+    "search-engine": {
+        id: "search-engine", type: "engine-select", default: "default", indent: true,
+        dependency: "show-search-box",
+        description: "Search engine",
+        tooltip: "\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.",
+        // Populated at render time from browser.search.get() — see
+        // options.js's "engine-select" case, since the installed engine
+        // list is only known at runtime, not something a static schema
+        // can declare.
+        options: { "System default": "default" }
+    },
 
     "show-date":          { id: "show-date", type: "checkbox", default: true,  description: "Show date" },
     "date-format-preset": {

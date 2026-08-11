@@ -62,6 +62,20 @@ describe("submitSearch", () => {
         global.browser = { search: { search: searchMock } };
         await expect(submitSearch("weather", null)).resolves.toBeUndefined();
     });
+
+    it("includes the chosen engine when one other than 'default' is given", async () => {
+        let searchMock = vi.fn(() => Promise.resolve());
+        global.browser = { search: { search: searchMock } };
+        await submitSearch("weather", null, "DuckDuckGo");
+        expect(searchMock).toHaveBeenCalledWith({ query: "weather", engine: "DuckDuckGo" });
+    });
+
+    it("omits the engine field for 'default' (use Firefox's own default engine)", async () => {
+        let searchMock = vi.fn(() => Promise.resolve());
+        global.browser = { search: { search: searchMock } };
+        await submitSearch("weather", null, "default");
+        expect(searchMock).toHaveBeenCalledWith({ query: "weather" });
+    });
 });
 
 describe("initSearchBox", () => {
@@ -87,5 +101,18 @@ describe("initSearchBox", () => {
 
     it("does not throw when the form/input are missing from the DOM", () => {
         expect(() => initSearchBox({}, null)).not.toThrow();
+    });
+
+    it("passes the result of getEngine() through to browser.search.search as the engine", async () => {
+        let searchMock = vi.fn(() => Promise.resolve());
+        global.browser = { search: { search: searchMock } };
+        initSearchBox(els, null, () => "Bing");
+
+        els.searchInput.value = "capital of hungary";
+        els.searchForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+        await Promise.resolve();
+        await Promise.resolve();
+
+        expect(searchMock).toHaveBeenCalledWith({ query: "capital of hungary", engine: "Bing" });
     });
 });

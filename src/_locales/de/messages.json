@@ -1,4 +1,8 @@
 {
+  "02_22_2026_m_n_y": {
+    "message": "02/22/2026                 (%m/%d/%Y)",
+    "description": "Source: \"02/22/2026                 (%m/%d/%Y)\""
+  },
   "0_fully_transparent_default_1_a_solid_opaque_panel_behind_the_widget_s_own_text_content_independent_of_the_page_background_below_the_panel_color_follows_the_light_dark_theme_so_text_always_stays_legible": {
     "message": "0 = vollständig transparent (Standard), 1 = ein vollständig deckendes Panel hinter dem eigenen Textinhalt des Widgets, unabhängig vom darunterliegenden Seitenhintergrund. Die Panelfarbe folgt dem hellen/dunklen Thema, damit der Text immer gut lesbar bleibt.",
     "description": "Source: \"0 = fully transparent (default), 1 = a solid opaque panel behind the widget's own text content, independent of the page background below. The panel color follows the light/dark theme so text always stays legible.\""
@@ -10,6 +14,30 @@
   "12_hour_am_pm": {
     "message": "12-Stunden (AM/PM)",
     "description": "Source: \"12-hour (AM/PM)\""
+  },
+  "2026_02_22_y_m_n": {
+    "message": "2026. 02. 22.              (%Y. %m. %d.)",
+    "description": "Source: \"2026. 02. 22.              (%Y. %m. %d.)\""
+  },
+  "2026_february_22_friday_y_b_n_a": {
+    "message": "2026. Februar 22., Freitag (%Y. %B %d., %A)",
+    "description": "Source: \"2026. February 22., Friday (%Y. %B %d., %A)\""
+  },
+  "2026_february_22_y_b_n": {
+    "message": "2026. Februar 22.         (%Y. %B %d.)",
+    "description": "Source: \"2026. February 22.         (%Y. %B %d.)\""
+  },
+  "22_02_2026_n_m_y": {
+    "message": "22.02.2026                 (%d.%m.%Y)",
+    "description": "Source: \"22.02.2026                 (%d.%m.%Y)\""
+  },
+  "22_feb_2026_n_b_y": {
+    "message": "22 Feb 2026                (%d %b %Y)",
+    "description": "Source: \"22 Feb 2026                (%d %b %Y)\""
+  },
+  "22_february_2026_n_b_y": {
+    "message": "22. Februar 2026          (%d. %B %Y)",
+    "description": "Source: \"22. February 2026          (%d. %B %Y)\""
   },
   "24_hour": {
     "message": "24-Stunden",
@@ -207,6 +235,10 @@
     "message": "Todesfälle an diesem Tag",
     "description": "Source: \"Deaths on this day\""
   },
+  "degrees": {
+    "message": "Grad",
+    "description": "Source: \"degrees\""
+  },
   "dog": {
     "message": "Hund",
     "description": "Source: \"Dog\""
@@ -243,6 +275,14 @@
     "message": "Calendarium",
     "description": "Extension name shown in about:addons"
   },
+  "feb_22_2026_b_n_y": {
+    "message": "Feb 22, 2026               (%b %d, %Y)",
+    "description": "Source: \"Feb 22, 2026               (%b %d, %Y)\""
+  },
+  "february_22_2026_b_n_y": {
+    "message": "Februar 22, 2026          (%B %d, %Y)",
+    "description": "Source: \"February 22, 2026          (%B %d, %Y)\""
+  },
   "filled_automatically_when_using_city_search_you_can_also_enter_an_iana_timezone_name_manually": {
     "message": "Wird bei Verwendung der Städtesuche automatisch ausgefüllt. Sie können auch manuell einen IANA-Zeitzonennamen eingeben.",
     "description": "Source: \"Filled automatically when using city search. You can also enter an IANA timezone name manually.\""
@@ -274,6 +314,18 @@
   "french": {
     "message": "Französisch",
     "description": "Source: \"French\""
+  },
+  "fri_22_feb_2026_a_n_b_y": {
+    "message": "Fr, 22 Feb 2026            (%a, %d %b %Y)",
+    "description": "Source: \"Fri, 22 Feb 2026           (%a, %d %b %Y)\""
+  },
+  "friday_22_february_2026_a_n_b_y": {
+    "message": "Freitag, 22. Februar 2026  (%A, %d. %B %Y)",
+    "description": "Source: \"Friday, 22. February 2026  (%A, %d. %B %Y)\""
+  },
+  "friday_february_22_2026_a_b_n_y": {
+    "message": "Freitag, Februar 22, 2026  (%A, %B %d, %Y)",
+    "description": "Source: \"Friday, February 22, 2026  (%A, %B %d, %Y)\""
   },
   "full_moon": {
     "message": "Vollmond",
@@ -355,6 +407,10 @@
     "message": "Italienisch",
     "description": "Source: \"Italian\""
   },
+  "items": {
+    "message": "Einträge",
+    "description": "Source: \"items\""
+  },
   "items_shown_per_section": {
     "message": "Angezeigte Einträge pro Abschnitt",
     "description": "Source: \"Items shown per section\""
@@ -410,6 +466,10 @@
   "metal": {
     "message": "Metall",
     "description": "Source: \"Metal\""
+  },
+  "minutes": {
+    "message": "Minuten",
+    "description": "Source: \"minutes\""
   },
   "monkey": {
     "message": "Affe",
@@ -546,6 +606,10 @@
   "search_city_to_auto_fill_coordinates": {
     "message": "Stadt suchen, um Koordinaten automatisch auszufüllen",
     "description": "Source: \"Search city to auto-fill coordinates\""
+  },
+  "search_engine": {
+    "message": "Suchmaschine",
+    "description": "Source: \"Search engine\""
   },
   "select_a_predefined_date_format_or_choose_custom_to_enter_your_own_strftime_string_below": {
     "message": "Wähle ein vordefiniertes Datumsformat oder 'Benutzerdefiniert', um unten eine eigene strftime-Zeichenkette einzugeben.",
@@ -718,6 +782,10 @@
   "sunset": {
     "message": "Sonnenuntergang",
     "description": "Source: \"Sunset\""
+  },
+  "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
+    "message": "„Systemstandard“ verwendet die jeweils aktuelle Standard-Suchmaschine von Firefox. Bei Auswahl einer bestimmten Suchmaschine wird stattdessen immer diese verwendet, unabhängig von Ihrem Firefox-Standard.",
+    "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
   },
   "system_language": {
     "message": "Systemsprache",
