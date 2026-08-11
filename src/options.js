@@ -120,12 +120,23 @@ function onFieldChanged(field, value) {
     }
 }
 
+// browser.permissions.request() must be called synchronously from within a
+// user input handler (the checkbox's "change" event) in THIS page's context
+// — relaying it through a runtime.sendMessage() to background.js loses the
+// transient user-activation flag by the time it arrives there and throws
+// "permissions.request may only be called from a user input handler". So the
+// request itself happens here; only the post-grant cache warm-up is
+// delegated to the background script (a plain fire-and-forget message,
+// no activation requirement for that).
+const WIKI_HOST_PERMISSION = { origins: ["https://api.wikimedia.org/*"] };
+
 async function requestWikipediaPermission(field) {
     let entry = fieldEls[field.id];
     try {
-        let resp = await browser.runtime.sendMessage({ type: "requestWikipediaPermission" });
-        if (resp && resp.granted) {
+        let granted = await browser.permissions.request(WIKI_HOST_PERMISSION);
+        if (granted) {
             await saveField(field.id, true);
+            browser.runtime.sendMessage({ type: "refreshWikipediaNow" }).catch(() => {});
         } else {
             if (entry && entry.input) entry.input.checked = false;
             setStatus(_("Permission was not granted; Wikipedia features stay disabled."));

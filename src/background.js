@@ -135,13 +135,6 @@ browser.storage.onChanged.addListener((changes, area) => {
 browser.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
     if (!message || typeof message !== "object") return undefined;
 
-    if (message.type === "requestWikipediaPermission") {
-        return browser.permissions.request(WIKI_HOST_PERMISSION).then((granted) => {
-            if (granted) refreshWikipediaCache();
-            return { granted };
-        });
-    }
-
     if (message.type === "checkWikipediaPermission") {
         return hasWikipediaPermission().then((granted) => ({ granted }));
     }
