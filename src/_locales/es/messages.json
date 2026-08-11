@@ -11,6 +11,10 @@
     "message": "24 horas",
     "description": "Source: \"24-hour\""
   },
+  "a_direct_https_or_data_image_image_url_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup": {
+    "message": "Una URL de imagen directa https:// (o data:image/...). Se usa únicamente como background-image de CSS — nunca se evalúa como script o markup.",
+    "description": "Source: \"A direct https:// (or data:image/...) image URL. Used only as a CSS background-image — never evaluated as script or markup.\""
+  },
   "a_rich_calendar_desklet_with_moon_phase_sunrise_sunset_zodiac_name_days_traditional_month_names_and_optional_wikipedia_features": {
     "message": "Un completo desklet de calendario con fase lunar, amanecer/atardecer, zodíaco, santoral, nombres tradicionales de los meses y funciones opcionales de Wikipedia.",
     "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
@@ -38,6 +42,14 @@
   "autumn_equinox": {
     "message": "Equinoccio de otoño",
     "description": "Source: \"Autumn equinox\""
+  },
+  "background": {
+    "message": "Fondo",
+    "description": "Source: \"Background\""
+  },
+  "background_color": {
+    "message": "Color de fondo",
+    "description": "Source: \"Background color\""
   },
   "background_opacity": {
     "message": "Opacidad del fondo",
@@ -131,6 +143,10 @@
     "message": "Zona horaria de la ciudad 3 (IANA, p.ej. Asia/Tokyo)",
     "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
   },
+  "color_theme": {
+    "message": "Tema de color",
+    "description": "Source: \"Color theme\""
+  },
   "controls_the_display_size_of_moon_phase_and_zodiac_symbols": {
     "message": "Controla el tamaño de los símbolos de fase lunar y zodíaco.",
     "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
@@ -142,6 +158,10 @@
   "current_time": {
     "message": "Hora actual",
     "description": "Source: \"Current time\""
+  },
+  "custom_background_image_url": {
+    "message": "URL de imagen de fondo personalizada",
+    "description": "Source: \"Custom background image URL\""
   },
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Formato de fecha personalizado (strftime) — solo activo cuando se selecciona 'Personalizado' arriba",
@@ -263,6 +283,10 @@
     "message": "Cabra",
     "description": "Source: \"Goat\""
   },
+  "gradient": {
+    "message": "Degradado",
+    "description": "Source: \"Gradient\""
+  },
   "hebrew_date": {
     "message": "Fecha hebrea",
     "description": "Source: \"Hebrew date\""
@@ -359,6 +383,10 @@
     "message": "Longitud (positivo = Este)",
     "description": "Source: \"Longitude (positive = East)\""
   },
+  "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
+    "message": "\"Seguir sistema\" se ajusta automáticamente a la preferencia clara u oscura de tu sistema operativo/navegador. Claro/Oscuro fuerza esa paleta independientemente de la configuración del sistema, tanto en la página de Nueva pestaña como en el popup y la vista completa.",
+    "description": "Source: \"\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.\""
+  },
   "medium": {
     "message": "Mediano",
     "description": "Source: \"Medium\""
@@ -431,6 +459,10 @@
     "message": "Buey",
     "description": "Source: \"Ox\""
   },
+  "page_background_new_tab_homepage_full_view": {
+    "message": "Fondo de página (Nueva pestaña / página de inicio / vista completa)",
+    "description": "Source: \"Page background (New Tab / homepage / full view)\""
+  },
   "persian_date": {
     "message": "Fecha persa",
     "description": "Source: \"Persian date\""
@@ -483,6 +515,10 @@
     "message": "Escorpio",
     "description": "Source: \"Scorpio\""
   },
+  "search": {
+    "message": "Búsqueda",
+    "description": "Source: \"Search\""
+  },
   "search_city_to_auto_fill_coordinates": {
     "message": "Buscar ciudad para completar coordenadas automáticamente",
     "description": "Source: \"Search city to auto-fill coordinates\""
@@ -494,6 +530,10 @@
   "separator_character_between_calendar_items": {
     "message": "Carácter separador entre elementos del calendario",
     "description": "Source: \"Separator character between calendar items\""
+  },
+  "show_a_search_box_uses_your_default_search_engine": {
+    "message": "Mostrar un cuadro de búsqueda (usa tu motor de búsqueda predeterminado)",
+    "description": "Source: \"Show a search box (uses your default search engine)\""
   },
   "show_article_of_the_day": {
     "message": "Mostrar artículo del día",
@@ -670,6 +710,10 @@
   "text_scale_factor": {
     "message": "Factor de escala del texto",
     "description": "Source: \"Text scale factor\""
+  },
+  "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
+    "message": "Este es el fondo propio de la extensión, independiente del selector de fondo integrado de Firefox para Nueva pestaña (que las extensiones no pueden leer ni establecer). \"Predeterminado del tema\" sigue la paleta clara/oscura de arriba. El popup de la barra de herramientas siempre usa la paleta de tema simple, independientemente de esta configuración.",
+    "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
   },
   "tiger": {
     "message": "Tigre",
