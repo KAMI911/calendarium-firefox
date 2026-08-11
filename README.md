@@ -41,6 +41,47 @@ Firefox/`web-ext` require it at the root of the loadable extension
 directory, and every `--source-dir=src` command (`dev`, `build`, `lint`,
 `sign`) treats `src/` as that root.
 
+## Firefox for Android support
+
+The extension is compatible with Firefox for Android (`manifest.json`
+declares `browser_specific_settings.gecko.gecko_android`, without which
+Android treats it as desktop-only and won't offer it as installable at
+all), but the on-Android experience differs from desktop in one
+significant way:
+
+- **What works:** the toolbar **action popup** (`popup.html`) and the
+  **options page** (`options.html`, via `options_ui`) are both supported
+  on Android, so all settings and a compact widget view are reachable.
+  The **standalone full view** (`view.html`) is also reachable — either
+  from the popup's "Open full view" footer link, or (on the desktop
+  builds of Firefox that support `browser.menus`) via the toolbar
+  button's right-click context menu. Wikipedia caching
+  (`browser.alarms` + `browser.storage.local`) works identically to
+  desktop.
+- **What doesn't work:** `chrome_url_overrides.newtab` and
+  `chrome_settings_overrides.homepage` are not implemented on Firefox
+  for Android — Android silently ignores both keys rather than failing,
+  but in practice this means the New Tab/homepage widget never appears
+  there. The popup and the full view are the real entry points on
+  mobile.
+- **API availability guards:** `browser.menus`/`browser.contextMenus`
+  (used for the toolbar button's "Open full view in a new tab" context
+  menu) has historically had limited/no support on Android, and
+  `browser.search.search()` (used for the optional search box) may
+  likewise be unavailable on a given platform/build. Both call sites
+  (`src/background.js`'s `ensureMenu()`, `src/lib/render.js`'s
+  `submitSearch()`) feature-detect the API before calling it and wrap
+  the actual call in try/catch, so a missing or rejecting API degrades
+  silently (no menu item / no-op search submit) instead of throwing and
+  breaking the rest of initialization or rendering.
+
+This has been verified via `web-ext lint` and the automated test suite
+(which mocks `browser.menus`/`browser.search` as `undefined` to simulate
+Android — see `tests/unit/background.test.js` and
+`tests/unit/search-box.test.js`), not by sideloading on a physical
+Android device; if you're deploying to Android, it's worth confirming
+the popup/options/full-view flow manually on-device at least once.
+
 ## Relationship to `calendarium@kami911`
 
 This extension is a port of the
