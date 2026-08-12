@@ -566,9 +566,10 @@ currently wired to a GitLab remote.
   `.zip` uploaded as a workflow artifact).
 - `sign-and-release` runs only on a pushed tag matching `v<major>.<minor>.<patch>`:
   syncs `manifest.json`/`package.json`'s version from the tag via
-  `scripts/set-version.mjs`, signs with `web-ext sign --channel=unlisted`
-  (self-distributed, not AMO-listed — see "Publishing to AMO" below for
-  what going listed would additionally require), and publishes a GitHub
+  `scripts/set-version.mjs`, signs with `web-ext sign --channel=listed`
+  (submits to AMO for public listing — see "Publishing to AMO" below;
+  each tag still needs the one-time listing metadata already in place,
+  Mozilla review still applies per version), and publishes a GitHub
   Release named after the tag with the signed `.xpi` attached
   (`softprops/action-gh-release`, release notes auto-generated from
   commits).
@@ -590,14 +591,16 @@ yourself:
 
 ### Publishing to AMO as a public ("listed") extension
 
-Everything above produces a self-signed, self-distributed `.xpi` — valid
-and installable, but not searchable on addons.mozilla.org. Going public
-requires a one-time manual submission through the AMO Developer Hub
-(listing metadata, screenshots, category, privacy-practices text — a
-first draft of all of this is prepared in `docs/amo-listing.md`) plus
-Mozilla's human review; it can't be fully automated from CI. Once listed,
-future version updates CAN go through CI by changing `--channel=unlisted`
-to `--channel=listed` in the workflow.
+The CI pipeline signs with `--channel=listed`, but that alone doesn't
+make the extension publicly searchable — AMO also needs the one-time
+listing metadata (name, summary, description, category, screenshots,
+privacy-practices text — a first draft of all of this is prepared in
+`docs/amo-listing.md`) filled in through the AMO Developer Hub, and every
+listed version still goes through Mozilla's human review before it's
+visible; neither of those can be automated from CI. If a `sign-and-release`
+run fails on a tag because the listing metadata isn't complete yet, that's
+expected until the Developer Hub submission is done — the CI error message
+will say what AMO is missing.
 
 ## Known gaps / TODOs
 

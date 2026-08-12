@@ -68,7 +68,7 @@ sign:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
   script:
     - node scripts/set-version.mjs
-    - npx web-ext sign --source-dir=src --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET --channel=unlisted --artifacts-dir=dist-signed
+    - npx web-ext sign --source-dir=src --api-key=$WEB_EXT_API_KEY --api-secret=$WEB_EXT_API_SECRET --channel=listed --artifacts-dir=dist-signed
   artifacts:
     paths:
       - dist-signed/

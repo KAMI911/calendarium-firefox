@@ -49,14 +49,14 @@ jobs:
         env:
           CI_COMMIT_TAG: ${{ github.ref_name }}
         run: node scripts/set-version.mjs
-      - name: Sign with web-ext (AMO, unlisted channel)
+      - name: Sign with web-ext (AMO, listed channel)
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
         run: |
           npx web-ext sign --source-dir=src --artifacts-dir=dist-signed \
             --api-key="$WEB_EXT_API_KEY" --api-secret="$WEB_EXT_API_SECRET" \
-            --channel=unlisted
+            --channel=listed
       - name: Create GitHub Release with the signed .xpi attached
         uses: softprops/action-gh-release@v3
         with:
