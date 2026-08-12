@@ -743,6 +743,14 @@
     "message": "Une ou plusieurs URL d'image directes https:// (ou data:image/...), une par ligne. Utilisée uniquement comme background-image CSS — jamais évaluée comme script ou balisage. Les lignes non valides sont ignorées individuellement plutôt que de rejeter toute la liste. Avec plusieurs URL et « Faire pivoter les arrière-plans » activé ci-dessous, elles alternent de la même manière que les dégradés intégrés.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "open_full_view": {
+    "message": "Ouvrir la vue complète ↗",
+    "description": "Source: \"Open full view ↗\""
+  },
+  "open_full_view_in_a_new_tab": {
+    "message": "Ouvrir la vue complète dans un nouvel onglet",
+    "description": "Source: \"Open full view in a new tab\""
+  },
   "overcast": {
     "message": "Couvert",
     "description": "Source: \"Overcast\""

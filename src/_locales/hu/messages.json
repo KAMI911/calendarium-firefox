@@ -743,6 +743,14 @@
     "message": "Egy vagy több közvetlen https:// (vagy data:image/...) képURL, soronként egy. Kizárólag CSS background-image-ként használjuk — soha nem értelmezzük szkriptként vagy jelölőnyelvként. Az érvénytelen sorokat egyenként kihagyjuk, nem a teljes listát utasítjuk el. Ha egynél több URL van megadva, és az alábbi „Háttérek automatikus váltása” be van kapcsolva, ugyanúgy váltakoznak, mint a beépített színátmenetek.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "open_full_view": {
+    "message": "Teljes nézet megnyitása ↗",
+    "description": "Source: \"Open full view ↗\""
+  },
+  "open_full_view_in_a_new_tab": {
+    "message": "Teljes nézet megnyitása új lapon",
+    "description": "Source: \"Open full view in a new tab\""
+  },
   "overcast": {
     "message": "Borult",
     "description": "Source: \"Overcast\""

@@ -25,6 +25,7 @@ import {
     renderWikiOnThisDay, renderWikiFeatured,
     resolveLocale, applyThemeMode, applyIconSize, applyPanelOpacity
 } from "./lib/render.js";
+import { _ } from "./lib/i18n.js";
 
 async function loadSettings() {
     let stored = (typeof browser !== "undefined") ? await browser.storage.local.get(null) : {};
@@ -105,6 +106,7 @@ async function initApp() {
 
     let openFullViewBtn = document.getElementById("cal-open-full-view");
     if (openFullViewBtn) {
+        openFullViewBtn.textContent = _("Open full view ↗");
         openFullViewBtn.addEventListener("click", () => {
             browser.tabs.create({ url: browser.runtime.getURL("view.html") });
             try { if (typeof window !== "undefined") window.close(); } catch (_e) { /* ignore */ }

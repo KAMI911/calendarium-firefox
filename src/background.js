@@ -17,6 +17,7 @@
 
 import { Wikipedia } from "./lib/wikipedia.js";
 import { DEFAULTS } from "./settings/schema.js";
+import { _ } from "./lib/i18n.js";
 
 const WIKI_ALARM_NAME = "calendarium-wikipedia-refresh";
 const WIKI_HOST_PERMISSION = { origins: ["https://api.wikimedia.org/*"] };
@@ -110,7 +111,7 @@ async function ensureMenu() {
     try {
         browser.menus.create({
             id: OPEN_VIEW_MENU_ID,
-            title: "Open full view in a new tab",
+            title: _("Open full view in a new tab"),
             contexts: ["action"]
         });
     } catch (e) {

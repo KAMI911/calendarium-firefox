@@ -743,6 +743,14 @@
     "message": "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "open_full_view": {
+    "message": "Open full view ↗",
+    "description": "Source: \"Open full view ↗\""
+  },
+  "open_full_view_in_a_new_tab": {
+    "message": "Open full view in a new tab",
+    "description": "Source: \"Open full view in a new tab\""
+  },
   "overcast": {
     "message": "Overcast",
     "description": "Source: \"Overcast\""
