@@ -1016,6 +1016,20 @@ export function parseImageUrlList(raw) {
  * assignment (CSSOM), never `innerHTML`/`eval` — see isSafeBackgroundImageUrl
  * for the custom-image-url allowlist.
  */
+/**
+ * Pick which item of a rotation list to show. "sequential" (default) walks
+ * the list in order via `rotateStep` (interval-driven rotation increments
+ * this once per tick — see newtab.js's scheduleBackgroundRotation() — while
+ * "on-open" rotation always calls with the same persisted step, see
+ * reload()'s bgRotateStep handling there). "random" ignores `rotateStep`
+ * entirely and picks anew every call, which is exactly the "different one
+ * each time" behavior wanted for both interval ticks and fresh page loads.
+ */
+function pickRotationIndex(length, rotateStep, mode) {
+    if (mode === "random") return Math.floor(Math.random() * length);
+    return Math.abs(rotateStep || 0) % length;
+}
+
 export function applyBackground(el, state, rotateStep = 0) {
     if (!el) return;
     let style = (state && state["background-style"]) || "theme-default";
@@ -1034,7 +1048,8 @@ export function applyBackground(el, state, rotateStep = 0) {
     } else if (style === "gradient") {
         let name = (state && state["background-gradient"]) || "sunset";
         if (state && state["background-rotate"] && GRADIENT_ORDER.length > 0) {
-            name = GRADIENT_ORDER[Math.abs(rotateStep || 0) % GRADIENT_ORDER.length];
+            let mode = state["background-rotate-mode"];
+            name = GRADIENT_ORDER[pickRotationIndex(GRADIENT_ORDER.length, rotateStep, mode)];
         }
         if (!VALID_GRADIENTS.has(name)) name = "sunset";
         el.classList.add("calendarium-bg-gradient-" + name);
@@ -1043,7 +1058,7 @@ export function applyBackground(el, state, rotateStep = 0) {
         let url = null;
         if (urls.length > 0) {
             url = (state && state["background-rotate"] && urls.length > 1)
-                ? urls[Math.abs(rotateStep || 0) % urls.length]
+                ? urls[pickRotationIndex(urls.length, rotateStep, state["background-rotate-mode"])]
                 : urls[0];
         }
         if (url) el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
@@ -1092,7 +1107,7 @@ export async function applyImageFolderBackground(el, state, rotateStep = 0) {
         return;
     }
     let url = (state["background-rotate"] && urls.length > 1)
-        ? urls[Math.abs(rotateStep || 0) % urls.length]
+        ? urls[pickRotationIndex(urls.length, rotateStep, state["background-rotate-mode"])]
         : urls[0];
     el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
 }

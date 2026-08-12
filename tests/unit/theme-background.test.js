@@ -191,6 +191,27 @@ describe("applyBackground", () => {
             applyBackground(el, baseState({ "background-style": "gradient", "background-rotate": true }), names.length);
             expect(el.classList.contains("calendarium-bg-gradient-" + names[0])).toBe(true);
         });
+
+        it("with 'background-rotate-mode': 'random', ignores rotateStep and picks via Math.random() instead", () => {
+            let names = Object.values(BACKGROUND_GRADIENT_OPTIONS);
+            let randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+            try {
+                // rotateStep=5 would normally select names[5] in sequential mode —
+                // random mode should ignore it entirely and use Math.random() (0 here).
+                applyBackground(el, baseState({
+                    "background-style": "gradient", "background-rotate": true, "background-rotate-mode": "random"
+                }), 5);
+                expect(el.classList.contains("calendarium-bg-gradient-" + names[0])).toBe(true);
+
+                randomSpy.mockReturnValue(0.999999);
+                applyBackground(el, baseState({
+                    "background-style": "gradient", "background-rotate": true, "background-rotate-mode": "random"
+                }), 5);
+                expect(el.classList.contains("calendarium-bg-gradient-" + names[names.length - 1])).toBe(true);
+            } finally {
+                randomSpy.mockRestore();
+            }
+        });
     });
 
     describe("parseImageUrlList", () => {

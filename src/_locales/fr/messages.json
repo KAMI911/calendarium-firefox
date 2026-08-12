@@ -307,6 +307,10 @@
     "message": "Dragon",
     "description": "Source: \"Dragon\""
   },
+  "each_time_a_new_tab_opens": {
+    "message": "À chaque ouverture d'un nouvel onglet",
+    "description": "Source: \"Each time a new tab opens\""
+  },
   "earth": {
     "message": "Terre",
     "description": "Source: \"Earth\""
@@ -495,6 +499,10 @@
     "message": "Fréquence à laquelle passer à l'arrière-plan suivant tant que la rotation est activée.",
     "description": "Source: \"How often to switch to the next background while rotation is enabled.\""
   },
+  "how_often_to_switch_to_the_next_background_while_rotation_is_enabled_only_applies_when_rotate_above_is_set_to_on_a_timer_ignored_for_each_time_a_new_tab_opens": {
+    "message": "À quelle fréquence passer à l'arrière-plan suivant tant que la rotation est activée. S'applique uniquement lorsque « Rotation » (ci-dessus) est réglé sur « Selon une minuterie » — ignoré pour « À chaque ouverture d'un nouvel onglet ».",
+    "description": "Source: \"How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\".\""
+  },
   "hungarian": {
     "message": "Hongrois",
     "description": "Source: \"Hungarian\""
@@ -538,6 +546,14 @@
   "imported_n_setting_s_skipped_n_unrecognized_key_s": {
     "message": "%d paramètre(s) importé(s), %d clé(s) non reconnue(s) ignorée(s).",
     "description": "Source: \"Imported %d setting(s), skipped %d unrecognized key(s).\""
+  },
+  "in_order": {
+    "message": "Dans l'ordre",
+    "description": "Source: \"In order\""
+  },
+  "in_order_cycles_through_the_list_the_same_way_every_time_randomly_picks_a_different_one_each_rotation_with_repeats_possible": {
+    "message": "« Dans l'ordre » parcourt la liste toujours de la même manière. « Aléatoirement » choisit un élément différent à chaque rotation, des répétitions sont possibles.",
+    "description": "Source: \"\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.\""
   },
   "include_images_from_subfolders": {
     "message": "Inclure les images des sous-dossiers",
@@ -743,6 +759,14 @@
     "message": "Hongrois ancien",
     "description": "Source: \"Old Hungarian\""
   },
+  "on_a_timer": {
+    "message": "Selon une minuterie",
+    "description": "Source: \"On a timer\""
+  },
+  "on_a_timer_switches_every_n_minutes_see_below_for_as_long_as_a_new_tab_full_view_page_stays_open_each_time_a_new_tab_opens_picks_once_when_the_page_loads_and_then_stays_put_no_periodic_switching_while_that_tab_remains_open": {
+    "message": "« Selon une minuterie » change toutes les N minutes (voir ci-dessous) tant qu'une page Nouvel onglet/vue complète reste ouverte. « À chaque ouverture d'un nouvel onglet » choisit une seule fois au chargement de la page puis ne change plus de lui-même tant que cet onglet reste ouvert.",
+    "description": "Source: \"\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.\""
+  },
   "one_or_more_direct_https_or_data_image_image_urls_one_per_line_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup_invalid_lines_are_skipped_individually_rather_than_rejecting_the_whole_list_with_more_than_one_url_and_rotate_backgrounds_enabled_below_they_rotate_the_same_way_the_built_in_gradients_do": {
     "message": "Une ou plusieurs URL d'image directes https:// (ou data:image/...), une par ligne. Utilisée uniquement comme background-image CSS — jamais évaluée comme script ou balisage. Les lignes non valides sont ignorées individuellement plutôt que de rejeter toute la liste. Avec plusieurs URL et « Faire pivoter les arrière-plans » activé ci-dessous, elles alternent de la même manière que les dégradés intégrés.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
@@ -754,6 +778,10 @@
   "open_full_view_in_a_new_tab": {
     "message": "Ouvrir la vue complète dans un nouvel onglet",
     "description": "Source: \"Open full view in a new tab\""
+  },
+  "order": {
+    "message": "Ordre",
+    "description": "Source: \"Order\""
   },
   "overcast": {
     "message": "Couvert",
@@ -807,6 +835,10 @@
     "message": "Lapin",
     "description": "Source: \"Rabbit\""
   },
+  "randomly": {
+    "message": "Aléatoirement",
+    "description": "Source: \"Randomly\""
+  },
   "rat": {
     "message": "Rat",
     "description": "Source: \"Rat\""
@@ -814,6 +846,10 @@
   "rooster": {
     "message": "Coq",
     "description": "Source: \"Rooster\""
+  },
+  "rotate": {
+    "message": "Rotation",
+    "description": "Source: \"Rotate\""
   },
   "rotate_backgrounds_automatically": {
     "message": "Faire pivoter les arrière-plans automatiquement",

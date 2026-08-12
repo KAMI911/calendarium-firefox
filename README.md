@@ -344,8 +344,29 @@ equivalent:
     `browser.alarms`, since this is a purely visual per-tab effect that
     doesn't need to survive the page being closed), paused/resumed by the
     same `isHidden()`/`visibilitychange` logic as those.
+  - `background-rotate-trigger` — a combobox, default `interval` (switch
+    every `background-rotate-minutes`, for as long as a New Tab/full-view
+    tab stays open) vs. `on-open` (pick once when the page loads, then
+    stay put — no periodic switching while that tab remains open). The
+    `on-open` case can't rely on an in-memory step counter the way
+    `interval` does, since every open is a fresh JS context; it's
+    persisted in `localStorage` instead (`newtab.js`'s
+    `nextOnOpenRotateStep()`) — deliberately **not**
+    `browser.storage.local`, since this page already reloads on *any*
+    `storage.onChanged` event to pick up settings changes made elsewhere,
+    and writing the step counter through that same storage would
+    re-trigger its own listener into an infinite reload loop.
+  - `background-rotate-mode` — a combobox, default `sequential` (cycles
+    the list in a fixed order, the original behavior) vs. `random` (a
+    fresh `Math.random()` pick every rotation, ignoring the step counter
+    entirely — see `pickRotationIndex()` in `src/lib/render.js`, the one
+    shared helper both modes go through for gradients, custom image URLs,
+    and folder images alike).
   - `background-rotate-minutes` — a spinbutton, default `30`, range
-    1–1440, depends (truthily) on `background-rotate`.
+    1–1440, depends (truthily) on `background-rotate`; only meaningful
+    when `background-rotate-trigger` is `interval` (ignored for `on-open`
+    — noted in its own tooltip since the schema's `dependency` mechanism
+    only supports one field, not a compound condition).
 
   `background-style` is **independent from `theme-mode`** and `theme-
   default`/`solid-color`/`gradient`/`custom-image-url` are all **not**

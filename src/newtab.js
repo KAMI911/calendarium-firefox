@@ -114,13 +114,47 @@ function initApp() {
         if (isHidden()) return;
         let style = state["background-style"];
         let rotatable = style === "gradient" || style === "custom-image-url" || style === "image-folder";
-        if (!state["background-rotate"] || !rotatable) return;
+        // "on-open" rotation picks once per page load (see reload()'s
+        // nextOnOpenRotateStep() call) and then stays put for as long as
+        // this tab is open — no interval timer for that mode.
+        if (!state["background-rotate"] || !rotatable || state["background-rotate-trigger"] === "on-open") return;
         let minutes = Math.max(1, state["background-rotate-minutes"] || 30);
         bgRotateTimer = setInterval(() => {
             bgRotateStep++;
             applyBackground(document.body, state, bgRotateStep);
             if (style === "image-folder") applyImageFolderBackground(document.body, state, bgRotateStep);
         }, minutes * 60000);
+    }
+
+    /**
+     * For "background-rotate-trigger": "on-open" — each fresh New Tab/
+     * full-view page load should show a different item than the last time
+     * (in "sequential" mode; "random" mode ignores the step entirely, see
+     * pickRotationIndex() in lib/render.js). Since every open is a brand
+     * new JS context, the step can't just live in a local variable like the
+     * interval-driven rotation's bgRotateStep does.
+     *
+     * Deliberately uses localStorage, NOT browser.storage.local: this page
+     * already reloads on *any* browser.storage.onChanged event (see the
+     * listener below) to pick up settings changes made elsewhere (e.g. the
+     * options page) — writing this counter through browser.storage.local
+     * would re-trigger that same listener, incrementing again, reloading
+     * again, forever. localStorage is per-origin and moz-extension:// pages
+     * share one origin per install, so it's just as persistent across
+     * separate New Tab opens, without the feedback loop.
+     */
+    function nextOnOpenRotateStep() {
+        const KEY = "calendarium-background-rotate-open-step";
+        try {
+            // Post-increment: the first-ever open (nothing stored yet) uses
+            // step 0, the second uses 1, and so on — each open reads
+            // *before* bumping the stored value for the next one.
+            let current = parseInt(localStorage.getItem(KEY), 10) || 0;
+            localStorage.setItem(KEY, String(current + 1));
+            return current;
+        } catch (_e) {
+            return 0;
+        }
     }
 
     async function scheduleWikipedia(now) {
@@ -227,7 +261,12 @@ function initApp() {
         applyThemeMode(document.documentElement, state);
         applyIconSize(els.container, state);
         applyPanelOpacity(els.container, state);
-        bgRotateStep = 0;
+        let rotatableStyle = state["background-style"] === "gradient"
+            || state["background-style"] === "custom-image-url"
+            || state["background-style"] === "image-folder";
+        bgRotateStep = (state["background-rotate"] && rotatableStyle && state["background-rotate-trigger"] === "on-open")
+            ? nextOnOpenRotateStep()
+            : 0;
         applyBackground(document.body, state, bgRotateStep);
         if (state["background-style"] === "firefox-theme") applyFirefoxThemeBackground(document.body);
         if (state["background-style"] === "image-folder") applyImageFolderBackground(document.body, state, bgRotateStep);

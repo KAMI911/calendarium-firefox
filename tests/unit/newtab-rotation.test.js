@@ -149,4 +149,43 @@ describe("newtab.js background-rotate timer", () => {
         await initApp();
         expect(document.body.classList.contains("calendarium-bg-firefox-theme")).toBe(true);
     });
+
+    describe("'background-rotate-trigger': 'on-open' (pick once per page load, no interval timer)", () => {
+        beforeEach(() => { localStorage.clear(); });
+
+        it("schedules no interval timer — a rotation-interval's worth of time passes with no change", async () => {
+            vi.useFakeTimers();
+            global.browser = makeBrowserMock({
+                "background-style": "gradient", "background-rotate": true,
+                "background-rotate-trigger": "on-open", "background-rotate-minutes": 1
+            });
+            await initApp();
+            let before = document.body.className;
+            await vi.advanceTimersByTimeAsync(60 * 60000);
+            expect(document.body.className).toBe(before);
+        });
+
+        it("advances one step further on each subsequent page load, persisted via localStorage across initApp() calls", async () => {
+            vi.useFakeTimers();
+            let names = Object.values(BACKGROUND_GRADIENT_OPTIONS);
+            let storedState = {
+                "background-style": "gradient", "background-rotate": true,
+                "background-rotate-trigger": "on-open", "background-rotate-mode": "sequential"
+            };
+
+            global.browser = makeBrowserMock(storedState);
+            await initApp();
+            expect(document.body.classList.contains("calendarium-bg-gradient-" + names[0])).toBe(true);
+
+            freshDom();
+            global.browser = makeBrowserMock(storedState); // a fresh page load = a fresh in-memory store, same as a real new tab
+            await initApp();
+            expect(document.body.classList.contains("calendarium-bg-gradient-" + names[1])).toBe(true);
+
+            freshDom();
+            global.browser = makeBrowserMock(storedState);
+            await initApp();
+            expect(document.body.classList.contains("calendarium-bg-gradient-" + names[2])).toBe(true);
+        });
+    });
 });

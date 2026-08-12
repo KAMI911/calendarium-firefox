@@ -307,6 +307,10 @@
     "message": "Dragon",
     "description": "Source: \"Dragon\""
   },
+  "each_time_a_new_tab_opens": {
+    "message": "Each time a new tab opens",
+    "description": "Source: \"Each time a new tab opens\""
+  },
   "earth": {
     "message": "Earth",
     "description": "Source: \"Earth\""
@@ -495,6 +499,10 @@
     "message": "How often to switch to the next background while rotation is enabled.",
     "description": "Source: \"How often to switch to the next background while rotation is enabled.\""
   },
+  "how_often_to_switch_to_the_next_background_while_rotation_is_enabled_only_applies_when_rotate_above_is_set_to_on_a_timer_ignored_for_each_time_a_new_tab_opens": {
+    "message": "How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\".",
+    "description": "Source: \"How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\".\""
+  },
   "hungarian": {
     "message": "Hungarian",
     "description": "Source: \"Hungarian\""
@@ -538,6 +546,14 @@
   "imported_n_setting_s_skipped_n_unrecognized_key_s": {
     "message": "Imported %d setting(s), skipped %d unrecognized key(s).",
     "description": "Source: \"Imported %d setting(s), skipped %d unrecognized key(s).\""
+  },
+  "in_order": {
+    "message": "In order",
+    "description": "Source: \"In order\""
+  },
+  "in_order_cycles_through_the_list_the_same_way_every_time_randomly_picks_a_different_one_each_rotation_with_repeats_possible": {
+    "message": "\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.",
+    "description": "Source: \"\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.\""
   },
   "include_images_from_subfolders": {
     "message": "Include images from subfolders",
@@ -743,6 +759,14 @@
     "message": "Old Hungarian",
     "description": "Source: \"Old Hungarian\""
   },
+  "on_a_timer": {
+    "message": "On a timer",
+    "description": "Source: \"On a timer\""
+  },
+  "on_a_timer_switches_every_n_minutes_see_below_for_as_long_as_a_new_tab_full_view_page_stays_open_each_time_a_new_tab_opens_picks_once_when_the_page_loads_and_then_stays_put_no_periodic_switching_while_that_tab_remains_open": {
+    "message": "\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.",
+    "description": "Source: \"\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.\""
+  },
   "one_or_more_direct_https_or_data_image_image_urls_one_per_line_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup_invalid_lines_are_skipped_individually_rather_than_rejecting_the_whole_list_with_more_than_one_url_and_rotate_backgrounds_enabled_below_they_rotate_the_same_way_the_built_in_gradients_do": {
     "message": "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
@@ -754,6 +778,10 @@
   "open_full_view_in_a_new_tab": {
     "message": "Open full view in a new tab",
     "description": "Source: \"Open full view in a new tab\""
+  },
+  "order": {
+    "message": "Order",
+    "description": "Source: \"Order\""
   },
   "overcast": {
     "message": "Overcast",
@@ -807,6 +835,10 @@
     "message": "Rabbit",
     "description": "Source: \"Rabbit\""
   },
+  "randomly": {
+    "message": "Randomly",
+    "description": "Source: \"Randomly\""
+  },
   "rat": {
     "message": "Rat",
     "description": "Source: \"Rat\""
@@ -814,6 +846,10 @@
   "rooster": {
     "message": "Rooster",
     "description": "Source: \"Rooster\""
+  },
+  "rotate": {
+    "message": "Rotate",
+    "description": "Source: \"Rotate\""
   },
   "rotate_backgrounds_automatically": {
     "message": "Rotate backgrounds automatically",

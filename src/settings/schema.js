@@ -102,7 +102,7 @@ export const LAYOUT = {
         keys: [
             "background-style", "background-color", "background-gradient", "background-image-url",
             "background-folder-picker", "background-folder-include-subfolders",
-            "background-rotate", "background-rotate-minutes"
+            "background-rotate", "background-rotate-trigger", "background-rotate-mode", "background-rotate-minutes"
         ]
     },
     "section-import-export": { title: "Import & Export", keys: ["settings-import-export"] }
@@ -330,11 +330,25 @@ export const FIELDS = {
         description: "Rotate backgrounds automatically",
         tooltip: "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles."
     },
+    "background-rotate-trigger": {
+        id: "background-rotate-trigger", type: "combobox", default: "interval",
+        dependency: "background-rotate", indent: true,
+        description: "Rotate",
+        tooltip: "\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.",
+        options: { "On a timer": "interval", "Each time a new tab opens": "on-open" }
+    },
+    "background-rotate-mode": {
+        id: "background-rotate-mode", type: "combobox", default: "sequential",
+        dependency: "background-rotate", indent: true,
+        description: "Order",
+        tooltip: "\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.",
+        options: { "In order": "sequential", "Randomly": "random" }
+    },
     "background-rotate-minutes": {
         id: "background-rotate-minutes", type: "spinbutton", default: 30, min: 1, max: 1440, step: 1, units: "minutes",
         dependency: "background-rotate", indent: true,
         description: "Rotate every",
-        tooltip: "How often to switch to the next background while rotation is enabled."
+        tooltip: "How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\"."
     },
 
     "sync-settings": {

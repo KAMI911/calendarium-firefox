@@ -307,6 +307,10 @@
     "message": "Drago",
     "description": "Source: \"Dragon\""
   },
+  "each_time_a_new_tab_opens": {
+    "message": "Ogni volta che si apre una nuova scheda",
+    "description": "Source: \"Each time a new tab opens\""
+  },
   "earth": {
     "message": "Terra",
     "description": "Source: \"Earth\""
@@ -495,6 +499,10 @@
     "message": "Con quale frequenza passare allo sfondo successivo mentre la rotazione è attiva.",
     "description": "Source: \"How often to switch to the next background while rotation is enabled.\""
   },
+  "how_often_to_switch_to_the_next_background_while_rotation_is_enabled_only_applies_when_rotate_above_is_set_to_on_a_timer_ignored_for_each_time_a_new_tab_opens": {
+    "message": "Con quale frequenza passare allo sfondo successivo mentre la rotazione è attiva. Si applica solo quando \"Rotazione\" (sopra) è impostato su \"A tempo\" — ignorato per \"Ogni volta che si apre una nuova scheda\".",
+    "description": "Source: \"How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\".\""
+  },
   "hungarian": {
     "message": "Ungherese",
     "description": "Source: \"Hungarian\""
@@ -538,6 +546,14 @@
   "imported_n_setting_s_skipped_n_unrecognized_key_s": {
     "message": "%d impostazione/i importata/e, %d chiave/i non riconosciuta/e ignorata/e.",
     "description": "Source: \"Imported %d setting(s), skipped %d unrecognized key(s).\""
+  },
+  "in_order": {
+    "message": "In ordine",
+    "description": "Source: \"In order\""
+  },
+  "in_order_cycles_through_the_list_the_same_way_every_time_randomly_picks_a_different_one_each_rotation_with_repeats_possible": {
+    "message": "\"In ordine\" scorre l'elenco sempre nello stesso modo. \"Casualmente\" sceglie un elemento diverso a ogni rotazione, sono possibili ripetizioni.",
+    "description": "Source: \"\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.\""
   },
   "include_images_from_subfolders": {
     "message": "Includi immagini dalle sottocartelle",
@@ -743,6 +759,14 @@
     "message": "Ungherese antico",
     "description": "Source: \"Old Hungarian\""
   },
+  "on_a_timer": {
+    "message": "A tempo",
+    "description": "Source: \"On a timer\""
+  },
+  "on_a_timer_switches_every_n_minutes_see_below_for_as_long_as_a_new_tab_full_view_page_stays_open_each_time_a_new_tab_opens_picks_once_when_the_page_loads_and_then_stays_put_no_periodic_switching_while_that_tab_remains_open": {
+    "message": "\"A tempo\" cambia ogni N minuti (vedi sotto) finché una pagina Nuova scheda/vista completa resta aperta. \"Ogni volta che si apre una nuova scheda\" sceglie una sola volta al caricamento della pagina e poi non cambia più da sola finché quella scheda resta aperta.",
+    "description": "Source: \"\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.\""
+  },
   "one_or_more_direct_https_or_data_image_image_urls_one_per_line_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup_invalid_lines_are_skipped_individually_rather_than_rejecting_the_whole_list_with_more_than_one_url_and_rotate_backgrounds_enabled_below_they_rotate_the_same_way_the_built_in_gradients_do": {
     "message": "Uno o più URL di immagine diretti https:// (o data:image/...), uno per riga. Usato esclusivamente come background-image CSS — mai valutato come script o markup. Le righe non valide vengono ignorate singolarmente anziché rifiutare l'intero elenco. Con più di un URL e \"Ruota sfondi\" attivato qui sotto, ruotano nello stesso modo dei gradienti integrati.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
@@ -754,6 +778,10 @@
   "open_full_view_in_a_new_tab": {
     "message": "Apri vista completa in una nuova scheda",
     "description": "Source: \"Open full view in a new tab\""
+  },
+  "order": {
+    "message": "Ordine",
+    "description": "Source: \"Order\""
   },
   "overcast": {
     "message": "Cielo coperto",
@@ -807,6 +835,10 @@
     "message": "Coniglio",
     "description": "Source: \"Rabbit\""
   },
+  "randomly": {
+    "message": "Casualmente",
+    "description": "Source: \"Randomly\""
+  },
   "rat": {
     "message": "Ratto",
     "description": "Source: \"Rat\""
@@ -814,6 +846,10 @@
   "rooster": {
     "message": "Gallo",
     "description": "Source: \"Rooster\""
+  },
+  "rotate": {
+    "message": "Rotazione",
+    "description": "Source: \"Rotate\""
   },
   "rotate_backgrounds_automatically": {
     "message": "Ruota automaticamente gli sfondi",

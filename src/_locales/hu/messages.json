@@ -307,6 +307,10 @@
     "message": "Sárkány",
     "description": "Source: \"Dragon\""
   },
+  "each_time_a_new_tab_opens": {
+    "message": "Minden új lap megnyitásakor",
+    "description": "Source: \"Each time a new tab opens\""
+  },
   "earth": {
     "message": "Föld",
     "description": "Source: \"Earth\""
@@ -495,6 +499,10 @@
     "message": "Milyen gyakran váltson a következő háttérre, amíg a váltás be van kapcsolva.",
     "description": "Source: \"How often to switch to the next background while rotation is enabled.\""
   },
+  "how_often_to_switch_to_the_next_background_while_rotation_is_enabled_only_applies_when_rotate_above_is_set_to_on_a_timer_ignored_for_each_time_a_new_tab_opens": {
+    "message": "Milyen gyakran váltson a következő háttérre, amíg a váltás be van kapcsolva. Csak akkor van hatása, ha a fenti „Váltás” beállítás „Időzítő szerint”-re van állítva — a „Minden új lap megnyitásakor” esetén figyelmen kívül marad.",
+    "description": "Source: \"How often to switch to the next background while rotation is enabled. Only applies when \"Rotate\" (above) is set to \"On a timer\" — ignored for \"Each time a new tab opens\".\""
+  },
   "hungarian": {
     "message": "Magyar",
     "description": "Source: \"Hungarian\""
@@ -538,6 +546,14 @@
   "imported_n_setting_s_skipped_n_unrecognized_key_s": {
     "message": "%d beállítás importálva, %d ismeretlen kulcs kihagyva.",
     "description": "Source: \"Imported %d setting(s), skipped %d unrecognized key(s).\""
+  },
+  "in_order": {
+    "message": "Sorrendben",
+    "description": "Source: \"In order\""
+  },
+  "in_order_cycles_through_the_list_the_same_way_every_time_randomly_picks_a_different_one_each_rotation_with_repeats_possible": {
+    "message": "A „Sorrendben” mindig ugyanabban a sorrendben halad végig a listán. A „Véletlenszerűen” minden váltáskor újat választ, ismétlődés is előfordulhat.",
+    "description": "Source: \"\"In order\" cycles through the list the same way every time. \"Randomly\" picks a different one each rotation, with repeats possible.\""
   },
   "include_images_from_subfolders": {
     "message": "Alkönyvtárak képeinek belefoglalása",
@@ -743,6 +759,14 @@
     "message": "Régi magyar",
     "description": "Source: \"Old Hungarian\""
   },
+  "on_a_timer": {
+    "message": "Időzítő szerint",
+    "description": "Source: \"On a timer\""
+  },
+  "on_a_timer_switches_every_n_minutes_see_below_for_as_long_as_a_new_tab_full_view_page_stays_open_each_time_a_new_tab_opens_picks_once_when_the_page_loads_and_then_stays_put_no_periodic_switching_while_that_tab_remains_open": {
+    "message": "Az „Időzítő szerint” N percenként vált (lásd lent), amíg az Új lap/teljes nézet oldal nyitva van. A „Minden új lap megnyitásakor” csak egyszer választ a lap betöltésekor, utána nem változik magától, amíg az a lap nyitva marad.",
+    "description": "Source: \"\"On a timer\" switches every N minutes (see below) for as long as a New Tab/full-view page stays open. \"Each time a new tab opens\" picks once when the page loads and then stays put — no periodic switching while that tab remains open.\""
+  },
   "one_or_more_direct_https_or_data_image_image_urls_one_per_line_used_only_as_a_css_background_image_never_evaluated_as_script_or_markup_invalid_lines_are_skipped_individually_rather_than_rejecting_the_whole_list_with_more_than_one_url_and_rotate_backgrounds_enabled_below_they_rotate_the_same_way_the_built_in_gradients_do": {
     "message": "Egy vagy több közvetlen https:// (vagy data:image/...) képURL, soronként egy. Kizárólag CSS background-image-ként használjuk — soha nem értelmezzük szkriptként vagy jelölőnyelvként. Az érvénytelen sorokat egyenként kihagyjuk, nem a teljes listát utasítjuk el. Ha egynél több URL van megadva, és az alábbi „Háttérek automatikus váltása” be van kapcsolva, ugyanúgy váltakoznak, mint a beépített színátmenetek.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
@@ -754,6 +778,10 @@
   "open_full_view_in_a_new_tab": {
     "message": "Teljes nézet megnyitása új lapon",
     "description": "Source: \"Open full view in a new tab\""
+  },
+  "order": {
+    "message": "Sorrend",
+    "description": "Source: \"Order\""
   },
   "overcast": {
     "message": "Borult",
@@ -807,6 +835,10 @@
     "message": "Nyúl",
     "description": "Source: \"Rabbit\""
   },
+  "randomly": {
+    "message": "Véletlenszerűen",
+    "description": "Source: \"Randomly\""
+  },
   "rat": {
     "message": "Patkány",
     "description": "Source: \"Rat\""
@@ -814,6 +846,10 @@
   "rooster": {
     "message": "Kakas",
     "description": "Source: \"Rooster\""
+  },
+  "rotate": {
+    "message": "Váltás",
+    "description": "Source: \"Rotate\""
   },
   "rotate_backgrounds_automatically": {
     "message": "Háttérek automatikus váltása",
