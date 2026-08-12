@@ -11,22 +11,22 @@ jobs:
     name: Install, lint, test, build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
       - run: npm ci
       - run: npm run lint
       - run: npx vitest run --coverage
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage
           path: coverage/
           retention-days: 7
       - run: npx web-ext build --source-dir=src --artifacts-dir=dist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: extension-zip
           path: dist/*.zip
@@ -39,10 +39,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
       - run: npm ci
       - name: Sync manifest.json/package.json version from the tag
@@ -58,7 +58,7 @@ jobs:
             --api-key="$WEB_EXT_API_KEY" --api-secret="$WEB_EXT_API_SECRET" \
             --channel=unlisted
       - name: Create GitHub Release with the signed .xpi attached
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: "Calendarium ${{ github.ref_name }}"
           files: dist-signed/*.xpi
