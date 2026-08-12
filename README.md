@@ -551,33 +551,53 @@ npm run build   # web-ext build --source-dir=src --artifacts-dir=dist
                  # produces an unsigned .zip in dist/
 ```
 
-## CI/CD (GitLab)
+## CI/CD
 
-Pipeline stages: `install → lint → test → build → sign`.
+The project is hosted on GitHub (`KAMI911/calendarium-firefox`); GitHub
+Actions (`.github/workflows/ci.yml`) is the active pipeline. A GitLab
+equivalent (`.gitlab-ci.yml`) is also kept in the repo — same stages, same
+signing logic — in case the project ever moves there instead; it isn't
+currently wired to a GitLab remote.
 
-- `install`/`lint`/`test`/`build` run on every push/MR (cached
-  `node_modules/` keyed on `package-lock.json`).
-- `sign` (and the follow-up `release` job) only run when a tag matching
-  `v<major>.<minor>.<patch>` is pushed. `sign` runs
-  `scripts/set-version.mjs` to sync `manifest.json`'s version from the
-  tag, then `web-ext sign` to produce a signed, AMO-listed `.xpi`;
-  `release` attaches it to a GitLab Release via `release-cli`.
+**GitHub Actions** — two jobs:
+
+- `install-lint-test-build` runs on every push and pull request: `npm ci`,
+  `npm run lint`, `vitest run --coverage`, `web-ext build` (unsigned
+  `.zip` uploaded as a workflow artifact).
+- `sign-and-release` runs only on a pushed tag matching `v<major>.<minor>.<patch>`:
+  syncs `manifest.json`/`package.json`'s version from the tag via
+  `scripts/set-version.mjs`, signs with `web-ext sign --channel=unlisted`
+  (self-distributed, not AMO-listed — see "Publishing to AMO" below for
+  what going listed would additionally require), and publishes a GitHub
+  Release named after the tag with the signed `.xpi` attached
+  (`softprops/action-gh-release`, release notes auto-generated from
+  commits).
 
 ### Provisioning AMO signing credentials
 
-The `sign` job needs `WEB_EXT_API_KEY` and `WEB_EXT_API_SECRET` as masked
-CI/CD variables — these are **not** something that can be generated for
-you; you must provision them yourself:
+The `sign-and-release` job needs `WEB_EXT_API_KEY` and
+`WEB_EXT_API_SECRET` as GitHub Actions secrets — these are **not**
+something that can be generated for you; you must provision them
+yourself:
 
 1. Sign in at <https://addons.mozilla.org/developers/addon/api/key/> and
    generate a JWT issuer/secret pair ("Manage API Keys").
-2. In this project on GitLab, go to **Settings → CI/CD → Variables** and
-   add:
+2. In this repo on GitHub, go to **Settings → Secrets and variables →
+   Actions** and add:
    - `WEB_EXT_API_KEY` = the JWT issuer
    - `WEB_EXT_API_SECRET` = the JWT secret
-   - Mark both **Masked** (and **Protected** if you only tag releases
-     from protected branches).
-3. Push a tag matching `v1.2.3` to trigger `sign` + `release`.
+3. Push a tag matching `v1.2.3` to trigger `sign-and-release`.
+
+### Publishing to AMO as a public ("listed") extension
+
+Everything above produces a self-signed, self-distributed `.xpi` — valid
+and installable, but not searchable on addons.mozilla.org. Going public
+requires a one-time manual submission through the AMO Developer Hub
+(listing metadata, screenshots, category, privacy-practices text — a
+first draft of all of this is prepared in `docs/amo-listing.md`) plus
+Mozilla's human review; it can't be fully automated from CI. Once listed,
+future version updates CAN go through CI by changing `--channel=unlisted`
+to `--channel=listed` in the workflow.
 
 ## Known gaps / TODOs
 

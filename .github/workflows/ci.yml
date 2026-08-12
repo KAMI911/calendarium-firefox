@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*.*.*"]
+  pull_request:
+
+jobs:
+  install-lint-test-build:
+    name: Install, lint, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run lint
+      - run: npx vitest run --coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 7
+      - run: npx web-ext build --source-dir=src --artifacts-dir=dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-zip
+          path: dist/*.zip
+
+  sign-and-release:
+    name: Sign (AMO) and publish GitHub Release
+    needs: install-lint-test-build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - name: Sync manifest.json/package.json version from the tag
+        env:
+          CI_COMMIT_TAG: ${{ github.ref_name }}
+        run: node scripts/set-version.mjs
+      - name: Sign with web-ext (AMO, unlisted channel)
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+        run: |
+          npx web-ext sign --source-dir=src --artifacts-dir=dist-signed \
+            --api-key="$WEB_EXT_API_KEY" --api-secret="$WEB_EXT_API_SECRET" \
+            --channel=unlisted
+      - name: Create GitHub Release with the signed .xpi attached
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Calendarium ${{ github.ref_name }}"
+          files: dist-signed/*.xpi
+          generate_release_notes: true
