@@ -38,8 +38,8 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 74 fields: the 65 ported from the source settings-schema.json ('text-scale' was removed as dead code — see the theme-agent's note in schema.js history), 'show-search-box' + 'search-engine' (Firefox-only extras, not present in the Cinnamon desklet), and 7 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url', 'background-rotate', 'background-rotate-minutes')", () => {
-        expect(Object.keys(FIELDS).length).toBe(74);
+    it("has 77 fields: the 65 ported from the source settings-schema.json ('text-scale' was removed as dead code — see the theme-agent's note in schema.js history), 'show-search-box' + 'search-engine' (Firefox-only extras, not present in the Cinnamon desklet), 7 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url', 'background-rotate', 'background-rotate-minutes'), and 3 more Firefox-only additions ('background-folder-picker', 'background-folder-include-subfolders', 'settings-import-export')", () => {
+        expect(Object.keys(FIELDS).length).toBe(77);
     });
 
     it("no longer has a 'text-scale' field (dead code, superseded by Firefox's own per-origin Ctrl+/- zoom)", () => {
@@ -53,7 +53,7 @@ describe("settings/schema.js structural integrity", () => {
     });
 
     it("every field has a recognized type", () => {
-        let known = new Set(["checkbox", "combobox", "entry", "entry-multiline", "spinbutton", "scale", "color", "engine-select"]);
+        let known = new Set(["checkbox", "combobox", "entry", "entry-multiline", "spinbutton", "scale", "color", "engine-select", "folder-picker", "import-export"]);
         for (let field of Object.values(FIELDS)) {
             expect(known.has(field.type), `unknown type '${field.type}' on '${field.id}'`).toBe(true);
         }

@@ -85,6 +85,18 @@ async function scheduleAlarm() {
 }
 
 /**
+ * Open view.html (the standalone full view) in a new tab — the single
+ * place that actually does this, shared by both the toolbar button's
+ * right-click "Open full view in a new tab" context menu item
+ * (browser.menus.onClicked below) and the "open-full-view" keyboard
+ * shortcut (browser.commands.onCommand below), so the two triggers can
+ * never drift apart.
+ */
+function openFullView() {
+    browser.tabs.create({ url: browser.runtime.getURL("view.html") });
+}
+
+/**
  * (Re)create the toolbar action's "Open full view in a new tab" context
  * menu item. Idempotent: removeAll() first so re-running it (e.g. on
  * every `web-ext run` reload during development, which re-fires
@@ -111,9 +123,18 @@ browser.runtime.onStartup.addListener(() => { scheduleAlarm(); ensureMenu(); });
 
 if (typeof browser !== "undefined" && browser.menus) {
     browser.menus.onClicked.addListener((info) => {
-        if (info.menuItemId === OPEN_VIEW_MENU_ID) {
-            browser.tabs.create({ url: browser.runtime.getURL("view.html") });
-        }
+        if (info.menuItemId === OPEN_VIEW_MENU_ID) openFullView();
+    });
+}
+
+// Keyboard shortcut (manifest.json's "commands" entry) — same handler as
+// the context-menu item above, feature-detected the same defensive way as
+// browser.menus/browser.theme/browser.search elsewhere in this codebase
+// (browser.commands has historically had limited/no support on some
+// platforms, e.g. older Firefox for Android builds).
+if (typeof browser !== "undefined" && browser.commands) {
+    browser.commands.onCommand.addListener((command) => {
+        if (command === "open-full-view") openFullView();
     });
 }
 

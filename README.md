@@ -31,7 +31,8 @@ layer (`src/lib/render.js`) and one settings store
   as the New Tab page, opened in its own tab. Since `moz-extension://`
   extension URLs are randomized per install and can't be bookmarked ahead
   of time, reach it via the toolbar button's right-click context menu →
-  **"Open full view in a new tab"** (or the popup's footer link).
+  **"Open full view in a new tab"** (or the popup's footer link), or via
+  the keyboard shortcut below.
   `view.html` reuses `newtab.js`/`newtab.css` verbatim — same markup, same
   orchestration — rather than duplicating either, since it has the exact
   same long-lived-tab lifecycle as the New Tab page.
@@ -40,6 +41,22 @@ layer (`src/lib/render.js`) and one settings store
 Firefox/`web-ext` require it at the root of the loadable extension
 directory, and every `--source-dir=src` command (`dev`, `build`, `lint`,
 `sign`) treats `src/` as that root.
+
+### Keyboard shortcut
+
+`manifest.json` declares a `commands` entry, `open-full-view`, bound by
+default to **Ctrl+Shift+Y** (**Command+Shift+Y** on macOS) — pressing it
+opens `view.html` in a new tab, the same action as the toolbar button's
+"Open full view in a new tab" context menu item. `src/background.js`
+extracts that shared action into one `openFullView()` function so the
+context-menu click (`browser.menus.onClicked`) and the keyboard shortcut
+(`browser.commands.onCommand`) can never drift apart; `browser.commands`
+is feature-detected before registering the listener, the same defensive
+pattern as `browser.menus`/`browser.theme`/`browser.search` elsewhere in
+this codebase. `Ctrl+Shift+K`/`Cmd+Shift+K` was deliberately avoided since
+it's Firefox's own default shortcut for the Web Console devtools panel;
+users can remap the shortcut at any time under
+`about:addons` → gear icon → **Manage Extension Shortcuts**.
 
 ## Firefox for Android support
 
@@ -173,7 +190,12 @@ npm test             # vitest run — unit tests for every ported lib
                       # (mocked fetch + storage.local, no real network),
                       # the shared render/toggle matrix (jsdom, against
                       # both newtab.html and popup.html markup), popup.js
-                      # init orchestration, and the search-box wiring
+                      # init orchestration, the search-box wiring, the
+                      # IndexedDB-backed image store (src/lib/image-store.js,
+                      # exercised via the `fake-indexeddb` devDependency
+                      # rather than a real browser IndexedDB implementation,
+                      # which jsdom doesn't provide), and the settings
+                      # import/export validation logic
 npm run test:coverage
 npm run lint          # eslint (flat config) + web-ext lint --source-dir=src
 ```
@@ -221,7 +243,7 @@ equivalent:
 - `background-style` (General > Background), a combobox — `theme-default`
   (default, follows `theme-mode`'s palette) / `solid-color` / `gradient`
   (14 built-in CSS gradients, no image assets) / `custom-image-url` /
-  `firefox-theme`. Paired settings only take effect for the matching
+  `image-folder` / `firefox-theme`. Paired settings only take effect for the matching
   style, via the same `dependency`/`indent` mechanism as e.g.
   `date-format-preset` → `date-format-custom`, extended with an optional
   `dependencyValue` for value-equality (not just truthy) dependencies —
@@ -237,11 +259,45 @@ equivalent:
     evaluated as script/markup; each line is validated against an
     allowlisted scheme independently (`parseImageUrlList()` in
     `lib/render.js`), so one bad line doesn't drop the rest.
-  - `background-rotate` — a checkbox, default `false`, enabled for either
-    `gradient` or `custom-image-url` (the `dependencyValue` array case).
-    For `gradient`, cycles through all 14 built-in gradients in
-    `BACKGROUND_GRADIENT_OPTIONS`' order; for `custom-image-url`, cycles
-    through every valid URL listed above (if more than one). The actual
+  - `background-folder-picker` — shown only for `image-folder`: a
+    hand-special-cased `<input type="file" webkitdirectory multiple>`
+    folder picker (there's no generic schema field type for "pick a local
+    folder", and the picked images don't map to a single
+    `browser.storage.local` scalar — see `src/options.js`'s
+    `buildFolderPickerField()`, hand-wired the same way the Wikipedia
+    permission flow is), plus a status line ("N images loaded" / "No
+    images selected"). Firefox's `webkitdirectory` returns every file
+    under the chosen folder recursively, each exposing a
+    `webkitRelativePath`; **the actual image bytes are stored in this
+    browser profile's IndexedDB** (`src/lib/image-store.js` — database
+    `"calendarium-images"`, object store `"backgroundImages"`), **never**
+    in `browser.storage.local`/`sync`, since real image data would blow
+    past either's practical quota almost immediately. **This means
+    folder-picked images do NOT survive an extension reinstall or a move
+    to a different Firefox profile/computer** the way every other setting
+    does (IndexedDB is origin/profile-scoped, and a reinstalled extension
+    gets a fresh `moz-extension://` origin) — re-pick the folder if that
+    happens. They're also explicitly **not** included in the
+    Import/Export feature below.
+  - `background-folder-include-subfolders` — a checkbox, default `false`,
+    shown only for `image-folder`: unchecked (default) keeps only images
+    directly inside the chosen folder; checked includes every image in
+    every subfolder underneath it too. Re-filters the already-picked
+    folder immediately when toggled, without requiring a re-pick.
+  - `background-rotate` — a checkbox, default `false`, enabled for
+    `gradient`, `custom-image-url`, or `image-folder` (the
+    `dependencyValue` array case). For `gradient`, cycles through all 14
+    built-in gradients in `BACKGROUND_GRADIENT_OPTIONS`' order; for
+    `custom-image-url`, cycles through every valid URL listed above (if
+    more than one); for `image-folder`, cycles through every stored image
+    (if more than one) via `src/lib/image-store.js`'s
+    `getAllImageBlobURLs()` — called (and its previous batch of
+    `URL.createObjectURL()` object URLs revoked first, to avoid leaking
+    memory over a long-lived New Tab session) from
+    `src/lib/render.js`'s `applyImageFolderBackground()`, an async
+    counterpart to the synchronous `applyBackground()` (parallel to how
+    `firefox-theme` is applied by the separate, async
+    `applyFirefoxThemeBackground()`). The actual rotation
     timer lives in `src/newtab.js`'s `scheduleBackgroundRotation()` — a
     plain `setInterval` alongside the existing clock/refresh timers (not
     `browser.alarms`, since this is a purely visual per-tab effect that
@@ -290,6 +346,34 @@ Wikipedia) with the same sections as tabs, generically from that schema
 `dependencyValue` variant of `dependency`, array-valued or not), and
 persists every field to `browser.storage.local`
 (replacing Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
+
+### Import / export settings
+
+General > "Import & Export" (schema key `settings-import-export`,
+another hand-special-cased field type like `background-folder-picker`
+above — see `buildImportExportField()` in `src/options.js`):
+
+- **Export** reads `browser.storage.local.get(null)`, JSON-stringifies it,
+  and downloads it as `calendarium-settings-<YYYY-MM-DD>.json` via a
+  `Blob` + `URL.createObjectURL` + a temporary `<a download>` click — no
+  new permission needed.
+- **Import** reads a chosen `.json` file, `JSON.parse`s it, and validates
+  it before writing anything: `validateImportedSettings()` (a pure,
+  independently unit-tested function — see
+  `tests/unit/options-import-export.test.js`) keeps only keys that exist
+  in `settings/schema.js`'s `FIELDS` and are actually backed by a
+  `browser.storage.local` scalar (i.e. not the two synthetic
+  `folder-picker`/`import-export` field types, which have no such value),
+  silently dropping everything else — so an export from a newer or older
+  version of the extension never crashes the import or injects unknown
+  keys. `setStatus()` reports how many keys were imported vs. skipped, and
+  the options page immediately re-renders (`buildPages()` +
+  `applyDependencies()`) from the newly-written state so the UI reflects
+  the import without needing a manual reload.
+- This **does not** cover the IndexedDB-stored `image-folder` background
+  images described above — those are never read or written by
+  export/import, by design (see that section's note on why they can't
+  live in `browser.storage.local` in the first place).
 
 ## Regenerating translations
 

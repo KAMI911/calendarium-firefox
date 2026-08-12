@@ -44,7 +44,8 @@ export const LAYOUT = {
             "section-search", "section-datetime", "section-progress", "section-traditional",
             "section-folkdays", "section-holidays", "section-moon",
             "section-sun", "section-zodiac", "section-namedays",
-            "section-altcal", "section-appearance", "section-background"
+            "section-altcal", "section-appearance", "section-background",
+            "section-import-export"
         ]
     },
     "page-location": {
@@ -90,9 +91,11 @@ export const LAYOUT = {
         title: "Background",
         keys: [
             "background-style", "background-color", "background-gradient", "background-image-url",
+            "background-folder-picker", "background-folder-include-subfolders",
             "background-rotate", "background-rotate-minutes"
         ]
-    }
+    },
+    "section-import-export": { title: "Import & Export", keys: ["settings-import-export"] }
 };
 
 const LOCALE_OPTIONS_SYSTEM = { "System language": "auto", "Hungarian": "hu", "German": "de", "English": "en", "French": "fr", "Spanish": "es", "Italian": "it" };
@@ -262,12 +265,13 @@ export const FIELDS = {
     "background-style": {
         id: "background-style", type: "combobox", default: "theme-default",
         description: "Page background (New Tab / homepage / full view)",
-        tooltip: "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. The toolbar popup always uses the plain theme palette, regardless of this setting.",
+        tooltip: "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. \"Image folder\" lets you pick a local folder of images to rotate through, stored in this browser profile's IndexedDB rather than in your synced settings — see the note under that option. The toolbar popup always uses the plain theme palette, regardless of this setting.",
         options: {
             "Theme default": "theme-default",
             "Solid color": "solid-color",
             "Gradient": "gradient",
             "Custom image URL": "custom-image-url",
+            "Image folder": "image-folder",
             "Firefox theme colors": "firefox-theme"
         }
     },
@@ -287,17 +291,35 @@ export const FIELDS = {
         description: "Custom background image URL(s)",
         tooltip: "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do."
     },
+    "background-folder-picker": {
+        id: "background-folder-picker", type: "folder-picker", indent: true,
+        dependency: "background-style", dependencyValue: "image-folder",
+        description: "Background image folder",
+        tooltip: "Pick a local folder of images to rotate through as your background. Images are read once at pick time and stored in this browser profile's IndexedDB — NOT in your synced/exported settings — so they do NOT survive an extension reinstall or a move to a different Firefox profile/computer; re-pick the folder if that happens. This control has no single storage.local value of its own (see src/lib/image-store.js) — it only participates in the schema so it can be shown/hidden like every other field."
+    },
+    "background-folder-include-subfolders": {
+        id: "background-folder-include-subfolders", type: "checkbox", default: false, indent: true,
+        dependency: "background-style", dependencyValue: "image-folder",
+        description: "Include images from subfolders",
+        tooltip: "When unchecked (default), only images directly inside the chosen folder are used. When checked, images in every subfolder underneath it are included too."
+    },
     "background-rotate": {
         id: "background-rotate", type: "checkbox", default: false,
-        dependency: "background-style", dependencyValue: ["gradient", "custom-image-url"],
+        dependency: "background-style", dependencyValue: ["gradient", "custom-image-url", "image-folder"],
         description: "Rotate backgrounds automatically",
-        tooltip: "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\", cycles through every URL listed above (if more than one). Has no effect for the other background styles."
+        tooltip: "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles."
     },
     "background-rotate-minutes": {
         id: "background-rotate-minutes", type: "spinbutton", default: 30, min: 1, max: 1440, step: 1, units: "minutes",
         dependency: "background-rotate", indent: true,
         description: "Rotate every",
         tooltip: "How often to switch to the next background while rotation is enabled."
+    },
+
+    "settings-import-export": {
+        id: "settings-import-export", type: "import-export",
+        description: "Import / export settings",
+        tooltip: "Export downloads all of your settings as a JSON file; Import reads one back in, keeping only keys this version of Calendarium recognizes (unrecognized keys — e.g. from a newer or older version — are silently skipped). This does NOT include folder-picked background images (see \"Background image folder\" above) — those live in this browser profile's IndexedDB and are never part of the exported file."
     },
 
     "show-julian":  { id: "show-julian", type: "checkbox", default: false, description: "Show Julian calendar date" },

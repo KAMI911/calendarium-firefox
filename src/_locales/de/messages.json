@@ -83,6 +83,10 @@
     "message": "Hintergrundfarbe",
     "description": "Source: \"Background color\""
   },
+  "background_image_folder": {
+    "message": "Hintergrundbilderordner",
+    "description": "Source: \"Background image folder\""
+  },
   "background_opacity": {
     "message": "Hintergrunddurchsichtigkeit",
     "description": "Source: \"Background opacity\""
@@ -267,6 +271,18 @@
     "message": "Ereignisse an diesem Tag",
     "description": "Source: \"Events on this day\""
   },
+  "export_downloads_all_of_your_settings_as_a_json_file_import_reads_one_back_in_keeping_only_keys_this_version_of_calendarium_recognizes_unrecognized_keys_e_g_from_a_newer_or_older_version_are_silently_skipped_this_does_not_include_folder_picked_background_images_see_background_image_folder_above_those_live_in_this_browser_profile_s_indexeddb_and_are_never_part_of_the_exported_file": {
+    "message": "Export lädt alle deine Einstellungen als JSON-Datei herunter; Import liest eine solche Datei wieder ein und behält nur die Schlüssel, die diese Version von Calendarium erkennt (nicht erkannte Schlüssel — z. B. aus einer neueren oder älteren Version — werden stillschweigend übersprungen). Dies umfasst NICHT die aus einem Ordner gewählten Hintergrundbilder (siehe „Bilderordner“ oben) — diese befinden sich in der IndexedDB dieses Browserprofils und sind niemals Teil der exportierten Datei.",
+    "description": "Source: \"Export downloads all of your settings as a JSON file; Import reads one back in, keeping only keys this version of Calendarium recognizes (unrecognized keys — e.g. from a newer or older version — are silently skipped). This does NOT include folder-picked background images (see \"Background image folder\" above) — those live in this browser profile's IndexedDB and are never part of the exported file.\""
+  },
+  "export_failed": {
+    "message": "Export fehlgeschlagen",
+    "description": "Source: \"Export failed\""
+  },
+  "export_settings": {
+    "message": "Einstellungen exportieren",
+    "description": "Source: \"Export settings\""
+  },
   "extension_description": {
     "message": "A rich New Tab page with date, moon phase, sun times, zodiac, name days, holidays, folk sayings, alternate calendars and optional Wikipedia \"on this day\" content — ported from the calendarium@kami911 Cinnamon desklet.",
     "description": "Extension description shown in about:addons"
@@ -310,6 +326,10 @@
   "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_cycles_through_every_url_listed_above_if_more_than_one_has_no_effect_for_the_other_background_styles": {
     "message": "Bei „Farbverlauf“ werden alle integrierten Farbverläufe der Reihe nach durchlaufen. Bei „Eigene Hintergrundbild-URL“ werden alle oben aufgeführten URLs durchlaufen (falls mehr als eine vorhanden ist). Hat keine Auswirkung auf die anderen Hintergrundstile.",
     "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\", cycles through every URL listed above (if more than one). Has no effect for the other background styles.\""
+  },
+  "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_or_image_folder_cycles_through_every_image_if_more_than_one_has_no_effect_for_the_other_background_styles": {
+    "message": "Bei „Verlauf“ wird zwischen allen integrierten Verläufen gewechselt. Bei „Eigene Bild-URL“ oder „Bilderordner“ wird zwischen allen Bildern gewechselt (falls mehr als eines vorhanden ist). Hat keine Auswirkung auf die anderen Hintergrundstile.",
+    "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.\""
   },
   "french": {
     "message": "Französisch",
@@ -398,6 +418,38 @@
   "icon_only": {
     "message": "Nur Symbol",
     "description": "Source: \"Icon only\""
+  },
+  "image_folder": {
+    "message": "Bilderordner",
+    "description": "Source: \"Image folder\""
+  },
+  "import_export": {
+    "message": "Importieren & Exportieren",
+    "description": "Source: \"Import & Export\""
+  },
+  "import_export_settings": {
+    "message": "Einstellungen importieren / exportieren",
+    "description": "Source: \"Import / export settings\""
+  },
+  "import_failed": {
+    "message": "Import fehlgeschlagen",
+    "description": "Source: \"Import failed\""
+  },
+  "import_failed_the_file_is_not_valid_json": {
+    "message": "Import fehlgeschlagen: Die Datei ist kein gültiges JSON.",
+    "description": "Source: \"Import failed: the file is not valid JSON.\""
+  },
+  "import_settings": {
+    "message": "Einstellungen importieren",
+    "description": "Source: \"Import settings\""
+  },
+  "imported_n_setting_s_skipped_n_unrecognized_key_s": {
+    "message": "%d Einstellung(en) importiert, %d unbekannte(r) Schlüssel übersprungen.",
+    "description": "Source: \"Imported %d setting(s), skipped %d unrecognized key(s).\""
+  },
+  "include_images_from_subfolders": {
+    "message": "Bilder aus Unterordnern einbeziehen",
+    "description": "Source: \"Include images from subfolders\""
   },
   "islamic_date": {
     "message": "Islamisches Datum",
@@ -495,6 +547,10 @@
     "message": "Monduntergang",
     "description": "Source: \"Moonset\""
   },
+  "n_images_loaded": {
+    "message": "%d Bilder geladen",
+    "description": "Source: \"%d images loaded\""
+  },
   "name_day_calendar": {
     "message": "Namentags-Kalender",
     "description": "Source: \"Name day calendar\""
@@ -514,6 +570,10 @@
   "no_data": {
     "message": "Keine Daten",
     "description": "Source: \"No data\""
+  },
+  "no_images_selected": {
+    "message": "Keine Bilder ausgewählt",
+    "description": "Source: \"No images selected\""
   },
   "none_hidden": {
     "message": "Keines (ausgeblendet)",
@@ -546,6 +606,10 @@
   "persian_date": {
     "message": "Persisches Datum",
     "description": "Source: \"Persian date\""
+  },
+  "pick_a_local_folder_of_images_to_rotate_through_as_your_background_images_are_read_once_at_pick_time_and_stored_in_this_browser_profile_s_indexeddb_not_in_your_synced_exported_settings_so_they_do_not_survive_an_extension_reinstall_or_a_move_to_a_different_firefox_profile_computer_re_pick_the_folder_if_that_happens_this_control_has_no_single_storage_local_value_of_its_own_see_src_lib_image_store_js_it_only_participates_in_the_schema_so_it_can_be_shown_hidden_like_every_other_field": {
+    "message": "Wähle einen lokalen Ordner mit Bildern, durch die dein Hintergrund rotiert. Die Bilder werden bei der Auswahl einmal gelesen und in der IndexedDB dieses Browserprofils gespeichert — NICHT in deinen synchronisierten/exportierten Einstellungen —, sie überstehen daher KEINE Neuinstallation der Erweiterung oder einen Umzug in ein anderes Firefox-Profil/einen anderen Computer; wähle den Ordner in diesem Fall erneut aus. Dieses Steuerelement hat keinen eigenen storage.local-Wert (siehe src/lib/image-store.js) — es nimmt nur am Schema teil, damit es wie jedes andere Feld ein-/ausgeblendet werden kann.",
+    "description": "Source: \"Pick a local folder of images to rotate through as your background. Images are read once at pick time and stored in this browser profile's IndexedDB — NOT in your synced/exported settings — so they do NOT survive an extension reinstall or a move to a different Firefox profile/computer; re-pick the folder if that happens. This control has no single storage.local value of its own (see src/lib/image-store.js) — it only participates in the schema so it can be shown/hidden like every other field.\""
   },
   "pig": {
     "message": "Schwein",
@@ -618,6 +682,10 @@
   "separator_character_between_calendar_items": {
     "message": "Trennzeichen zwischen Kalendereinträgen",
     "description": "Source: \"Separator character between calendar items\""
+  },
+  "settings_exported": {
+    "message": "Einstellungen exportiert.",
+    "description": "Source: \"Settings exported.\""
   },
   "show_a_search_box_uses_your_default_search_engine": {
     "message": "Suchfeld anzeigen (verwendet Ihre Standard-Suchmaschine)",
@@ -799,6 +867,10 @@
     "message": "Nur Text",
     "description": "Source: \"Text only\""
   },
+  "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_image_folder_lets_you_pick_a_local_folder_of_images_to_rotate_through_stored_in_this_browser_profile_s_indexeddb_rather_than_in_your_synced_settings_see_the_note_under_that_option_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
+    "message": "Dies ist der eigene Hintergrund der Erweiterung, unabhängig von Firefox' eingebauter Hintergrundbild-Auswahl für neue Tabs (die Erweiterungen weder lesen noch festlegen können). „Standardthema“ folgt der oben gewählten Hell/Dunkel-Palette. „Firefox-Themenfarben“ liest die Farben deines installierten Firefox-Themes über die browser.theme-API — eine echte, eigenständige WebExtension-API für installierte Themes, nicht die Hintergrundbild-Auswahl für neue Tabs — und verwendet die Standardpalette, falls das aktive Theme keine brauchbaren Farben hat. „Bilderordner“ erlaubt dir, einen lokalen Ordner mit Bildern auszuwählen, durch die der Hintergrund rotiert; sie werden in der IndexedDB dieses Browserprofils gespeichert, nicht in deinen synchronisierten Einstellungen — siehe den Hinweis bei dieser Option. Das Popup der Symbolleiste verwendet immer die einfache Themenpalette, unabhängig von dieser Einstellung.",
+    "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. \"Image folder\" lets you pick a local folder of images to rotate through, stored in this browser profile's IndexedDB rather than in your synced settings — see the note under that option. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
+  },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "Dies ist der eigene Hintergrund der Erweiterung, unabhängig von Firefox' integrierter Hintergrundbild-Auswahl für neue Tabs (die Erweiterungen weder lesen noch festlegen können). „Standardthema“ folgt der obigen hellen/dunklen Palette. „Firefox-Themenfarben“ liest die Farben deines installierten Firefox-Themes über die browser.theme-API — eine echte, eigenständige WebExtension-API für installierte Themes, nicht die Hintergrundbild-Auswahl für neue Tabs — und greift auf die Standardpalette zurück, falls das aktive Theme keine brauchbaren Farben hat. Das Popup in der Symbolleiste verwendet unabhängig von dieser Einstellung immer die einfache Themenpalette.",
     "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
@@ -882,6 +954,10 @@
   "western_zodiac_display": {
     "message": "Westliches Tierkreiszeichen anzeigen",
     "description": "Source: \"Western zodiac display\""
+  },
+  "when_unchecked_default_only_images_directly_inside_the_chosen_folder_are_used_when_checked_images_in_every_subfolder_underneath_it_are_included_too": {
+    "message": "Wenn deaktiviert (Standard), werden nur Bilder verwendet, die sich direkt im gewählten Ordner befinden. Wenn aktiviert, werden auch Bilder aus jedem darunterliegenden Unterordner einbezogen.",
+    "description": "Source: \"When unchecked (default), only images directly inside the chosen folder are used. When checked, images in every subfolder underneath it are included too.\""
   },
   "wikipedia": {
     "message": "Wikipedia",

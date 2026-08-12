@@ -260,6 +260,16 @@ body {
   /* background-image set inline by applyBackground() after URL validation
      (and rotated among multiple valid URLs when "background-rotate" is on) */
 }
+/* "Image folder" — like custom-image-url, but the URL is a blob: object
+   URL from lib/image-store.js's IndexedDB-backed folder picker, applied
+   asynchronously by lib/render.js's applyImageFolderBackground() (see its
+   doc comment) rather than the synchronous applyBackground() above, since
+   reading from IndexedDB is inherently async. */
+.calendarium-bg-image-folder {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 /* "Firefox theme colors" — colors/image applied inline (async) by
    applyFirefoxThemeBackground(); this class alone is exactly the
    theme-default fallback, used whenever the active Firefox Theme has no

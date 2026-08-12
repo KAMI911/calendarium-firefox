@@ -24,7 +24,8 @@ import {
     getEls, renderAll, renderTime, renderCityTimes,
     renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
     resolveLocale, applyThemeMode, applyBackground,
-    applyIconSize, applyPanelOpacity, applyFirefoxThemeBackground
+    applyIconSize, applyPanelOpacity, applyFirefoxThemeBackground,
+    applyImageFolderBackground
 } from "./lib/render.js";
 
 async function loadSettings() {
@@ -90,11 +91,13 @@ function initApp() {
         if (bgRotateTimer) { clearInterval(bgRotateTimer); bgRotateTimer = null; }
         if (isHidden()) return;
         let style = state["background-style"];
-        if (!state["background-rotate"] || (style !== "gradient" && style !== "custom-image-url")) return;
+        let rotatable = style === "gradient" || style === "custom-image-url" || style === "image-folder";
+        if (!state["background-rotate"] || !rotatable) return;
         let minutes = Math.max(1, state["background-rotate-minutes"] || 30);
         bgRotateTimer = setInterval(() => {
             bgRotateStep++;
             applyBackground(document.body, state, bgRotateStep);
+            if (style === "image-folder") applyImageFolderBackground(document.body, state, bgRotateStep);
         }, minutes * 60000);
     }
 
@@ -151,6 +154,7 @@ function initApp() {
         bgRotateStep = 0;
         applyBackground(document.body, state, bgRotateStep);
         if (state["background-style"] === "firefox-theme") applyFirefoxThemeBackground(document.body);
+        if (state["background-style"] === "image-folder") applyImageFolderBackground(document.body, state, bgRotateStep);
         scheduleBackgroundRotation();
         data = Object.assign(data, await loadLocaleData(state));
         data.wikiRotateStep = 0;

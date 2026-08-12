@@ -1,10 +1,20 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import "fake-indexeddb/auto";
 import {
     applyThemeMode, applyBackground, applyIconSize, applyPanelOpacity,
-    isEffectiveDarkTheme, applyFirefoxThemeBackground, parseImageUrlList
+    isEffectiveDarkTheme, applyFirefoxThemeBackground, parseImageUrlList,
+    applyImageFolderBackground
 } from "../../src/lib/render.js";
 import { DEFAULTS, BACKGROUND_GRADIENT_OPTIONS } from "../../src/settings/schema.js";
+import { clearImages, addImages } from "../../src/lib/image-store.js";
+
+function makeFile(relativePath) {
+    let blob = new Blob(["x"], { type: "image/png" });
+    blob.webkitRelativePath = relativePath;
+    blob.name = relativePath.split("/").pop();
+    return blob;
+}
 
 function baseState(overrides = {}) {
     return Object.assign({}, DEFAULTS, overrides);
@@ -156,6 +166,12 @@ describe("applyBackground", () => {
         expect(el.style.backgroundImage).toBe("");
     });
 
+    it("adds only the 'calendarium-bg-image-folder' class, with no inline image, for 'image-folder' (the actual image is applied separately, async, by applyImageFolderBackground)", () => {
+        applyBackground(el, baseState({ "background-style": "image-folder" }));
+        expect(el.classList.contains("calendarium-bg-image-folder")).toBe(true);
+        expect(el.style.backgroundImage).toBe("");
+    });
+
     describe("background-rotate for 'gradient'", () => {
         it("without rotation, always uses the configured 'background-gradient' regardless of rotateStep", () => {
             applyBackground(el, baseState({ "background-style": "gradient", "background-gradient": "candy" }), 5);
@@ -227,6 +243,73 @@ describe("applyBackground", () => {
             applyBackground(el, baseState({ "background-style": "custom-image-url", "background-image-url": "not-a-url" }));
             expect(el.style.backgroundImage).toBe("");
         });
+    });
+});
+
+describe("applyImageFolderBackground ('image-folder' background-style — IndexedDB-backed, via lib/image-store.js)", () => {
+    let el;
+    let createObjectURLSpy;
+
+    beforeEach(async () => {
+        el = document.createElement("div");
+        if (!URL.createObjectURL) URL.createObjectURL = () => "blob:unset";
+        if (!URL.revokeObjectURL) URL.revokeObjectURL = () => {};
+        // Keyed off the underlying File's own name (stable across the
+        // multiple internal getAllImageBlobURLs() calls each
+        // applyImageFolderBackground() invocation makes — see that
+        // function's doc comment on revoking+regenerating every call)
+        // rather than an incrementing counter, so assertions below can
+        // check "which image" independent of how many blob: URLs have
+        // been minted so far.
+        createObjectURLSpy = vi.spyOn(URL, "createObjectURL").mockImplementation((blob) => "blob:" + (blob && blob.name));
+        vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
+        await clearImages();
+    });
+
+    afterEach(async () => {
+        await clearImages();
+        vi.restoreAllMocks();
+    });
+
+    it("no-ops (leaves backgroundImage unset) when background-style isn't 'image-folder'", async () => {
+        await addImages([makeFile("Pics/a.jpg")], false);
+        await applyImageFolderBackground(el, baseState({ "background-style": "custom-image-url" }));
+        expect(el.style.backgroundImage).toBe("");
+        expect(createObjectURLSpy).not.toHaveBeenCalled();
+    });
+
+    it("no-ops silently when el is null/undefined", async () => {
+        await expect(applyImageFolderBackground(null, baseState({ "background-style": "image-folder" }))).resolves.toBeUndefined();
+    });
+
+    it("leaves no background-image when no images have been picked yet", async () => {
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder" }));
+        expect(el.style.backgroundImage).toBe("");
+    });
+
+    it("without rotation, always uses the first stored image", async () => {
+        await addImages([makeFile("Pics/a.jpg"), makeFile("Pics/b.jpg")], false);
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder" }), 3);
+        expect(el.style.backgroundImage).toContain("a.jpg");
+    });
+
+    it("with rotation on and multiple images, cycles through them by rotateStep", async () => {
+        await addImages([makeFile("Pics/a.jpg"), makeFile("Pics/b.jpg"), makeFile("Pics/c.jpg")], false);
+
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder", "background-rotate": true }), 0);
+        expect(el.style.backgroundImage).toContain("a.jpg");
+
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder", "background-rotate": true }), 1);
+        expect(el.style.backgroundImage).toContain("b.jpg");
+
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder", "background-rotate": true }), 3);
+        expect(el.style.backgroundImage).toContain("a.jpg"); // wraps: 3 % 3 === 0
+    });
+
+    it("with rotation on but only a single image, stays on that one image regardless of rotateStep", async () => {
+        await addImages([makeFile("Pics/only.jpg")], false);
+        await applyImageFolderBackground(el, baseState({ "background-style": "image-folder", "background-rotate": true }), 4);
+        expect(el.style.backgroundImage).toContain("only.jpg");
     });
 });
 

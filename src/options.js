@@ -12,10 +12,13 @@ import { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled } from "./settings/schema.js";
 import { Geocoder } from "./lib/geocoder.js";
 import { _ } from "./lib/i18n.js";
 import { getInstalledSearchEngines } from "./lib/render.js";
+import { addImages, clearImages, getImageCount } from "./lib/image-store.js";
 
 let state = Object.assign({}, DEFAULTS);
 let fieldEls = {}; // id -> { row, input }
 let geoDebounce = null;
+let pickedFolderFiles = null; // FileList from the last folder-picker change, so the
+                               // "include subfolders" checkbox can re-filter it live
 
 function setStatus(text) {
     let el = document.getElementById("options-status");
@@ -172,6 +175,14 @@ function onFieldChanged(field, value) {
     if (cityMatch) {
         handleCityNameChange(cityMatch[1], value);
     }
+
+    // Re-filter/re-store the already-picked folder (if any) when the
+    // "include subfolders" checkbox is toggled, so flipping it takes
+    // effect immediately instead of only on the next folder pick.
+    if (field.id === "background-folder-include-subfolders" && pickedFolderFiles) {
+        let statusEl = document.getElementById("background-folder-picker-status");
+        storePickedFolder(pickedFolderFiles, value, statusEl);
+    }
 }
 
 // browser.permissions.request() must be called synchronously from within a
@@ -239,10 +250,8 @@ function syncFieldInputs(ids) {
     }
 }
 
-function buildField(field) {
-    let row = document.createElement("div");
-    row.className = "options-field" + (field.indent ? " indent" : "");
-
+/** Build the label (description + optional tooltip) shared by every field, generic or hand-special-cased. */
+function buildFieldLabel(field) {
     let label = document.createElement("label");
     let labelText = document.createElement("span");
     labelText.className = "field-label";
@@ -254,6 +263,232 @@ function buildField(field) {
         tip.textContent = _(field.tooltip);
         label.appendChild(tip);
     }
+    return label;
+}
+
+/**
+ * Read the current image count from IndexedDB (src/lib/image-store.js) and
+ * reflect it in the folder-picker's status line — shared by the initial
+ * render (so re-opening the options page after a previous pick shows the
+ * right count) and every re-pick/re-filter.
+ */
+async function refreshFolderPickerStatus(statusEl) {
+    let count = 0;
+    try { count = await getImageCount(); }
+    catch (_e) { count = 0; }
+    statusEl.textContent = count > 0
+        ? _("%d images loaded", count)
+        : _("No images selected");
+}
+
+/** Filter+store a freshly-picked (or re-filtered) FileList, then refresh the status line. */
+async function storePickedFolder(fileList, includeSubfolders, statusEl) {
+    await clearImages();
+    await addImages(fileList, !!includeSubfolders);
+    if (statusEl) await refreshFolderPickerStatus(statusEl);
+}
+
+/**
+ * Hand-special-cased "folder-picker" field (see settings/schema.js's
+ * "background-folder-picker" entry): there's no generic field type for "let
+ * the user pick a local folder of images", and the actual image data is
+ * stored in IndexedDB (src/lib/image-store.js), not as a single
+ * browser.storage.local scalar — so unlike every generic field type in
+ * buildFieldControl(), this one is built by hand here, the same way the
+ * Wikipedia permission flow is hand-special-cased in onFieldChanged/
+ * requestWikipediaPermission above. It still participates in
+ * fieldEls/applyDependencies (via the row + the file input itself) so
+ * show/hide-on-dependency works exactly like every other field.
+ */
+function buildFolderPickerField(field) {
+    let row = document.createElement("div");
+    row.className = "options-field" + (field.indent ? " indent" : "");
+
+    let label = buildFieldLabel(field);
+
+    let container = document.createElement("div");
+    container.className = "folder-picker-control";
+
+    let fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.id = field.id;
+    fileInput.multiple = true;
+    // webkitdirectory (Firefox honors it despite the "webkit" prefix) is
+    // what turns this into a folder picker returning every file under the
+    // chosen folder (recursively), each exposing webkitRelativePath.
+    fileInput.setAttribute("webkitdirectory", "");
+    fileInput.setAttribute("directory", "");
+
+    let statusEl = document.createElement("span");
+    statusEl.className = "folder-picker-status";
+    statusEl.id = field.id + "-status";
+    statusEl.textContent = _("No images selected");
+    refreshFolderPickerStatus(statusEl);
+
+    fileInput.addEventListener("change", () => {
+        pickedFolderFiles = fileInput.files;
+        storePickedFolder(pickedFolderFiles, state["background-folder-include-subfolders"], statusEl);
+    });
+
+    container.appendChild(fileInput);
+    container.appendChild(statusEl);
+
+    label.htmlFor = field.id;
+    row.appendChild(container);
+    row.appendChild(label);
+
+    fieldEls[field.id] = { row, input: fileInput };
+    return row;
+}
+
+/** yyyy-mm-dd for the export filename, from the local date (not UTC, so it matches what the user sees on their clock). */
+function todayStamp() {
+    let d = new Date();
+    let pad = (n) => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+}
+
+/**
+ * Pure validation/filtering logic for imported settings, exported for unit
+ * testing without any DOM/browser.* involvement. Only keys that exist in
+ * `fields` (normally settings/schema.js's FIELDS) are accepted — anything
+ * else (a stray key from a newer/older export, accidental garbage) is
+ * silently dropped rather than written to storage.local, and the two
+ * synthetic field types that have no single storage.local value of their
+ * own ("folder-picker", "import-export" — see their FIELDS entries) are
+ * never accepted either, since there's nothing meaningful to import for
+ * them (folder-picked images live in IndexedDB — see the note next to the
+ * Import/Export section and in the README).
+ */
+const NON_STORAGE_FIELD_TYPES = new Set(["folder-picker", "import-export"]);
+
+export function validateImportedSettings(parsed, fields = FIELDS) {
+    let known = new Set(
+        Object.values(fields)
+            .filter((f) => !NON_STORAGE_FIELD_TYPES.has(f.type))
+            .map((f) => f.id)
+    );
+    let accepted = {};
+    let importedCount = 0;
+    let skippedCount = 0;
+    let skippedKeys = [];
+
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        for (let [key, value] of Object.entries(parsed)) {
+            if (known.has(key)) {
+                accepted[key] = value;
+                importedCount++;
+            } else {
+                skippedCount++;
+                skippedKeys.push(key);
+            }
+        }
+    }
+    return { accepted, importedCount, skippedCount, skippedKeys };
+}
+
+async function handleExportSettings() {
+    try {
+        let all = await browser.storage.local.get(null);
+        let json = JSON.stringify(all, null, 2);
+        let blob = new Blob([json], { type: "application/json" });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "calendarium-settings-" + todayStamp() + ".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus(_("Settings exported."));
+    } catch (e) {
+        setStatus(_("Export failed") + ": " + String(e));
+    }
+}
+
+async function handleImportFile(file) {
+    if (!file) return;
+    let text;
+    try {
+        text = await file.text();
+    } catch (e) {
+        setStatus(_("Import failed") + ": " + String(e));
+        return;
+    }
+    let parsed;
+    try {
+        parsed = JSON.parse(text);
+    } catch (_e) {
+        setStatus(_("Import failed: the file is not valid JSON."));
+        return;
+    }
+    let { accepted, importedCount, skippedCount } = validateImportedSettings(parsed, FIELDS);
+    await browser.storage.local.set(accepted);
+    await loadState();
+    buildPages();
+    applyDependencies();
+    setStatus(_("Imported %d setting(s), skipped %d unrecognized key(s).", importedCount, skippedCount));
+}
+
+/**
+ * Hand-special-cased "import-export" field (settings/schema.js's
+ * "settings-import-export" entry) — export/import don't map to a single
+ * browser.storage.local scalar either, so like the folder picker above,
+ * the actual DOM control is built here rather than by buildFieldControl().
+ * Explicitly does NOT cover the IndexedDB-stored folder images from the
+ * "folder-picker" field above — see the note rendered alongside it and in
+ * the README.
+ */
+function buildImportExportField(field) {
+    let row = document.createElement("div");
+    row.className = "options-field" + (field.indent ? " indent" : "");
+
+    let label = buildFieldLabel(field);
+
+    let container = document.createElement("div");
+    container.className = "import-export-control";
+
+    let exportBtn = document.createElement("button");
+    exportBtn.type = "button";
+    exportBtn.id = field.id + "-export";
+    exportBtn.textContent = _("Export settings");
+    exportBtn.addEventListener("click", handleExportSettings);
+
+    let importBtn = document.createElement("button");
+    importBtn.type = "button";
+    importBtn.textContent = _("Import settings");
+
+    let importInput = document.createElement("input");
+    importInput.type = "file";
+    importInput.id = field.id;
+    importInput.accept = "application/json";
+    importInput.hidden = true;
+    importInput.addEventListener("change", () => {
+        let file = importInput.files && importInput.files[0];
+        handleImportFile(file);
+        importInput.value = "";
+    });
+    importBtn.addEventListener("click", () => importInput.click());
+
+    container.appendChild(exportBtn);
+    container.appendChild(importBtn);
+    container.appendChild(importInput);
+
+    row.appendChild(container);
+    row.appendChild(label);
+
+    fieldEls[field.id] = { row, input: importInput };
+    return row;
+}
+
+function buildField(field) {
+    if (field.type === "folder-picker") return buildFolderPickerField(field);
+    if (field.type === "import-export") return buildImportExportField(field);
+
+    let row = document.createElement("div");
+    row.className = "options-field" + (field.indent ? " indent" : "");
+
+    let label = buildFieldLabel(field);
 
     let input = buildFieldControl(field);
     label.htmlFor = field.id;

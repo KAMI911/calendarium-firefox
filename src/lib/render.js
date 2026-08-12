@@ -31,6 +31,7 @@ import { Solstice } from "./solstice.js";
 import { Calendars } from "./calendars.js";
 import { _, slug } from "./i18n.js";
 import { BACKGROUND_GRADIENT_OPTIONS } from "../settings/schema.js";
+import { getAllImageBlobURLs } from "./image-store.js";
 
 export { _, slug };
 
@@ -875,7 +876,7 @@ export function applyThemeMode(root, state) {
     }
 }
 
-const BACKGROUND_STYLES = ["theme-default", "solid-color", "gradient", "custom-image-url", "firefox-theme"];
+const BACKGROUND_STYLES = ["theme-default", "solid-color", "gradient", "custom-image-url", "image-folder", "firefox-theme"];
 const VALID_GRADIENTS = new Set(Object.values(BACKGROUND_GRADIENT_OPTIONS));
 const GRADIENT_ORDER = Object.values(BACKGROUND_GRADIENT_OPTIONS);
 
@@ -958,7 +959,53 @@ export function applyBackground(el, state, rotateStep = 0) {
         }
         if (url) el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
     }
+    // "image-folder": nothing more to do here (synchronously) — the actual
+    // blob: URLs come from IndexedDB, an inherently async read, so they're
+    // applied separately by applyImageFolderBackground() below, exactly
+    // like "firefox-theme" defers to applyFirefoxThemeBackground().
     // "firefox-theme": nothing more to do here — see applyFirefoxThemeBackground().
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// "image-folder" background-style — like "custom-image-url" above, but the
+// images come from a local folder picked via a <input type="file"
+// webkitdirectory> control (src/options.js) and stored as Blobs in
+// IndexedDB (src/lib/image-store.js) rather than as pasted URLs in
+// settings. Reading them back out is inherently async (IndexedDB), so —
+// exactly like applyFirefoxThemeBackground() above — this is a separate
+// function from the synchronous applyBackground(), called after it from
+// newtab.js's reload()/scheduleBackgroundRotation() whenever
+// "background-style" is "image-folder".
+// ══════════════════════════════════════════════════════════════════════
+
+/**
+ * Apply the current "image-folder" background image (if any) to `el`
+ * (normally `document.body`). No-ops entirely if `state["background-style"]`
+ * isn't "image-folder" (so callers can invoke it unconditionally, the same
+ * way applyFirefoxThemeBackground is guarded by its own style check at the
+ * call site in newtab.js) or if no images have been picked yet, in which
+ * case the "calendarium-bg-image-folder" CSS class alone (theme-default-
+ * equivalent background, no image) is left in effect.
+ *
+ * `rotateStep` selects which image to show when "background-rotate" is
+ * enabled, indexing into getAllImageBlobURLs()' result — the same
+ * `bgRotateStep` pattern used by applyBackground() for "gradient"/
+ * "custom-image-url".
+ */
+export async function applyImageFolderBackground(el, state, rotateStep = 0) {
+    if (!el) return;
+    if (!state || state["background-style"] !== "image-folder") return;
+    let urls = [];
+    try { urls = await getAllImageBlobURLs(); }
+    catch (_e) { urls = []; }
+    if (urls.length === 0) {
+        el.style.backgroundImage = "";
+        return;
+    }
+    let url = (state["background-rotate"] && urls.length > 1)
+        ? urls[Math.abs(rotateStep || 0) % urls.length]
+        : urls[0];
+    el.style.backgroundImage = "url(" + JSON.stringify(url) + ")";
 }
 
 // ══════════════════════════════════════════════════════════════════════

@@ -27,7 +27,7 @@ function makeStorageMock(initial = {}) {
  * Build a `global.browser` mock. `withMenus` controls whether `browser.menus`
  * exists at all, simulating Firefox for Android (where the API is absent).
  */
-function makeBrowserMock({ withMenus }) {
+function makeBrowserMock({ withMenus, withCommands = true }) {
     let listeners = {
         onInstalled: [],
         onStartup: []
@@ -57,6 +57,11 @@ function makeBrowserMock({ withMenus }) {
             removeAll: vi.fn(() => Promise.resolve()),
             create: vi.fn(),
             onClicked: { addListener: vi.fn() }
+        };
+    }
+    if (withCommands) {
+        browserMock.commands = {
+            onCommand: { addListener: vi.fn() }
         };
     }
     browserMock.__listeners = listeners;
@@ -105,6 +110,66 @@ describe("background.js on a platform without browser.menus (e.g. Firefox for An
         // throwing, which the surrounding try/catch in this test would
         // otherwise have surfaced as a failure.
         expect(global.browser.menus).toBeUndefined();
+    });
+});
+
+describe("background.js's 'open-full-view' keyboard shortcut (browser.commands)", () => {
+    let consoleErrorSpy;
+
+    beforeEach(() => {
+        vi.resetModules();
+        consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        consoleErrorSpy.mockRestore();
+        delete global.browser;
+    });
+
+    it("registers a browser.commands.onCommand listener", async () => {
+        global.browser = makeBrowserMock({ withMenus: true, withCommands: true });
+        await import("../../src/background.js");
+        expect(global.browser.commands.onCommand.addListener).toHaveBeenCalled();
+    });
+
+    it("opens view.html in a new tab via browser.tabs.create when the 'open-full-view' command fires — the same tab-creation call the context menu item uses", async () => {
+        global.browser = makeBrowserMock({ withMenus: true, withCommands: true });
+        await import("../../src/background.js");
+        let onCommandCb = global.browser.commands.onCommand.addListener.mock.calls[0][0];
+
+        onCommandCb("open-full-view");
+
+        expect(global.browser.tabs.create).toHaveBeenCalledWith({ url: "moz-extension://test/view.html" });
+    });
+
+    it("ignores unrelated command names", async () => {
+        global.browser = makeBrowserMock({ withMenus: true, withCommands: true });
+        await import("../../src/background.js");
+        let onCommandCb = global.browser.commands.onCommand.addListener.mock.calls[0][0];
+
+        onCommandCb("some-other-command");
+
+        expect(global.browser.tabs.create).not.toHaveBeenCalled();
+    });
+
+    it("the context-menu click and the keyboard shortcut both invoke the same browser.tabs.create call", async () => {
+        global.browser = makeBrowserMock({ withMenus: true, withCommands: true });
+        await import("../../src/background.js");
+        let onClickedCb = global.browser.menus.onClicked.addListener.mock.calls[0][0];
+        let onCommandCb = global.browser.commands.onCommand.addListener.mock.calls[0][0];
+
+        onClickedCb({ menuItemId: "calendarium-open-full-view" });
+        onCommandCb("open-full-view");
+
+        expect(global.browser.tabs.create).toHaveBeenCalledTimes(2);
+        expect(global.browser.tabs.create).toHaveBeenNthCalledWith(1, { url: "moz-extension://test/view.html" });
+        expect(global.browser.tabs.create).toHaveBeenNthCalledWith(2, { url: "moz-extension://test/view.html" });
+    });
+
+    it("does not register a commands.onCommand listener when browser.commands is absent (e.g. older Firefox for Android)", async () => {
+        global.browser = makeBrowserMock({ withMenus: false, withCommands: false });
+        await expect(import("../../src/background.js")).resolves.toBeTruthy();
+        expect(global.browser.commands).toBeUndefined();
     });
 });
 

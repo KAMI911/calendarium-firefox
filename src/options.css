@@ -129,6 +129,34 @@ h1 { font-size: 1.4em; margin-bottom: 4px; }
   min-height: 1.2em;
 }
 
+.folder-picker-control {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.folder-picker-status {
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.import-export-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.import-export-control button {
+  background: var(--field-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+.import-export-control button:hover { border-color: var(--accent); }
+
 .geocoder-results {
   font-size: 0.85em;
   color: var(--muted);
