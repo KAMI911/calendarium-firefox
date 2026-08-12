@@ -56,7 +56,7 @@ jobs:
         run: |
           npx web-ext sign --source-dir=src --artifacts-dir=dist-signed \
             --api-key="$WEB_EXT_API_KEY" --api-secret="$WEB_EXT_API_SECRET" \
-            --channel=listed
+            --channel=listed --amo-metadata=amo-metadata.json
       - name: Create GitHub Release with the signed .xpi attached
         uses: softprops/action-gh-release@v3
         with:
