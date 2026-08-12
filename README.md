@@ -224,6 +224,23 @@ npm run test:coverage
 npm run lint          # eslint (flat config) + web-ext lint --source-dir=src
 ```
 
+## Live language switching
+
+The New Tab/homepage/full-view widget already re-translates itself
+automatically — it re-renders (and therefore re-reads every `_()` string)
+on its ~60s refresh timer, which itself re-reads the live browser
+language each time (`resolveLocale()` in `src/lib/render.js`). If you
+change Firefox's UI language, an already-open New Tab page picks it up
+within about a minute, no reload needed.
+
+The options page doesn't have a recurring timer (it's a static settings
+form, not a live-updating display), so it only translates its labels
+once on load. As a safety net for the rare case of changing languages
+while Options is already open, `options.js`'s `refreshTranslations()`
+rebuilds the whole page (preserving the currently selected tab and field
+values) whenever the tab regains focus (`visibilitychange`), not just on
+open — see `tests/unit/options-i18n-refresh.test.js`.
+
 ## Options page ↔ desklet settings mapping
 
 `src/settings/schema.js` is a straight transcription of the desklet's

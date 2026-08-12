@@ -653,6 +653,35 @@ function selectPage(pageKey) {
     }
 }
 
+/**
+ * Safety net for the rare case where the user changes Firefox's UI
+ * language while this options page is already open: unlike newtab.js
+ * (which re-renders, and therefore re-translates, every ~60s anyway),
+ * this page only builds its labels once on load, so a live language
+ * switch wouldn't otherwise show up until the page is closed and
+ * reopened. Rebuilding fieldEls/buildPages() from scratch re-reads every
+ * _()-translated string against whatever browser.i18n reports *now*, at
+ * negligible cost (it's just DOM, no network) — cheap enough to do
+ * whenever the tab regains focus rather than trying to detect an actual
+ * language change (no such event exists in the WebExtension APIs).
+ */
+function refreshTranslations() {
+    let activePage = document.querySelector(".options-page.active");
+    let activePageKey = (activePage && activePage.dataset.page) || LAYOUT.pages[0];
+    let title = _("Calendarium settings");
+    document.getElementById("options-title").textContent = title;
+    document.title = title;
+    buildPages();
+    selectPage(activePageKey);
+    applyDependencies();
+}
+
+if (typeof document !== "undefined") {
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) refreshTranslations();
+    });
+}
+
 async function loadState() {
     let stored = await browser.storage.local.get(null);
     state = Object.assign({}, DEFAULTS, stored);
@@ -706,4 +735,4 @@ if (typeof document !== "undefined") {
     }
 }
 
-export { buildPages, applyDependencies, loadState };
+export { buildPages, applyDependencies, loadState, selectPage, refreshTranslations };

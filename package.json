@@ -1,6 +1,6 @@
 {
   "name": "calendarium-firefox",
-  "version": "1.7.10",
+  "version": "1.7.11",
   "private": true,
   "license": "GPL-3.0-only",
   "description": "Firefox New Tab extension port of the calendarium@kami911 Cinnamon desklet.",
