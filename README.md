@@ -170,7 +170,7 @@ extension E2E isn't reliably scriptable in CI):
   the same "has a name → show its row" presence signal the sunrise/sunset
   city rows already use, rather than adding a separate per-city checkbox.
   Weather is New Tab / full-view only (not the popup — see below).
-- Enabling General > Sync > "Sync settings across devices" mirrors most
+- Enabling Advanced > Sync > "Sync settings across devices" mirrors most
   settings to `browser.storage.sync` going forward and, on every load,
   lets any value already in Sync take precedence over this device's local
   copy for the fields that participate — see "Firefox Sync" below for
@@ -180,20 +180,31 @@ extension E2E isn't reliably scriptable in CI):
   popup — see below); typing a query and submitting it dispatches to
   your default search engine via `browser.search.search()` (first use
   may prompt for the `search` permission, depending on Firefox version).
-  The paired "Search engine" combobox in Options (shown once the search
+  The paired "Search engine" field in Options (shown once the search
   box is enabled) sets the *persistent default*, defaulting to "System
   default" but selectable to any engine installed in Firefox — its
   option list is populated at options-page load time from
   `browser.search.get()` (not knowable statically, unlike every other
-  combobox in this schema). The search box itself also carries a second,
-  *per-search* engine picker right next to the input — a small `<select>`
-  (`lib/render.js`'s `populateSearchEngineSelect()`, sharing the same
-  `getInstalledSearchEngines()` engine-discovery helper as the Options
-  combobox) that starts pre-selected to the persistent default but can be
-  changed for one search only, without writing anything back to storage;
-  it's hidden entirely when fewer than 2 engines are installed, since
-  there'd be nothing to choose between. Either way, the chosen engine is
-  passed as `search.search()`'s `engine` option instead of omitting it.
+  combobox in this schema). Because search engines carry their own icons
+  and a native `<select>`/`<option>` can't render an `<img>` inside an
+  option reliably, this field (schema type `"engine-select"`) and the
+  search box's second, *per-search* engine picker right next to the input
+  both render as a small custom dropdown instead — a `<button>` showing
+  the current engine's icon + name that expands into a `<ul role="listbox">`
+  of icon+name options (`createEngineDropdown()` in `src/lib/render.js`,
+  one implementation shared by both mount points), rather than a plain
+  `<select>`. Icons come from each `SearchEngine`'s `favIconUrl`
+  (`getInstalledSearchEnginesDetailed()`, the `{name, favIconUrl}` sibling
+  of the plain-names `getInstalledSearchEngines()` both pickers used to
+  share) — normally a local `moz-extension://`-style URL bundled with the
+  engine/Firefox itself, so no new host permission is needed for this;
+  a missing or failed-to-load icon falls back to a generic 🔍 emoji via the
+  `<img>`'s `onerror` handler. The per-search picker starts pre-selected to
+  the persistent default but can be changed for one search only, without
+  writing anything back to storage; it's hidden entirely when fewer than 2
+  engines are installed, since there'd be nothing to choose between.
+  Either way, the chosen engine is passed as `search.search()`'s `engine`
+  option instead of omitting it.
 
 ## Tests & linting
 
@@ -353,8 +364,8 @@ equivalent:
   or `applyFirefoxThemeBackground()` (see `src/popup.css`'s doc comment
   for why) — though it does apply `icon-size`/`bg-opacity`, as noted above.
 
-`src/options.js` renders the same three pages (General, Location,
-Wikipedia) with the same sections as tabs, generically from that schema
+`src/options.js` renders the same four pages (General, Location,
+Wikipedia, Advanced) with the same sections as tabs, generically from that schema
 (including the `color` and `entry-multiline` field types and the
 `dependencyValue` variant of `dependency`, array-valued or not), and
 persists every field to `browser.storage.local`
@@ -434,7 +445,7 @@ flag is gone by the time a message handler picks it up.
 
 ### Firefox Sync (opt-in, scoped to a safe subset of settings)
 
-`sync-settings` (General > Sync), a checkbox, default `false`. When
+`sync-settings` (Advanced > Sync), a checkbox, default `false`. When
 enabled, `src/options.js`'s `saveField()` best-effort-mirrors every
 *syncable* field write to `browser.storage.sync` in addition to its normal
 `browser.storage.local` write, and on load (`options.js`, `newtab.js`,
@@ -494,7 +505,7 @@ can never leave this browser profile.
 
 ### Import / export settings
 
-General > "Import & Export" (schema key `settings-import-export`,
+Advanced > "Import & Export" (schema key `settings-import-export`,
 another hand-special-cased field type like `background-folder-picker`
 above — see `buildImportExportField()` in `src/options.js`):
 

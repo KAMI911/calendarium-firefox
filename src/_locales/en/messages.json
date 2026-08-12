@@ -51,6 +51,10 @@
     "message": "A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.",
     "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
   },
+  "advanced": {
+    "message": "Advanced",
+    "description": "Source: \"Advanced\""
+  },
   "alternate_calendars": {
     "message": "Alternate Calendars",
     "description": "Source: \"Alternate Calendars\""
@@ -71,6 +75,10 @@
     "message": "Article of the day",
     "description": "Source: \"Article of the day\""
   },
+  "aurora": {
+    "message": "Aurora",
+    "description": "Source: \"Aurora\""
+  },
   "autumn_equinox": {
     "message": "Autumn equinox",
     "description": "Source: \"Autumn equinox\""
@@ -90,6 +98,10 @@
   "background_opacity": {
     "message": "Background opacity",
     "description": "Source: \"Background opacity\""
+  },
+  "berry": {
+    "message": "Berry",
+    "description": "Source: \"Berry\""
   },
   "births_on_this_day": {
     "message": "Births on this day",
@@ -114,6 +126,10 @@
   "cancer": {
     "message": "Cancer",
     "description": "Source: \"Cancer\""
+  },
+  "candy": {
+    "message": "Candy",
+    "description": "Source: \"Candy\""
   },
   "capricorn": {
     "message": "Capricorn",
@@ -195,6 +211,10 @@
     "message": "Controls the display size of moon phase and zodiac symbols.",
     "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
   },
+  "copper": {
+    "message": "Copper",
+    "description": "Source: \"Copper\""
+  },
   "current_date": {
     "message": "Current date",
     "description": "Source: \"Current date\""
@@ -214,6 +234,14 @@
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Custom date format (strftime) — only active when 'Custom' is selected above",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "custom_image_url": {
+    "message": "Custom image URL",
+    "description": "Source: \"Custom image URL\""
+  },
+  "dark": {
+    "message": "Dark",
+    "description": "Source: \"Dark\""
   },
   "date_and_time": {
     "message": "Date and Time",
@@ -275,6 +303,10 @@
     "message": "Earth",
     "description": "Source: \"Earth\""
   },
+  "ember": {
+    "message": "Ember",
+    "description": "Source: \"Ember\""
+  },
   "enable_wikipedia_features_requires_internet": {
     "message": "Enable Wikipedia features (requires Internet)",
     "description": "Source: \"Enable Wikipedia features (requires Internet)\""
@@ -331,6 +363,10 @@
     "message": "Fire",
     "description": "Source: \"Fire\""
   },
+  "firefox_theme_colors": {
+    "message": "Firefox theme colors",
+    "description": "Source: \"Firefox theme colors\""
+  },
   "first_quarter": {
     "message": "First Quarter",
     "description": "Source: \"First Quarter\""
@@ -354,6 +390,10 @@
   "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_or_image_folder_cycles_through_every_image_if_more_than_one_has_no_effect_for_the_other_background_styles": {
     "message": "For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.",
     "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.\""
+  },
+  "forest": {
+    "message": "Forest",
+    "description": "Source: \"Forest\""
   },
   "french": {
     "message": "French",
@@ -519,6 +559,10 @@
     "message": "Label for an additional city. Leave empty to hide.",
     "description": "Source: \"Label for an additional city. Leave empty to hide.\""
   },
+  "lagoon": {
+    "message": "Lagoon",
+    "description": "Source: \"Lagoon\""
+  },
   "large": {
     "message": "Large",
     "description": "Source: \"Large\""
@@ -531,6 +575,10 @@
     "message": "Latitude (positive = North)",
     "description": "Source: \"Latitude (positive = North)\""
   },
+  "lavender": {
+    "message": "Lavender",
+    "description": "Source: \"Lavender\""
+  },
   "leo": {
     "message": "Leo",
     "description": "Source: \"Leo\""
@@ -538,6 +586,10 @@
   "libra": {
     "message": "Libra",
     "description": "Source: \"Libra\""
+  },
+  "light": {
+    "message": "Light",
+    "description": "Source: \"Light\""
   },
   "light_drizzle": {
     "message": "Light drizzle",
@@ -567,9 +619,17 @@
     "message": "Mainly clear",
     "description": "Source: \"Mainly clear\""
   },
+  "match_system": {
+    "message": "Match system",
+    "description": "Source: \"Match system\""
+  },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.",
     "description": "Source: \"\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.\""
+  },
+  "meadow": {
+    "message": "Meadow",
+    "description": "Source: \"Meadow\""
   },
   "medium": {
     "message": "Medium",
@@ -578,6 +638,10 @@
   "metal": {
     "message": "Metal",
     "description": "Source: \"Metal\""
+  },
+  "mint": {
+    "message": "Mint",
+    "description": "Source: \"Mint\""
   },
   "minutes": {
     "message": "minutes",
@@ -654,6 +718,10 @@
   "none_hidden": {
     "message": "None (hidden)",
     "description": "Source: \"None (hidden)\""
+  },
+  "ocean": {
+    "message": "Ocean",
+    "description": "Source: \"Ocean\""
   },
   "old_english_anglo_saxon": {
     "message": "Old English (Anglo-Saxon)",
@@ -911,6 +979,10 @@
     "message": "Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.",
     "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
   },
+  "slate": {
+    "message": "Slate",
+    "description": "Source: \"Slate\""
+  },
   "slight_rain": {
     "message": "Slight rain",
     "description": "Source: \"Slight rain\""
@@ -938,6 +1010,10 @@
   "snow_grains": {
     "message": "Snow grains",
     "description": "Source: \"Snow grains\""
+  },
+  "solid_color": {
+    "message": "Solid color",
+    "description": "Source: \"Solid color\""
   },
   "spanish": {
     "message": "Spanish",
@@ -975,6 +1051,10 @@
     "message": "Sync settings across devices via Firefox Sync",
     "description": "Source: \"Sync settings across devices via Firefox Sync\""
   },
+  "system_default": {
+    "message": "System default",
+    "description": "Source: \"System default\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -990,6 +1070,10 @@
   "text_only": {
     "message": "Text only",
     "description": "Source: \"Text only\""
+  },
+  "theme_default": {
+    "message": "Theme default",
+    "description": "Source: \"Theme default\""
   },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_image_folder_lets_you_pick_a_local_folder_of_images_to_rotate_through_stored_in_this_browser_profile_s_indexeddb_rather_than_in_your_synced_settings_see_the_note_under_that_option_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. \"Firefox theme colors\" reads your installed Firefox Theme's colors via the browser.theme API — a real, separate WebExtension API for installed Themes, not the New Tab wallpaper picker — falling back to the default palette if the active theme has no useful colors. \"Image folder\" lets you pick a local folder of images to rotate through, stored in this browser profile's IndexedDB rather than in your synced settings — see the note under that option. The toolbar popup always uses the plain theme palette, regardless of this setting.",
@@ -1034,6 +1118,10 @@
   "traditional_month_names": {
     "message": "Traditional Month Names",
     "description": "Source: \"Traditional Month Names\""
+  },
+  "twilight": {
+    "message": "Twilight",
+    "description": "Source: \"Twilight\""
   },
   "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
     "message": "Type a city name — coordinates are filled in automatically after 1.5 seconds.",

@@ -51,6 +51,10 @@
     "message": "Ein umfangreiches Kalender-Desklet mit Mondphase, Sonnenauf-/-untergang, Tierkreiszeichen, Namenstagen, traditionellen Monatsnamen und optionalen Wikipedia-Funktionen.",
     "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
   },
+  "advanced": {
+    "message": "Erweitert",
+    "description": "Source: \"Advanced\""
+  },
   "alternate_calendars": {
     "message": "Alternative Kalender",
     "description": "Source: \"Alternate Calendars\""
@@ -71,6 +75,10 @@
     "message": "Artikel des Tages",
     "description": "Source: \"Article of the day\""
   },
+  "aurora": {
+    "message": "Polarlicht",
+    "description": "Source: \"Aurora\""
+  },
   "autumn_equinox": {
     "message": "Herbst-Tagundnachtgleiche",
     "description": "Source: \"Autumn equinox\""
@@ -90,6 +98,10 @@
   "background_opacity": {
     "message": "Hintergrunddurchsichtigkeit",
     "description": "Source: \"Background opacity\""
+  },
+  "berry": {
+    "message": "Beere",
+    "description": "Source: \"Berry\""
   },
   "births_on_this_day": {
     "message": "Geburten an diesem Tag",
@@ -114,6 +126,10 @@
   "cancer": {
     "message": "Krebs",
     "description": "Source: \"Cancer\""
+  },
+  "candy": {
+    "message": "Süßigkeit",
+    "description": "Source: \"Candy\""
   },
   "capricorn": {
     "message": "Steinbock",
@@ -195,6 +211,10 @@
     "message": "Steuert die Anzeigegröße der Mondphasen- und Tierkreissymbole.",
     "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
   },
+  "copper": {
+    "message": "Kupfer",
+    "description": "Source: \"Copper\""
+  },
   "current_date": {
     "message": "Aktuelles Datum",
     "description": "Source: \"Current date\""
@@ -214,6 +234,14 @@
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Benutzerdefiniertes Datumsformat (strftime) — nur aktiv, wenn oben 'Benutzerdefiniert' gewählt ist",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "custom_image_url": {
+    "message": "Eigene Bild-URL",
+    "description": "Source: \"Custom image URL\""
+  },
+  "dark": {
+    "message": "Dunkel",
+    "description": "Source: \"Dark\""
   },
   "date_and_time": {
     "message": "Datum und Uhrzeit",
@@ -275,6 +303,10 @@
     "message": "Erde",
     "description": "Source: \"Earth\""
   },
+  "ember": {
+    "message": "Glut",
+    "description": "Source: \"Ember\""
+  },
   "enable_wikipedia_features_requires_internet": {
     "message": "Wikipedia-Funktionen aktivieren (Internet erforderlich)",
     "description": "Source: \"Enable Wikipedia features (requires Internet)\""
@@ -331,6 +363,10 @@
     "message": "Feuer",
     "description": "Source: \"Fire\""
   },
+  "firefox_theme_colors": {
+    "message": "Firefox-Themenfarben",
+    "description": "Source: \"Firefox theme colors\""
+  },
   "first_quarter": {
     "message": "Erstes Viertel",
     "description": "Source: \"First Quarter\""
@@ -354,6 +390,10 @@
   "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_or_image_folder_cycles_through_every_image_if_more_than_one_has_no_effect_for_the_other_background_styles": {
     "message": "Bei „Verlauf“ wird zwischen allen integrierten Verläufen gewechselt. Bei „Eigene Bild-URL“ oder „Bilderordner“ wird zwischen allen Bildern gewechselt (falls mehr als eines vorhanden ist). Hat keine Auswirkung auf die anderen Hintergrundstile.",
     "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.\""
+  },
+  "forest": {
+    "message": "Wald",
+    "description": "Source: \"Forest\""
   },
   "french": {
     "message": "Französisch",
@@ -519,6 +559,10 @@
     "message": "Bezeichnung einer zusätzlichen Stadt. Leer lassen zum Ausblenden.",
     "description": "Source: \"Label for an additional city. Leave empty to hide.\""
   },
+  "lagoon": {
+    "message": "Lagune",
+    "description": "Source: \"Lagoon\""
+  },
   "large": {
     "message": "Groß",
     "description": "Source: \"Large\""
@@ -531,6 +575,10 @@
     "message": "Breitengrad (positiv = Nord)",
     "description": "Source: \"Latitude (positive = North)\""
   },
+  "lavender": {
+    "message": "Lavendel",
+    "description": "Source: \"Lavender\""
+  },
   "leo": {
     "message": "Löwe",
     "description": "Source: \"Leo\""
@@ -538,6 +586,10 @@
   "libra": {
     "message": "Waage",
     "description": "Source: \"Libra\""
+  },
+  "light": {
+    "message": "Hell",
+    "description": "Source: \"Light\""
   },
   "light_drizzle": {
     "message": "Leichter Nieselregen",
@@ -567,9 +619,17 @@
     "message": "Überwiegend klar",
     "description": "Source: \"Mainly clear\""
   },
+  "match_system": {
+    "message": "Systemeinstellung übernehmen",
+    "description": "Source: \"Match system\""
+  },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "„System folgen“ passt sich automatisch an die helle oder dunkle Einstellung Ihres Betriebssystems/Browsers an. Hell/Dunkel erzwingt dieses Farbschema unabhängig von der Systemeinstellung, einheitlich auf der Neuer-Tab-Seite, im Popup und in der Vollansicht.",
     "description": "Source: \"\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.\""
+  },
+  "meadow": {
+    "message": "Wiese",
+    "description": "Source: \"Meadow\""
   },
   "medium": {
     "message": "Mittel",
@@ -578,6 +638,10 @@
   "metal": {
     "message": "Metall",
     "description": "Source: \"Metal\""
+  },
+  "mint": {
+    "message": "Minze",
+    "description": "Source: \"Mint\""
   },
   "minutes": {
     "message": "Minuten",
@@ -654,6 +718,10 @@
   "none_hidden": {
     "message": "Keines (ausgeblendet)",
     "description": "Source: \"None (hidden)\""
+  },
+  "ocean": {
+    "message": "Ozean",
+    "description": "Source: \"Ocean\""
   },
   "old_english_anglo_saxon": {
     "message": "Altenglisch (Angelsächsisch)",
@@ -911,6 +979,10 @@
     "message": "Zeigt die aktuelle Temperatur und die Wetterbedingungen für Ihren primären Standort sowie für jede zusätzliche Stadt unten an, für die ein Name festgelegt ist. Beim Aktivieren wird die Berechtigung zum Kontaktieren von api.open-meteo.com angefordert, einer kostenlosen, schlüssellosen Wetter-API — es ist kein Konto oder API-Schlüssel erforderlich.",
     "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
   },
+  "slate": {
+    "message": "Schiefer",
+    "description": "Source: \"Slate\""
+  },
   "slight_rain": {
     "message": "Leichter Regen",
     "description": "Source: \"Slight rain\""
@@ -938,6 +1010,10 @@
   "snow_grains": {
     "message": "Schneegriesel",
     "description": "Source: \"Snow grains\""
+  },
+  "solid_color": {
+    "message": "Einfarbig",
+    "description": "Source: \"Solid color\""
   },
   "spanish": {
     "message": "Spanisch",
@@ -975,6 +1051,10 @@
     "message": "Einstellungen geräteübergreifend über Firefox Sync synchronisieren",
     "description": "Source: \"Sync settings across devices via Firefox Sync\""
   },
+  "system_default": {
+    "message": "Systemstandard",
+    "description": "Source: \"System default\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "„Systemstandard“ verwendet die jeweils aktuelle Standard-Suchmaschine von Firefox. Bei Auswahl einer bestimmten Suchmaschine wird stattdessen immer diese verwendet, unabhängig von Ihrem Firefox-Standard.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -990,6 +1070,10 @@
   "text_only": {
     "message": "Nur Text",
     "description": "Source: \"Text only\""
+  },
+  "theme_default": {
+    "message": "Themenstandard",
+    "description": "Source: \"Theme default\""
   },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_image_folder_lets_you_pick_a_local_folder_of_images_to_rotate_through_stored_in_this_browser_profile_s_indexeddb_rather_than_in_your_synced_settings_see_the_note_under_that_option_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "Dies ist der eigene Hintergrund der Erweiterung, unabhängig von Firefox' eingebauter Hintergrundbild-Auswahl für neue Tabs (die Erweiterungen weder lesen noch festlegen können). „Standardthema“ folgt der oben gewählten Hell/Dunkel-Palette. „Firefox-Themenfarben“ liest die Farben deines installierten Firefox-Themes über die browser.theme-API — eine echte, eigenständige WebExtension-API für installierte Themes, nicht die Hintergrundbild-Auswahl für neue Tabs — und verwendet die Standardpalette, falls das aktive Theme keine brauchbaren Farben hat. „Bilderordner“ erlaubt dir, einen lokalen Ordner mit Bildern auszuwählen, durch die der Hintergrund rotiert; sie werden in der IndexedDB dieses Browserprofils gespeichert, nicht in deinen synchronisierten Einstellungen — siehe den Hinweis bei dieser Option. Das Popup der Symbolleiste verwendet immer die einfache Themenpalette, unabhängig von dieser Einstellung.",
@@ -1034,6 +1118,10 @@
   "traditional_month_names": {
     "message": "Traditionelle Monatsnamen",
     "description": "Source: \"Traditional Month Names\""
+  },
+  "twilight": {
+    "message": "Dämmerung",
+    "description": "Source: \"Twilight\""
   },
   "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
     "message": "Geben Sie einen Städtenamen ein — die Koordinaten werden nach 1,5 Sekunden automatisch ausgefüllt.",

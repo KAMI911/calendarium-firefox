@@ -14,7 +14,7 @@ import {
 } from "./settings/schema.js";
 import { Geocoder } from "./lib/geocoder.js";
 import { _ } from "./lib/i18n.js";
-import { getInstalledSearchEngines } from "./lib/render.js";
+import { getInstalledSearchEnginesDetailed, createEngineDropdown } from "./lib/render.js";
 import { addImages, clearImages, getImageCount } from "./lib/image-store.js";
 
 let state = Object.assign({}, DEFAULTS);
@@ -80,24 +80,28 @@ function applyDependencies() {
 }
 
 /**
- * Fill an "engine-select" <select> with the user's actually-installed
- * search engines, on top of the static "System default" option already
- * rendered. Uses the same getInstalledSearchEngines() helper as the
- * in-widget per-search picker in lib/render.js, so there's one code path
- * for discovering engines, not two — silently leaves just the default
+ * Rebuild the "engine-select" field's custom dropdown (see
+ * createEngineDropdown() in lib/render.js) with the user's
+ * actually-installed search engines, on top of the "System default" entry
+ * the dropdown always includes. Uses the same
+ * getInstalledSearchEnginesDetailed() helper as the in-widget per-search
+ * picker in lib/render.js, so there's one code path for discovering
+ * engines (and their icons), not two — silently leaves just the default
  * option if none are discoverable (API unavailable, permission not yet
  * granted, etc.; see that function's own guarding).
  */
-async function populateEngineOptions(selectEl, field) {
-    let engines = await getInstalledSearchEngines();
+async function populateEngineOptions(container, field) {
+    let engines = await getInstalledSearchEnginesDetailed();
     let currentValue = state[field.id];
-    for (let name of engines) {
-        let opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        if (name === currentValue) opt.selected = true;
-        selectEl.appendChild(opt);
-    }
+    let dropdown = createEngineDropdown({
+        engines,
+        currentValue,
+        onSelect: (value) => onFieldChanged(field, value),
+        ariaLabel: _(field.description)
+    });
+    container.textContent = "";
+    container.appendChild(dropdown);
+    container.dropdown = dropdown;
 }
 
 function buildFieldControl(field) {
@@ -115,7 +119,7 @@ function buildFieldControl(field) {
             for (let [label, value] of Object.entries(field.options || {})) {
                 let opt = document.createElement("option");
                 opt.value = value;
-                opt.textContent = label;
+                opt.textContent = _(label);
                 if (value === state[field.id]) opt.selected = true;
                 input.appendChild(opt);
             }
@@ -123,23 +127,45 @@ function buildFieldControl(field) {
             break;
         }
         case "engine-select": {
-            // Like "combobox", but the option list isn't known statically —
-            // it's whatever search engines the user has installed, only
-            // discoverable at runtime via browser.search.get(). Render the
-            // schema's static fallback ("System default") immediately so
-            // the field isn't empty while that call is in flight, then
-            // replace the option list once it resolves. See
-            // populateEngineOptions() below.
-            input = document.createElement("select");
-            for (let [label, value] of Object.entries(field.options || {})) {
-                let opt = document.createElement("option");
-                opt.value = value;
-                opt.textContent = label;
-                if (value === state[field.id]) opt.selected = true;
-                input.appendChild(opt);
-            }
-            input.addEventListener("change", () => onFieldChanged(field, input.value));
-            populateEngineOptions(input, field);
+            // Unlike a plain "combobox", the option list isn't known
+            // statically (it's whatever search engines the user has
+            // installed, only discoverable at runtime via
+            // browser.search.get()) AND each option can show the engine's
+            // own icon — something a native <select>/<option> can't render
+            // reliably, hence the custom dropdown built by
+            // createEngineDropdown() (src/lib/render.js), shared with the
+            // in-widget per-search picker there. Render a "System default"
+            // -only dropdown immediately so the field isn't empty while the
+            // engine list is in flight, then replace it once
+            // populateEngineOptions() below resolves.
+            let container = document.createElement("span");
+            container.className = "engine-dropdown-container";
+            // Proxy .disabled through to the mounted dropdown so the
+            // generic applyDependencies() (entry.input.disabled = ...) keeps
+            // working unmodified for this field type too.
+            Object.defineProperty(container, "disabled", {
+                configurable: true,
+                get() { return this.dropdown ? this.dropdown.disabled : false; },
+                set(v) { if (this.dropdown) this.dropdown.disabled = v; }
+            });
+            // Same proxy for .value, so syncFieldInputs()'s generic
+            // `entry.input.value = state[id]` also works unmodified if this
+            // field is ever included in a syncFieldInputs() call.
+            Object.defineProperty(container, "value", {
+                configurable: true,
+                get() { return this.dropdown ? this.dropdown.value : state[field.id]; },
+                set(v) { if (this.dropdown) this.dropdown.value = v; }
+            });
+            let initialDropdown = createEngineDropdown({
+                engines: [],
+                currentValue: state[field.id],
+                onSelect: (value) => onFieldChanged(field, value),
+                ariaLabel: _(field.description)
+            });
+            container.appendChild(initialDropdown);
+            container.dropdown = initialDropdown;
+            populateEngineOptions(container, field);
+            input = container;
             break;
         }
         case "entry": {
@@ -300,7 +326,15 @@ async function handleCityNameChange(n, name) {
     await saveField("city" + n + "-lat", r.lat);
     await saveField("city" + n + "-lon", r.lon);
     await saveField("city" + n + "-tz", r.tz || "");
-    syncFieldInputs(["city" + n + "-lat", "city" + n + "-lon", "city" + n + "-tz"]);
+    // Also normalize the visible name to the geocoder's canonical
+    // capitalization (e.g. typed "london" -> saved/shown "London"), so the
+    // input doesn't keep showing whatever raw casing the user typed. This
+    // calls saveField() directly rather than going through an input "change"
+    // event, so it does NOT re-enter onFieldChanged()/handleCityNameChange()
+    // — only real DOM input events do that (see buildFieldControl()'s
+    // "entry" case, which fires onFieldChanged from an "input" listener).
+    await saveField("city" + n + "-name", r.name);
+    syncFieldInputs(["city" + n + "-lat", "city" + n + "-lon", "city" + n + "-tz", "city" + n + "-name"]);
 }
 
 function syncFieldInputs(ids) {
@@ -317,7 +351,11 @@ function buildFieldLabel(field) {
     let label = document.createElement("label");
     let labelText = document.createElement("span");
     labelText.className = "field-label";
-    labelText.textContent = _(field.description);
+    // Append the field's unit (e.g. "minutes", "days") in parentheses when
+    // the schema declares one — spinbutton/scale fields carry a `units`
+    // property that was previously parsed by nothing in this file, so it
+    // silently never reached the UI even though every spinbutton had one.
+    labelText.textContent = _(field.description) + (field.units ? " (" + _(field.units) + ")" : "");
     label.appendChild(labelText);
     if (field.tooltip) {
         let tip = document.createElement("span");

@@ -36,7 +36,7 @@
  */
 
 export const LAYOUT = {
-    pages: ["page-general", "page-location", "page-wikipedia"],
+    pages: ["page-general", "page-location", "page-wikipedia", "page-advanced"],
 
     "page-general": {
         title: "General",
@@ -44,8 +44,7 @@ export const LAYOUT = {
             "section-search", "section-datetime", "section-progress", "section-traditional",
             "section-folkdays", "section-holidays", "section-moon",
             "section-sun", "section-weather", "section-zodiac", "section-namedays",
-            "section-altcal", "section-appearance", "section-background",
-            "section-sync", "section-import-export"
+            "section-altcal", "section-appearance", "section-background"
         ]
     },
     "page-location": {
@@ -55,6 +54,15 @@ export const LAYOUT = {
     "page-wikipedia": {
         title: "Wikipedia",
         sections: ["section-wikipedia"]
+    },
+    // Sync + Import/Export are split into their own page (rather than living
+    // under "page-general") since they're less "everyday" settings than the
+    // rest of General — set apart here to help preserve compatibility
+    // (a device-to-device / version-to-version concern) rather than being
+    // mixed in with widget-display preferences.
+    "page-advanced": {
+        title: "Advanced",
+        sections: ["section-sync", "section-import-export"]
     },
 
     "section-search":       { title: "Search", keys: ["show-search-box", "search-engine"] },

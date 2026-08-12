@@ -51,6 +51,10 @@
     "message": "Egy gazdag funkcionalitású naptár-asztalkalmazás, amely tartalmazza a holdfázisokat, a napkelte és napnyugta időpontját, a csillagjegyeket, a névnapokat, a hagyományos hónapneveket, valamint opcionálisan Wikipédia-funkciókat is.",
     "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
   },
+  "advanced": {
+    "message": "Speciális",
+    "description": "Source: \"Advanced\""
+  },
   "alternate_calendars": {
     "message": "Alternatív naptárak",
     "description": "Source: \"Alternate Calendars\""
@@ -71,6 +75,10 @@
     "message": "A nap cikke",
     "description": "Source: \"Article of the day\""
   },
+  "aurora": {
+    "message": "Sarki fény",
+    "description": "Source: \"Aurora\""
+  },
   "autumn_equinox": {
     "message": "Őszi napéjegyenlőség",
     "description": "Source: \"Autumn equinox\""
@@ -90,6 +98,10 @@
   "background_opacity": {
     "message": "Háttér átlátszósága",
     "description": "Source: \"Background opacity\""
+  },
+  "berry": {
+    "message": "Bogyó",
+    "description": "Source: \"Berry\""
   },
   "births_on_this_day": {
     "message": "Ezen a napon születtek",
@@ -114,6 +126,10 @@
   "cancer": {
     "message": "Rák",
     "description": "Source: \"Cancer\""
+  },
+  "candy": {
+    "message": "Cukorka",
+    "description": "Source: \"Candy\""
   },
   "capricorn": {
     "message": "Bak",
@@ -195,6 +211,10 @@
     "message": "Szabályozza a holdfázis és állatövi szimbólumok megjelenítési méretét.",
     "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
   },
+  "copper": {
+    "message": "Réz",
+    "description": "Source: \"Copper\""
+  },
   "current_date": {
     "message": "Mai dátum",
     "description": "Source: \"Current date\""
@@ -214,6 +234,14 @@
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Egyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztvaEgyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztva",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "custom_image_url": {
+    "message": "Egyéni kép URL",
+    "description": "Source: \"Custom image URL\""
+  },
+  "dark": {
+    "message": "Sötét",
+    "description": "Source: \"Dark\""
   },
   "date_and_time": {
     "message": "Dátum és idő",
@@ -275,6 +303,10 @@
     "message": "Föld",
     "description": "Source: \"Earth\""
   },
+  "ember": {
+    "message": "Parázs",
+    "description": "Source: \"Ember\""
+  },
   "enable_wikipedia_features_requires_internet": {
     "message": "Wikipédia-funkciók engedélyezése (Internet szükséges)",
     "description": "Source: \"Enable Wikipedia features (requires Internet)\""
@@ -331,6 +363,10 @@
     "message": "Tűz",
     "description": "Source: \"Fire\""
   },
+  "firefox_theme_colors": {
+    "message": "Firefox témaszínek",
+    "description": "Source: \"Firefox theme colors\""
+  },
   "first_quarter": {
     "message": "Első negyed",
     "description": "Source: \"First Quarter\""
@@ -354,6 +390,10 @@
   "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_or_image_folder_cycles_through_every_image_if_more_than_one_has_no_effect_for_the_other_background_styles": {
     "message": "„Színátmenet” esetén az összes beépített színátmenet között váltogat. „Egyéni képURL” vagy „Képmappa” esetén az összes képet váltogatja (ha egynél több van). A többi háttérstílusra nincs hatással.",
     "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.\""
+  },
+  "forest": {
+    "message": "Erdő",
+    "description": "Source: \"Forest\""
   },
   "french": {
     "message": "Francia",
@@ -519,6 +559,10 @@
     "message": "Egy további város felirata. Üresen hagyva elrejtve.",
     "description": "Source: \"Label for an additional city. Leave empty to hide.\""
   },
+  "lagoon": {
+    "message": "Lagúna",
+    "description": "Source: \"Lagoon\""
+  },
   "large": {
     "message": "Nagy",
     "description": "Source: \"Large\""
@@ -531,6 +575,10 @@
     "message": "Szélességi fok (pozitív = Észak)",
     "description": "Source: \"Latitude (positive = North)\""
   },
+  "lavender": {
+    "message": "Levendula",
+    "description": "Source: \"Lavender\""
+  },
   "leo": {
     "message": "Oroszlán",
     "description": "Source: \"Leo\""
@@ -538,6 +586,10 @@
   "libra": {
     "message": "Mérleg",
     "description": "Source: \"Libra\""
+  },
+  "light": {
+    "message": "Világos",
+    "description": "Source: \"Light\""
   },
   "light_drizzle": {
     "message": "Gyenge szitálás",
@@ -567,9 +619,17 @@
     "message": "Túlnyomórészt derült",
     "description": "Source: \"Mainly clear\""
   },
+  "match_system": {
+    "message": "Rendszer szerint",
+    "description": "Source: \"Match system\""
+  },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "A „Rendszer követése” automatikusan igazodik az operációs rendszer/böngésző világos vagy sötét beállításához. A Világos/Sötét kényszeríti az adott témát a rendszerbeállítástól függetlenül, egységesen az Új lapon, a felugró ablakban és a teljes nézetben.",
     "description": "Source: \"\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.\""
+  },
+  "meadow": {
+    "message": "Rét",
+    "description": "Source: \"Meadow\""
   },
   "medium": {
     "message": "Közepes",
@@ -578,6 +638,10 @@
   "metal": {
     "message": "Fém",
     "description": "Source: \"Metal\""
+  },
+  "mint": {
+    "message": "Menta",
+    "description": "Source: \"Mint\""
   },
   "minutes": {
     "message": "perc",
@@ -654,6 +718,10 @@
   "none_hidden": {
     "message": "Nincs (rejtett)",
     "description": "Source: \"None (hidden)\""
+  },
+  "ocean": {
+    "message": "Óceán",
+    "description": "Source: \"Ocean\""
   },
   "old_english_anglo_saxon": {
     "message": "Régi angol (angolszász)",
@@ -911,6 +979,10 @@
     "message": "Megjeleníti az aktuális hőmérsékletet és időjárási viszonyokat az elsődleges helyszínen, valamint minden olyan további városnál lent, amelynek meg van adva a neve. Bekapcsoláskor engedélyt kér az api.open-meteo.com eléréséhez, amely egy ingyenes, kulcs nélküli időjárás API — nincs szükség fiókra vagy API-kulcsra.",
     "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
   },
+  "slate": {
+    "message": "Pala",
+    "description": "Source: \"Slate\""
+  },
   "slight_rain": {
     "message": "Gyenge eső",
     "description": "Source: \"Slight rain\""
@@ -938,6 +1010,10 @@
   "snow_grains": {
     "message": "Szemcsés hó",
     "description": "Source: \"Snow grains\""
+  },
+  "solid_color": {
+    "message": "Homogén szín",
+    "description": "Source: \"Solid color\""
   },
   "spanish": {
     "message": "Spanyol",
@@ -975,6 +1051,10 @@
     "message": "Beállítások szinkronizálása az eszközök között a Firefox Sync használatával",
     "description": "Source: \"Sync settings across devices via Firefox Sync\""
   },
+  "system_default": {
+    "message": "Rendszer alapértelmezett",
+    "description": "Source: \"System default\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "A „Rendszer alapértelmezett” azt a keresőmotort használja, ami éppen a Firefox alapértelmezettje. Ha egy konkrétat választasz, mindig azt fogja használni, függetlenül a Firefox alapértelmezettjétől.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -990,6 +1070,10 @@
   "text_only": {
     "message": "Csak szöveg",
     "description": "Source: \"Text only\""
+  },
+  "theme_default": {
+    "message": "Téma alapértelmezett",
+    "description": "Source: \"Theme default\""
   },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_image_folder_lets_you_pick_a_local_folder_of_images_to_rotate_through_stored_in_this_browser_profile_s_indexeddb_rather_than_in_your_synced_settings_see_the_note_under_that_option_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "Ez a kiegészítő saját háttere, függetlenül a Firefox beépített Új lap háttérkép-választójától (amelyet a kiegészítők nem tudnak olvasni vagy beállítani). A „Téma alapértelmezett” a fenti világos/sötét paletta szerint működik. A „Firefox téma színei” a telepített Firefox témád színeit olvassa be a browser.theme API-n keresztül — ez egy valódi, önálló WebExtension API a telepített témákhoz, nem az Új lap háttérkép-választó —, és visszaáll az alapértelmezett palettára, ha az aktív témának nincsenek hasznos színei. A „Képmappa” lehetővé teszi, hogy egy helyi képmappát válassz, amelyen keresztül forognak a háttérképek; ezek ennek a böngészőprofilnak az IndexedDB-jében tárolódnak, nem a szinkronizált beállításaidban — lásd a megjegyzést az adott opciónál. Az eszköztár felugró ablaka mindig a sima témapalettát használja, függetlenül ettől a beállítástól.",
@@ -1034,6 +1118,10 @@
   "traditional_month_names": {
     "message": "Hagyományos hónapnevek",
     "description": "Source: \"Traditional Month Names\""
+  },
+  "twilight": {
+    "message": "Alkonyat",
+    "description": "Source: \"Twilight\""
   },
   "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
     "message": "Írj be egy városnevet — a koordináták 1,5 másodperc után automatikusan kitöltődnek.",

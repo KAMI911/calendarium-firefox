@@ -2,14 +2,15 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
     getEls, renderSearchBox, submitSearch, initSearchBox,
-    getInstalledSearchEngines, populateSearchEngineSelect
+    getInstalledSearchEngines, getInstalledSearchEnginesDetailed,
+    populateSearchEngineSelect, createEngineDropdown
 } from "../../src/lib/render.js";
 import { DEFAULTS } from "../../src/settings/schema.js";
 
 function freshDom() {
     document.body.innerHTML = `
       <form id="cal-search-form" hidden>
-        <select id="cal-search-engine-select" hidden></select>
+        <span id="cal-search-engine-select" hidden></span>
         <input id="cal-search-input" type="search">
         <button type="submit">Search</button>
       </form>
@@ -87,6 +88,11 @@ describe("initSearchBox", () => {
     beforeEach(() => { els = freshDom(); });
     afterEach(() => { delete global.browser; });
 
+    it("sets a translated placeholder on the search input", () => {
+        initSearchBox(els, null);
+        expect(els.searchInput.placeholder).toBeTruthy();
+    });
+
     it("wires the form's submit event to call browser.search.search and clear the input", async () => {
         let searchMock = vi.fn(() => Promise.resolve());
         global.browser = { search: { search: searchMock } };
@@ -132,7 +138,14 @@ describe("initSearchBox", () => {
         await Promise.resolve(); await Promise.resolve(); await Promise.resolve();
 
         expect(els.searchEngineSelect.hasAttribute("hidden")).toBe(false);
-        els.searchEngineSelect.value = "Bing";
+        // Pick "Bing" through the real dropdown UI (button + listbox), not
+        // by poking a .value setter — this exercises the actual click path.
+        let toggle = els.searchEngineSelect.querySelector(".engine-dropdown-toggle");
+        toggle.click();
+        let bingOption = [...els.searchEngineSelect.querySelectorAll(".engine-dropdown-option")]
+            .find((b) => b.textContent.includes("Bing"));
+        bingOption.click();
+
         els.searchInput.value = "weather";
         els.searchForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
         await Promise.resolve(); await Promise.resolve();
@@ -162,40 +175,139 @@ describe("getInstalledSearchEngines", () => {
     });
 });
 
+describe("getInstalledSearchEnginesDetailed", () => {
+    afterEach(() => { delete global.browser; });
+
+    it("returns [] when browser.search is unavailable", async () => {
+        global.browser = {};
+        expect(await getInstalledSearchEnginesDetailed()).toEqual([]);
+    });
+
+    it("returns {name, favIconUrl} pairs, defaulting favIconUrl to null when absent", async () => {
+        global.browser = {
+            search: {
+                get: () => Promise.resolve([
+                    { name: "Google", favIconUrl: "moz-extension://abc/google.png" },
+                    { name: "Bing" }
+                ])
+            }
+        };
+        expect(await getInstalledSearchEnginesDetailed()).toEqual([
+            { name: "Google", favIconUrl: "moz-extension://abc/google.png" },
+            { name: "Bing", favIconUrl: null }
+        ]);
+    });
+});
+
+describe("createEngineDropdown", () => {
+    afterEach(() => { document.body.innerHTML = ""; });
+
+    it("always includes a 'System default' entry plus every given engine", () => {
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }, { name: "Bing" }], currentValue: "default" });
+        let names = [...dropdown.querySelectorAll(".engine-dropdown-option")].map((b) => b.textContent);
+        expect(names.some((n) => n.includes("Google"))).toBe(true);
+        expect(names.some((n) => n.includes("Bing"))).toBe(true);
+        expect(dropdown.querySelectorAll(".engine-dropdown-option").length).toBe(3);
+    });
+
+    it("starts closed, opens on toggle click, and shows the option list", () => {
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }], currentValue: "default" });
+        document.body.appendChild(dropdown);
+        let list = dropdown.querySelector(".engine-dropdown-list");
+        let toggle = dropdown.querySelector(".engine-dropdown-toggle");
+        expect(list.hidden).toBe(true);
+        toggle.click();
+        expect(list.hidden).toBe(false);
+        expect(toggle.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("selecting an option calls onSelect with its value, updates .value, and closes the list", () => {
+        let onSelect = vi.fn();
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }, { name: "Bing" }], currentValue: "default", onSelect });
+        document.body.appendChild(dropdown);
+        dropdown.querySelector(".engine-dropdown-toggle").click();
+        let bingOption = [...dropdown.querySelectorAll(".engine-dropdown-option")].find((b) => b.textContent.includes("Bing"));
+        bingOption.click();
+
+        expect(onSelect).toHaveBeenCalledWith("Bing");
+        expect(dropdown.value).toBe("Bing");
+        expect(dropdown.querySelector(".engine-dropdown-list").hidden).toBe(true);
+    });
+
+    it("closes on Escape without changing the selection", () => {
+        let onSelect = vi.fn();
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }], currentValue: "default", onSelect });
+        document.body.appendChild(dropdown);
+        let toggle = dropdown.querySelector(".engine-dropdown-toggle");
+        toggle.click();
+        expect(dropdown.querySelector(".engine-dropdown-list").hidden).toBe(false);
+
+        toggle.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+        expect(dropdown.querySelector(".engine-dropdown-list").hidden).toBe(true);
+        expect(onSelect).not.toHaveBeenCalled();
+        expect(dropdown.value).toBe("default");
+    });
+
+    it("closes when clicking outside the control", () => {
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }], currentValue: "default" });
+        document.body.appendChild(dropdown);
+        let outside = document.createElement("div");
+        document.body.appendChild(outside);
+
+        dropdown.querySelector(".engine-dropdown-toggle").click();
+        expect(dropdown.querySelector(".engine-dropdown-list").hidden).toBe(false);
+
+        outside.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        expect(dropdown.querySelector(".engine-dropdown-list").hidden).toBe(true);
+    });
+
+    it(".disabled proxies to the toggle button's disabled state", () => {
+        let dropdown = createEngineDropdown({ engines: [{ name: "Google" }], currentValue: "default" });
+        expect(dropdown.disabled).toBe(false);
+        dropdown.disabled = true;
+        expect(dropdown.querySelector(".engine-dropdown-toggle").disabled).toBe(true);
+        expect(dropdown.disabled).toBe(true);
+    });
+});
+
 describe("populateSearchEngineSelect", () => {
-    let select;
+    let container;
     beforeEach(() => {
-        document.body.innerHTML = `<select id="sel" hidden></select>`;
-        select = document.getElementById("sel");
+        document.body.innerHTML = `<span id="sel" hidden></span>`;
+        container = document.getElementById("sel");
     });
     afterEach(() => { delete global.browser; });
 
-    it("stays hidden when fewer than 2 engines are discoverable", async () => {
+    it("stays hidden and empty when fewer than 2 engines are discoverable", async () => {
         global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }]) } };
-        await populateSearchEngineSelect(select, "default");
-        expect(select.hasAttribute("hidden")).toBe(true);
+        await populateSearchEngineSelect(container, "default");
+        expect(container.hasAttribute("hidden")).toBe(true);
+        expect(container.dropdown).toBeNull();
     });
 
-    it("populates 'System default' + every engine and unhides when 2+ are discoverable", async () => {
+    it("mounts a dropdown with 'System default' + every engine and unhides when 2+ are discoverable", async () => {
         global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
-        await populateSearchEngineSelect(select, "default");
-        expect(select.hasAttribute("hidden")).toBe(false);
-        expect([...select.options].map((o) => o.value)).toEqual(["default", "Google", "DuckDuckGo"]);
+        await populateSearchEngineSelect(container, "default");
+        expect(container.hasAttribute("hidden")).toBe(false);
+        expect(container.dropdown).toBeTruthy();
+        let names = [...container.querySelectorAll(".engine-dropdown-option")].map((b) => b.textContent);
+        expect(names.some((n) => n.includes("Google"))).toBe(true);
+        expect(names.some((n) => n.includes("DuckDuckGo"))).toBe(true);
     });
 
     it("pre-selects the persisted default engine when it's among the installed ones", async () => {
         global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
-        await populateSearchEngineSelect(select, "DuckDuckGo");
-        expect(select.value).toBe("DuckDuckGo");
+        await populateSearchEngineSelect(container, "DuckDuckGo");
+        expect(container.dropdown.value).toBe("DuckDuckGo");
     });
 
     it("falls back to 'default' when the persisted engine isn't among the installed ones", async () => {
         global.browser = { search: { get: () => Promise.resolve([{ name: "Google" }, { name: "DuckDuckGo" }]) } };
-        await populateSearchEngineSelect(select, "SomeRemovedEngine");
-        expect(select.value).toBe("default");
+        await populateSearchEngineSelect(container, "SomeRemovedEngine");
+        expect(container.dropdown.value).toBe("default");
     });
 
-    it("does not throw when selectEl is null", async () => {
+    it("does not throw when the container is null", async () => {
         await expect(populateSearchEngineSelect(null, "default")).resolves.toBeUndefined();
     });
 });

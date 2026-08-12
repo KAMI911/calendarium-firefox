@@ -162,3 +162,82 @@ h1 { font-size: 1.4em; margin-bottom: 4px; }
   color: var(--muted);
   margin: -4px 0 8px 0;
 }
+
+/* Custom search-engine dropdown (createEngineDropdown() in lib/render.js,
+   shared with the in-widget per-search picker in newtab.css) — replaces
+   the "Search engine" field's plain <select>, since native <option>
+   elements can't reliably render each engine's icon. */
+.engine-dropdown-container { display: contents; }
+
+.engine-dropdown {
+  position: relative;
+  min-width: 160px;
+}
+
+.engine-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 160px;
+  background: var(--field-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+.engine-dropdown-toggle:hover { border-color: var(--accent); }
+.engine-dropdown-toggle:disabled { cursor: default; opacity: 0.6; }
+
+.engine-dropdown-toggle-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.engine-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.engine-dropdown-list {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  margin: 2px 0 0 0;
+  padding: 4px 0;
+  min-width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--field-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.engine-dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.9em;
+  text-align: left;
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.engine-dropdown-option:hover,
+.engine-dropdown-option:focus-visible { background: var(--bg); }
+.engine-dropdown-option[aria-selected="true"] { font-weight: bold; }

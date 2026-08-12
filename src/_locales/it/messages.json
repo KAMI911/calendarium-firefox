@@ -51,6 +51,10 @@
     "message": "Un desklet calendario completo con fase lunare, alba/tramonto, zodiaco, onomastico, nomi tradizionali dei mesi e funzioni Wikipedia opzionali.",
     "description": "Source: \"A rich calendar desklet with moon phase, sunrise/sunset, zodiac, name days, traditional month names, and optional Wikipedia features.\""
   },
+  "advanced": {
+    "message": "Avanzate",
+    "description": "Source: \"Advanced\""
+  },
   "alternate_calendars": {
     "message": "Calendari alternativi",
     "description": "Source: \"Alternate Calendars\""
@@ -71,6 +75,10 @@
     "message": "Articolo del giorno",
     "description": "Source: \"Article of the day\""
   },
+  "aurora": {
+    "message": "Aurora",
+    "description": "Source: \"Aurora\""
+  },
   "autumn_equinox": {
     "message": "Equinozio d'autunno",
     "description": "Source: \"Autumn equinox\""
@@ -90,6 +98,10 @@
   "background_opacity": {
     "message": "Opacità sfondo",
     "description": "Source: \"Background opacity\""
+  },
+  "berry": {
+    "message": "Bacca",
+    "description": "Source: \"Berry\""
   },
   "births_on_this_day": {
     "message": "Nascite di questo giorno",
@@ -114,6 +126,10 @@
   "cancer": {
     "message": "Cancro",
     "description": "Source: \"Cancer\""
+  },
+  "candy": {
+    "message": "Caramella",
+    "description": "Source: \"Candy\""
   },
   "capricorn": {
     "message": "Capricorno",
@@ -195,6 +211,10 @@
     "message": "Controlla la dimensione di visualizzazione dei simboli di fase lunare e zodiaco.",
     "description": "Source: \"Controls the display size of moon phase and zodiac symbols.\""
   },
+  "copper": {
+    "message": "Rame",
+    "description": "Source: \"Copper\""
+  },
   "current_date": {
     "message": "Data corrente",
     "description": "Source: \"Current date\""
@@ -214,6 +234,14 @@
   "custom_date_format_strftime_only_active_when_custom_is_selected_above": {
     "message": "Formato data personalizzato (strftime) — attivo solo quando è selezionato 'Personalizzato'Formato data personalizzato (strftime) — attivo solo quando è selezionato 'Personalizzato' sopra",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
+  },
+  "custom_image_url": {
+    "message": "URL immagine personalizzata",
+    "description": "Source: \"Custom image URL\""
+  },
+  "dark": {
+    "message": "Scuro",
+    "description": "Source: \"Dark\""
   },
   "date_and_time": {
     "message": "Data e ora",
@@ -275,6 +303,10 @@
     "message": "Terra",
     "description": "Source: \"Earth\""
   },
+  "ember": {
+    "message": "Brace",
+    "description": "Source: \"Ember\""
+  },
   "enable_wikipedia_features_requires_internet": {
     "message": "Abilita funzioni Wikipedia (richiede Internet)",
     "description": "Source: \"Enable Wikipedia features (requires Internet)\""
@@ -331,6 +363,10 @@
     "message": "Fuoco",
     "description": "Source: \"Fire\""
   },
+  "firefox_theme_colors": {
+    "message": "Colori del tema di Firefox",
+    "description": "Source: \"Firefox theme colors\""
+  },
   "first_quarter": {
     "message": "Primo quarto",
     "description": "Source: \"First Quarter\""
@@ -354,6 +390,10 @@
   "for_gradient_cycles_through_all_built_in_gradients_for_custom_image_url_or_image_folder_cycles_through_every_image_if_more_than_one_has_no_effect_for_the_other_background_styles": {
     "message": "Per \"Gradiente\", scorre tutti i gradienti integrati. Per \"URL immagine personalizzato\" o \"Cartella immagini\", scorre tutte le immagini (se più di una). Non ha effetto sugli altri stili di sfondo.",
     "description": "Source: \"For \"Gradient\", cycles through all built-in gradients. For \"Custom image URL\" or \"Image folder\", cycles through every image (if more than one). Has no effect for the other background styles.\""
+  },
+  "forest": {
+    "message": "Foresta",
+    "description": "Source: \"Forest\""
   },
   "french": {
     "message": "Francese",
@@ -519,6 +559,10 @@
     "message": "Etichetta per una città aggiuntiva. Lascia vuoto per nascondere.",
     "description": "Source: \"Label for an additional city. Leave empty to hide.\""
   },
+  "lagoon": {
+    "message": "Laguna",
+    "description": "Source: \"Lagoon\""
+  },
   "large": {
     "message": "Grande",
     "description": "Source: \"Large\""
@@ -531,6 +575,10 @@
     "message": "Latitudine (positivo = Nord)",
     "description": "Source: \"Latitude (positive = North)\""
   },
+  "lavender": {
+    "message": "Lavanda",
+    "description": "Source: \"Lavender\""
+  },
   "leo": {
     "message": "Leone",
     "description": "Source: \"Leo\""
@@ -538,6 +586,10 @@
   "libra": {
     "message": "Bilancia",
     "description": "Source: \"Libra\""
+  },
+  "light": {
+    "message": "Chiaro",
+    "description": "Source: \"Light\""
   },
   "light_drizzle": {
     "message": "Pioviggine debole",
@@ -567,9 +619,17 @@
     "message": "Prevalentemente sereno",
     "description": "Source: \"Mainly clear\""
   },
+  "match_system": {
+    "message": "Segui il sistema",
+    "description": "Source: \"Match system\""
+  },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "\"Segui sistema\" segue automaticamente la preferenza chiara o scura del tuo sistema operativo/browser. Chiaro/Scuro forza quella tavolozza indipendentemente dall'impostazione di sistema, allo stesso modo nella pagina Nuova scheda, nel popup e nella vista completa.",
     "description": "Source: \"\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.\""
+  },
+  "meadow": {
+    "message": "Prato",
+    "description": "Source: \"Meadow\""
   },
   "medium": {
     "message": "Medio",
@@ -578,6 +638,10 @@
   "metal": {
     "message": "Metallo",
     "description": "Source: \"Metal\""
+  },
+  "mint": {
+    "message": "Menta",
+    "description": "Source: \"Mint\""
   },
   "minutes": {
     "message": "minuti",
@@ -654,6 +718,10 @@
   "none_hidden": {
     "message": "Nessuno (nascosto)",
     "description": "Source: \"None (hidden)\""
+  },
+  "ocean": {
+    "message": "Oceano",
+    "description": "Source: \"Ocean\""
   },
   "old_english_anglo_saxon": {
     "message": "Inglese antico (anglosassone)",
@@ -911,6 +979,10 @@
     "message": "Mostra la temperatura e le condizioni attuali per la posizione principale e per ogni città aggiuntiva qui sotto a cui è stato assegnato un nome. L'attivazione richiede il permesso di contattare api.open-meteo.com, un'API meteo gratuita e senza chiave — non serve alcun account o chiave API.",
     "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
   },
+  "slate": {
+    "message": "Ardesia",
+    "description": "Source: \"Slate\""
+  },
   "slight_rain": {
     "message": "Pioggia debole",
     "description": "Source: \"Slight rain\""
@@ -938,6 +1010,10 @@
   "snow_grains": {
     "message": "Granuli di neve",
     "description": "Source: \"Snow grains\""
+  },
+  "solid_color": {
+    "message": "Colore pieno",
+    "description": "Source: \"Solid color\""
   },
   "spanish": {
     "message": "Spagnolo",
@@ -975,6 +1051,10 @@
     "message": "Sincronizza le impostazioni tra i dispositivi tramite Firefox Sync",
     "description": "Source: \"Sync settings across devices via Firefox Sync\""
   },
+  "system_default": {
+    "message": "Predefinito di sistema",
+    "description": "Source: \"System default\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "\"Predefinito di sistema\" usa il motore di ricerca predefinito attuale di Firefox. Scegliendone uno specifico, verrà sempre usato quello, indipendentemente dal tuo predefinito di Firefox.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -990,6 +1070,10 @@
   "text_only": {
     "message": "Solo testo",
     "description": "Source: \"Text only\""
+  },
+  "theme_default": {
+    "message": "Predefinito del tema",
+    "description": "Source: \"Theme default\""
   },
   "this_is_the_extension_s_own_background_independent_of_firefox_s_built_in_new_tab_wallpaper_picker_which_extensions_cannot_read_or_set_theme_default_follows_the_light_dark_palette_above_firefox_theme_colors_reads_your_installed_firefox_theme_s_colors_via_the_browser_theme_api_a_real_separate_webextension_api_for_installed_themes_not_the_new_tab_wallpaper_picker_falling_back_to_the_default_palette_if_the_active_theme_has_no_useful_colors_image_folder_lets_you_pick_a_local_folder_of_images_to_rotate_through_stored_in_this_browser_profile_s_indexeddb_rather_than_in_your_synced_settings_see_the_note_under_that_option_the_toolbar_popup_always_uses_the_plain_theme_palette_regardless_of_this_setting": {
     "message": "Questo è lo sfondo proprio dell'estensione, indipendente dal selettore di sfondo integrato della nuova scheda di Firefox (che le estensioni non possono leggere o impostare). \"Tema predefinito\" segue la tavolozza chiara/scura sopra indicata. \"Colori del tema di Firefox\" legge i colori del tuo tema Firefox installato tramite l'API browser.theme — una vera e propria API WebExtension separata per i temi installati, non il selettore di sfondo della nuova scheda — tornando alla tavolozza predefinita se il tema attivo non ha colori utili. \"Cartella immagini\" ti permette di scegliere una cartella locale di immagini tra cui ruotare come sfondo; vengono memorizzate nell'IndexedDB di questo profilo del browser, non nelle tue impostazioni sincronizzate — vedi la nota accanto a quell'opzione. Il popup della barra degli strumenti usa sempre la tavolozza del tema semplice, indipendentemente da questa impostazione.",
@@ -1034,6 +1118,10 @@
   "traditional_month_names": {
     "message": "Nomi dei mesi tradizionali",
     "description": "Source: \"Traditional Month Names\""
+  },
+  "twilight": {
+    "message": "Crepuscolo",
+    "description": "Source: \"Twilight\""
   },
   "type_a_city_name_coordinates_are_filled_in_automatically_after_1_5_seconds": {
     "message": "Digita il nome di una città — le coordinate vengono compilate automaticamente dopo 1,5 secondi.",

@@ -636,17 +636,87 @@ body {
 
 /* Per-search engine picker — only shown when 2+ engines are installed;
    overrides the persisted default (Options > Search) for one search only,
-   see populateSearchEngineSelect() in lib/render.js. */
+   see populateSearchEngineSelect() in lib/render.js. This wraps a
+   createEngineDropdown() (a custom button+listbox control, not a native
+   <select> — see that function's doc comment for why: native <option>
+   elements can't reliably show each engine's icon), so it's a plain
+   layout wrapper rather than something styled to look like a form control
+   itself; the actual look lives on .engine-dropdown-toggle below. */
 .calendarium-search-engine-select {
+  display: contents;
+}
+
+.engine-dropdown {
+  position: relative;
   flex: 0 0 auto;
+}
+
+.engine-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   max-width: 8em;
   background: var(--cal-input-bg);
   border: 1px solid var(--cal-input-border);
   border-radius: 6px;
   color: var(--cal-input-text);
+  font: inherit;
   font-size: 0.85em;
   padding: 6px 4px;
+  cursor: pointer;
 }
+.engine-dropdown-toggle:hover { background: var(--cal-input-hover-bg); }
+.engine-dropdown-toggle:disabled { cursor: default; opacity: 0.6; }
+
+.engine-dropdown-toggle-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.engine-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.engine-dropdown-list {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  margin: 2px 0 0 0;
+  padding: 4px 0;
+  min-width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--cal-input-bg);
+  border: 1px solid var(--cal-input-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.engine-dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--cal-input-text);
+  font: inherit;
+  font-size: 0.9em;
+  text-align: left;
+  padding: 6px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.engine-dropdown-option:hover,
+.engine-dropdown-option:focus-visible { background: var(--cal-input-hover-bg); }
+.engine-dropdown-option[aria-selected="true"] { font-weight: bold; }
 
 .calendarium-search-submit {
   background: var(--cal-input-bg);

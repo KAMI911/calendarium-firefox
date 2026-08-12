@@ -1190,51 +1190,230 @@ export async function submitSearch(query, resolveTabId, engine) {
 }
 
 /**
- * List the search engines Firefox currently has installed, as plain names
- * (the same identifiers `browser.search.search({engine})` accepts).
- * Guarded like every other optional-API touch in this codebase — resolves
- * to `[]` rather than throwing if `browser.search` is unavailable, the
- * "search" permission isn't granted yet, or the call itself rejects.
- * Shared by `populateSearchEngineSelect()` below (the in-widget, per-search
- * picker) and `options.js`'s persistent-default picker, so the engine list
- * is only ever fetched through one code path.
+ * List the search engines Firefox currently has installed, with their icon
+ * URL (if any) — the raw shape returned by browser.search.get()'s
+ * SearchEngine objects, trimmed to just {name, favIconUrl}. Guarded like
+ * every other optional-API touch in this codebase — resolves to `[]`
+ * rather than throwing if `browser.search` is unavailable, the "search"
+ * permission isn't granted yet, or the call itself rejects.
+ *
+ * `favIconUrl` on a real Firefox install is documented (MDN's
+ * browser.search.SearchEngine) as normally pointing at an icon bundled
+ * with the engine itself or with Firefox (a moz-extension:// or similar
+ * local URL), not a remote fetch — so rendering it via a plain <img> here
+ * should not require any new host permissions. TODO/risk: if a
+ * user-installed third-party OpenSearch engine ever supplies a genuine
+ * https:// favIconUrl, loading it would be a real cross-origin request;
+ * createEngineDropdown()'s <img onerror> fallback (a plain search emoji)
+ * covers the failure case gracefully either way, so this degrades safely
+ * even if that assumption ever turns out wrong for some engine.
  */
-export async function getInstalledSearchEngines() {
+export async function getInstalledSearchEnginesDetailed() {
     if (typeof browser === "undefined" || !browser.search || !browser.search.get) return [];
     try {
         let engines = await browser.search.get();
-        return Array.isArray(engines) ? engines.filter((e) => e && e.name).map((e) => e.name) : [];
+        return Array.isArray(engines)
+            ? engines.filter((e) => e && e.name).map((e) => ({ name: e.name, favIconUrl: e.favIconUrl || null }))
+            : [];
     } catch (_e) {
         return [];
     }
 }
 
 /**
- * Fill the in-widget search-engine <select> (distinct from options.js's
- * persistent-default combobox): a "System default" option plus every
- * installed engine, pre-selected to `defaultEngine` (the persisted
- * setting) but changeable per search without writing anything back to
- * storage — see initSearchBox() below, which just reads whatever this
- * element's current value is at submit time. Hidden entirely when there's
- * nothing to choose between (no engines discoverable, or exactly one).
+ * List the search engines Firefox currently has installed, as plain names
+ * (the same identifiers `browser.search.search({engine})` accepts).
+ * Thin wrapper around getInstalledSearchEnginesDetailed() for callers that
+ * only need the names, not the icons.
  */
-export async function populateSearchEngineSelect(selectEl, defaultEngine) {
-    if (!selectEl) return;
-    let engines = await getInstalledSearchEngines();
-    if (engines.length < 2) { selectEl.setAttribute("hidden", ""); return; }
-    selectEl.textContent = "";
-    let defaultOpt = document.createElement("option");
-    defaultOpt.value = "default";
-    defaultOpt.textContent = "System default";
-    selectEl.appendChild(defaultOpt);
-    for (let name of engines) {
-        let opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
-        selectEl.appendChild(opt);
+export async function getInstalledSearchEngines() {
+    return (await getInstalledSearchEnginesDetailed()).map((e) => e.name);
+}
+
+/** Build a single engine option's icon element: the engine's own favicon when available, falling back to a generic search emoji on missing/broken URLs (native <option> elements can't reliably render <img>s at all, which is the whole reason this is a custom dropdown instead of a <select>). */
+function buildEngineIcon(favIconUrl) {
+    if (favIconUrl) {
+        let img = document.createElement("img");
+        img.src = favIconUrl;
+        img.alt = "";
+        img.className = "engine-icon";
+        img.addEventListener("error", () => {
+            let fallback = document.createElement("span");
+            fallback.className = "engine-icon engine-icon-fallback";
+            fallback.textContent = "🔍";
+            img.replaceWith(fallback);
+        });
+        return img;
     }
-    selectEl.value = (defaultEngine && engines.includes(defaultEngine)) ? defaultEngine : "default";
-    selectEl.removeAttribute("hidden");
+    let fallback = document.createElement("span");
+    fallback.className = "engine-icon engine-icon-fallback";
+    fallback.textContent = "🔍";
+    return fallback;
+}
+
+/**
+ * Build a custom search-engine picker that CAN show each engine's icon,
+ * unlike a native <select>/<option> list. Shared by options.js's
+ * persistent-default "Search engine" field and this module's own
+ * in-widget per-search picker (see populateSearchEngineSelect() below) —
+ * one implementation, two mount points.
+ *
+ * `engines` is an array of {name, favIconUrl} (as returned by
+ * getInstalledSearchEnginesDetailed()) — a "System default" entry (value
+ * "default") is always prepended internally, so callers don't need to add
+ * it themselves. `currentValue` preselects an entry by value ("default" or
+ * an engine name); `onSelect(value)` fires whenever the user picks a
+ * (possibly unchanged) option; `ariaLabel` labels the toggle button for
+ * screen readers.
+ *
+ * Returns a DOM element (the dropdown's root `<div>`) exposing `.value`
+ * (get/set) and `.disabled` (get/set) accessors so existing generic code
+ * that treats form controls uniformly (options.js's applyDependencies()/
+ * syncFieldInputs()) keeps working without special-casing this field type
+ * beyond what's already needed for construction.
+ *
+ * Keyboard support is intentionally minimal: Escape closes the list
+ * without changing the selection, Enter/Space activates a focused option
+ * button (native <button> behavior, no extra wiring needed), and clicking
+ * outside the control closes it. Full ARIA-listbox roving-tabindex focus
+ * management is out of scope — correct and simple beats exhaustively
+ * spec-complete here.
+ */
+export function createEngineDropdown({ engines = [], currentValue, onSelect, ariaLabel } = {}) {
+    let options = [{ name: _("System default"), value: "default", favIconUrl: null }]
+        .concat((engines || []).map((e) => ({ name: e.name, value: e.name, favIconUrl: e.favIconUrl })));
+
+    let selected = options.find((o) => o.value === currentValue) || options[0];
+
+    let root = document.createElement("div");
+    root.className = "engine-dropdown";
+
+    let toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "engine-dropdown-toggle";
+    toggle.setAttribute("aria-haspopup", "listbox");
+    toggle.setAttribute("aria-expanded", "false");
+    if (ariaLabel) toggle.setAttribute("aria-label", ariaLabel);
+
+    let toggleLabel = document.createElement("span");
+    toggleLabel.className = "engine-dropdown-toggle-label";
+
+    function setToggleDisplay(opt) {
+        let icon = buildEngineIcon(opt.favIconUrl);
+        if (toggle.firstChild) toggle.replaceChild(icon, toggle.firstChild);
+        else toggle.appendChild(icon);
+        toggleLabel.textContent = opt.name;
+    }
+
+    toggle.appendChild(buildEngineIcon(selected.favIconUrl));
+    toggle.appendChild(toggleLabel);
+    toggleLabel.textContent = selected.name;
+
+    let list = document.createElement("ul");
+    list.setAttribute("role", "listbox");
+    list.className = "engine-dropdown-list";
+    list.hidden = true;
+
+    function closeList() {
+        list.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+    }
+    function openList() {
+        list.hidden = false;
+        toggle.setAttribute("aria-expanded", "true");
+    }
+
+    let optionButtons = [];
+    for (let opt of options) {
+        let li = document.createElement("li");
+        li.setAttribute("role", "presentation");
+        let optBtn = document.createElement("button");
+        optBtn.type = "button";
+        optBtn.setAttribute("role", "option");
+        optBtn.className = "engine-dropdown-option";
+        optBtn.setAttribute("aria-selected", opt.value === selected.value ? "true" : "false");
+        optBtn.appendChild(buildEngineIcon(opt.favIconUrl));
+        let optLabel = document.createElement("span");
+        optLabel.textContent = opt.name;
+        optBtn.appendChild(optLabel);
+        optBtn.addEventListener("click", () => {
+            selected = opt;
+            setToggleDisplay(opt);
+            for (let b of optionButtons) b.setAttribute("aria-selected", b === optBtn ? "true" : "false");
+            closeList();
+            toggle.focus();
+            if (onSelect) onSelect(opt.value);
+        });
+        li.appendChild(optBtn);
+        list.appendChild(li);
+        optionButtons.push(optBtn);
+    }
+
+    toggle.addEventListener("click", () => {
+        if (list.hidden) openList(); else closeList();
+    });
+    toggle.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeList();
+    });
+    list.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") { closeList(); toggle.focus(); }
+    });
+    document.addEventListener("click", (event) => {
+        if (!root.isConnected) return;
+        if (!root.contains(event.target)) closeList();
+    });
+
+    root.appendChild(toggle);
+    root.appendChild(list);
+
+    Object.defineProperty(root, "value", {
+        configurable: true,
+        get() { return selected.value; },
+        set(value) {
+            let opt = options.find((o) => o.value === value) || options[0];
+            selected = opt;
+            setToggleDisplay(opt);
+            for (let b of optionButtons) {
+                let optValue = options[optionButtons.indexOf(b)].value;
+                b.setAttribute("aria-selected", optValue === opt.value ? "true" : "false");
+            }
+        }
+    });
+    Object.defineProperty(root, "disabled", {
+        configurable: true,
+        get() { return toggle.disabled; },
+        set(value) { toggle.disabled = !!value; root.classList.toggle("engine-dropdown-disabled", !!value); }
+    });
+
+    return root;
+}
+
+/**
+ * Fill the in-widget search-engine picker container (distinct from
+ * options.js's persistent-default field): mounts a createEngineDropdown()
+ * with a "System default" entry plus every installed engine, pre-selected
+ * to `defaultEngine` (the persisted setting) but changeable per search
+ * without writing anything back to storage — see initSearchBox() below,
+ * which just reads the mounted dropdown's current value at submit time.
+ * `container` stays hidden entirely (and empty) when there's nothing to
+ * choose between (no engines discoverable, or exactly one) — matching the
+ * previous <select>-based behavior.
+ */
+export async function populateSearchEngineSelect(container, defaultEngine) {
+    if (!container) return;
+    let engines = await getInstalledSearchEnginesDetailed();
+    if (engines.length < 2) {
+        container.setAttribute("hidden", "");
+        container.textContent = "";
+        container.dropdown = null;
+        return;
+    }
+    container.textContent = "";
+    let currentValue = (defaultEngine && engines.some((e) => e.name === defaultEngine)) ? defaultEngine : "default";
+    let dropdown = createEngineDropdown({ engines, currentValue, ariaLabel: _("Search engine") });
+    container.appendChild(dropdown);
+    container.dropdown = dropdown;
+    container.removeAttribute("hidden");
 }
 
 /**
@@ -1244,12 +1423,14 @@ export async function populateSearchEngineSelect(selectEl, defaultEngine) {
  * plain value because the caller's `state` is reloaded/reassigned after
  * settings change and this listener is registered once up front, before
  * settings have even loaded for the first time. Also populates and wires
- * up `els.searchEngineSelect` (if present in the markup) as a per-search
- * override of that default: whatever it's currently set to at submit time
- * wins, without persisting the change.
+ * up `els.searchEngineSelect` (if present in the markup — a plain
+ * container element the dropdown mounts into, see populateSearchEngineSelect()
+ * above) as a per-search override of that default: whatever it's currently
+ * set to at submit time wins, without persisting the change.
  */
 export function initSearchBox(els, resolveTabId, getEngine) {
     if (!els.searchForm || !els.searchInput) return;
+    els.searchInput.placeholder = _("Search…");
     if (els.searchEngineSelect) {
         populateSearchEngineSelect(els.searchEngineSelect, getEngine ? getEngine() : undefined);
     }
@@ -1257,8 +1438,8 @@ export function initSearchBox(els, resolveTabId, getEngine) {
         event.preventDefault();
         let query = els.searchInput.value;
         els.searchInput.value = "";
-        let engine = (els.searchEngineSelect && !els.searchEngineSelect.hasAttribute("hidden"))
-            ? els.searchEngineSelect.value
+        let engine = (els.searchEngineSelect && !els.searchEngineSelect.hasAttribute("hidden") && els.searchEngineSelect.dropdown)
+            ? els.searchEngineSelect.dropdown.value
             : (getEngine ? getEngine() : undefined);
         submitSearch(query, resolveTabId, engine);
     });
