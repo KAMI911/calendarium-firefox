@@ -54,6 +54,14 @@
   /* Page / surface */
   --cal-page-bg: #f0f0f3;
 
+  /* Solid (non-translucent) surface for floating UI — the search-engine
+     dropdown's option list, currently the only user of this. Deliberately
+     NOT --cal-input-bg (which is a subtle translucent tint meant for
+     inline form controls sitting on the page background) — a popup needs
+     to fully obscure whatever's behind it (page background image/gradient
+     included), or its text becomes unreadable. */
+  --cal-popup-bg: #ffffff;
+
   /* Icon/symbol size ("icon-size" setting — small/medium/large), set on
      #calendarium-container by src/lib/render.js's applyIconSize(). Not
      theme-dependent, so defined once here rather than repeated in the
@@ -127,6 +135,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --cal-page-bg: #1b1b1f;
+    --cal-popup-bg: #2a2a30;
 
     --cal-date-color: #eeeeee;
     --cal-time-color: #ffffff;
@@ -183,6 +192,7 @@
    when the user picked "light" or "dark" explicitly (never for "auto"). */
 :root[data-theme="dark"] {
   --cal-page-bg: #1b1b1f;
+  --cal-popup-bg: #2a2a30;
 
   --cal-date-color: #eeeeee;
   --cal-time-color: #ffffff;
@@ -693,7 +703,7 @@ body {
   max-height: 220px;
   overflow-y: auto;
   list-style: none;
-  background: var(--cal-input-bg);
+  background: var(--cal-popup-bg);
   border: 1px solid var(--cal-input-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
