@@ -239,6 +239,10 @@
     "message": "Egyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztvaEgyéni dátumformátum (strftime) — csak akkor aktív, ha fent az 'Egyéni' van kiválasztva",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
   },
+  "custom_enter_strftime_string_below": {
+    "message": "Egyéni (add meg alább a strftime karakterláncot)",
+    "description": "Source: \"Custom (enter strftime string below)\""
+  },
   "custom_image_url": {
     "message": "Egyéni kép URL",
     "description": "Source: \"Custom image URL\""

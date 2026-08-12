@@ -239,6 +239,10 @@
     "message": "Custom date format (strftime) — only active when 'Custom' is selected above",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
   },
+  "custom_enter_strftime_string_below": {
+    "message": "Custom (enter strftime string below)",
+    "description": "Source: \"Custom (enter strftime string below)\""
+  },
   "custom_image_url": {
     "message": "Custom image URL",
     "description": "Source: \"Custom image URL\""

@@ -239,6 +239,10 @@
     "message": "Benutzerdefiniertes Datumsformat (strftime) — nur aktiv, wenn oben 'Benutzerdefiniert' gewählt ist",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
   },
+  "custom_enter_strftime_string_below": {
+    "message": "Benutzerdefiniert (unten strftime-Zeichenkette eingeben)",
+    "description": "Source: \"Custom (enter strftime string below)\""
+  },
   "custom_image_url": {
     "message": "Eigene Bild-URL",
     "description": "Source: \"Custom image URL\""

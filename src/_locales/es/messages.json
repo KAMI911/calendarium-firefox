@@ -239,6 +239,10 @@
     "message": "Formato de fecha personalizado (strftime) — solo activo cuando se selecciona 'Personalizado' arriba",
     "description": "Source: \"Custom date format (strftime) — only active when 'Custom' is selected above\""
   },
+  "custom_enter_strftime_string_below": {
+    "message": "Personalizado (introduce el código strftime abajo)",
+    "description": "Source: \"Custom (enter strftime string below)\""
+  },
   "custom_image_url": {
     "message": "URL de imagen personalizada",
     "description": "Source: \"Custom image URL\""
