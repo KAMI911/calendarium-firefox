@@ -32,6 +32,7 @@ import { Calendars } from "./calendars.js";
 import { _, slug } from "./i18n.js";
 import { BACKGROUND_GRADIENT_OPTIONS } from "../settings/schema.js";
 import { getAllImageBlobURLs } from "./image-store.js";
+import { getWeatherInfo } from "./weather.js";
 
 export { _, slug };
 
@@ -215,6 +216,8 @@ export function getEls(root = document) {
         sunrise: q("cal-sunrise"),
         sunset: q("cal-sunset"),
         cityGrid: q("cal-city-grid"),
+        weatherPrimary: q("cal-weather-primary"),
+        weatherCities: q("cal-weather-cities"),
         zodiacRow: q("cal-zodiac-row"),
         zodiacWesternPart: q("cal-zodiac-western-part"),
         zodiacWesternIcon: q("cal-zodiac-western-icon"),
@@ -548,6 +551,84 @@ export function renderSun(els, state, now) {
     renderCityTimes(els, state);
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// Weather — current conditions for the primary location and any named
+// extra city, from an Open-Meteo `current_weather` payload
+// (`{ temperature, weathercode, windspeed }`, see lib/weather.js).
+// Deliberately its own small row/grid rather than folded into
+// ensureCityGridRows()'s 5-column city grid above: that grid's overall
+// visibility is gated by "show-sun", but weather is independently
+// toggleable ("show-weather") and should render for a named city even
+// when sunrise/sunset display is off. It reuses the same "does this city
+// have a name?" presence signal as renderSun()/renderCityTimes() though —
+// no separate per-city weather checkbox exists, by design.
+// ══════════════════════════════════════════════════════════════════════
+
+function ensureWeatherCityRows(els) {
+    if (!els.weatherCities) return null;
+    if (els._weatherCityRows) return els._weatherCityRows;
+    let doc = els.weatherCities.ownerDocument || document;
+    let rows = [];
+    for (let i = 0; i < 3; i++) {
+        let row  = doc.createElement("div");
+        let name = doc.createElement("span");
+        let info = doc.createElement("span");
+        row.className  = "calendarium-weather-city-row";
+        name.className = "calendarium-weather-city-name";
+        info.className = "calendarium-weather-city-info";
+        row.appendChild(name);
+        row.appendChild(info);
+        els.weatherCities.appendChild(row);
+        rows.push({ row, name, info });
+    }
+    els._weatherCityRows = rows;
+    return rows;
+}
+
+/** Format one location's weather payload (or null/incomplete) as "<emoji> <label> · <N>°C", translated. */
+function formatWeather(w) {
+    if (!w || typeof w.temperature !== "number") return _("No data");
+    let info = getWeatherInfo(w.weathercode);
+    return info.emoji + " " + _(info.text) + " · " + Math.round(w.temperature) + "°C";
+}
+
+/**
+ * Render current weather for the primary location (els.weatherPrimary) and
+ * for each named extra city (els.weatherCities' per-row grid).
+ * `weatherData` is `{ primary: WeatherResult|null, cities: [WeatherResult|null, ...] }`
+ * (see newtab.js's scheduleWeather()) — may be null/undefined before the
+ * first fetch resolves, in which case rows still show (once "show-weather"
+ * is on) with a "No data" placeholder rather than staying blank forever.
+ */
+export function renderWeather(els, state, weatherData) {
+    // Guarded (rather than assumed present) because popup.html deliberately
+    // has no weather markup at all — weather needs a network fetch +
+    // permission flow that doesn't fit the popup's short-lived nature well,
+    // the same boundary as the search box (see options.js/README). Calling
+    // renderAll() against popup markup must stay a safe no-op here.
+    if (els.weatherPrimary) {
+        show(els.weatherPrimary, !!state["show-weather"]);
+        if (state["show-weather"]) {
+            els.weatherPrimary.textContent = formatWeather(weatherData && weatherData.primary);
+        }
+    }
+
+    let rows = ensureWeatherCityRows(els);
+    if (!rows) return;
+    let names = [state["city1-name"], state["city2-name"], state["city3-name"]];
+    let cities = (weatherData && weatherData.cities) || [];
+    let anyCity = false;
+    for (let i = 0; i < 3; i++) {
+        let has = !!(state["show-weather"] && names[i] && names[i].trim());
+        if (has) anyCity = true;
+        show(rows[i].row, has);
+        if (!has) continue;
+        rows[i].name.textContent = names[i];
+        rows[i].info.textContent = formatWeather(cities[i]);
+    }
+    show(els.weatherCities, anyCity);
+}
+
 export function renderZodiac(els, state, now) {
     let wMode = state["zodiac-western-display"] || "icon-and-text";
     let cMode = state["zodiac-chinese-display"] || "icon-and-text";
@@ -758,6 +839,7 @@ export function renderAll(els, state, data, now) {
     renderMoon(els, state, now);
     renderMoonTimes(els, state, now);
     renderSun(els, state, now);
+    renderWeather(els, state, data.weather);
     renderZodiac(els, state, now);
     renderSolstice(els, state, now);
     renderNamedays(els, state, data.namedayData, now);

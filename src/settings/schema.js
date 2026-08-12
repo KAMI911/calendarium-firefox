@@ -43,9 +43,9 @@ export const LAYOUT = {
         sections: [
             "section-search", "section-datetime", "section-progress", "section-traditional",
             "section-folkdays", "section-holidays", "section-moon",
-            "section-sun", "section-zodiac", "section-namedays",
+            "section-sun", "section-weather", "section-zodiac", "section-namedays",
             "section-altcal", "section-appearance", "section-background",
-            "section-import-export"
+            "section-sync", "section-import-export"
         ]
     },
     "page-location": {
@@ -65,6 +65,7 @@ export const LAYOUT = {
     "section-holidays":     { title: "National Holidays", keys: ["show-holidays", "holiday-locale", "holiday-lookahead", "show-period-upcoming", "period-upcoming-lookahead"] },
     "section-moon":         { title: "Moon Phase", keys: ["show-moon", "show-moon-name", "show-moon-age", "show-moonrise"] },
     "section-sun":          { title: "Sunrise and Sunset", keys: ["show-sun", "show-solstice"] },
+    "section-weather":      { title: "Weather", keys: ["show-weather", "weather-cache-hours"] },
     "section-altcal":       { title: "Alternate Calendars", keys: ["show-julian", "show-hebrew", "show-islamic", "show-persian"] },
     "section-location":     {
         title: "Location",
@@ -87,6 +88,7 @@ export const LAYOUT = {
         ]
     },
     "section-appearance":   { title: "Appearance", keys: ["theme-mode", "icon-size", "bg-opacity"] },
+    "section-sync":         { title: "Sync", keys: ["sync-settings"] },
     "section-background":   {
         title: "Background",
         keys: [
@@ -208,6 +210,17 @@ export const FIELDS = {
     "show-sun":      { id: "show-sun", type: "checkbox", default: true, description: "Show sunrise and sunset times" },
     "show-solstice": { id: "show-solstice", type: "checkbox", default: false, description: "Show equinox and solstice" },
 
+    "show-weather": {
+        id: "show-weather", type: "checkbox", default: false,
+        description: "Show current weather (uses Open-Meteo, requires Internet)",
+        tooltip: "Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed."
+    },
+    "weather-cache-hours": {
+        id: "weather-cache-hours", type: "spinbutton", default: 1, min: 1, max: 12, step: 1, units: "hours",
+        description: "Cache duration for weather data", dependency: "show-weather", indent: true,
+        tooltip: "How long to keep weather data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage. Weather changes faster than Wikipedia's daily content, so this defaults much lower than the Wikipedia cache."
+    },
+
     "use-manual-location": { id: "use-manual-location", type: "checkbox", default: false, description: "Use manual location (default: Budapest, Hungary)" },
     "location-search": { id: "location-search", type: "entry", default: "", dependency: "use-manual-location", indent: true, description: "Search city to auto-fill coordinates", tooltip: "Type a city name — coordinates are filled in automatically after 1.5 seconds." },
     "latitude":  { id: "latitude", type: "spinbutton", default: 47.4979, min: -90.0, max: 90.0, step: 0.0001, units: "degrees", description: "Latitude (positive = North)", dependency: "use-manual-location", indent: true },
@@ -316,6 +329,12 @@ export const FIELDS = {
         tooltip: "How often to switch to the next background while rotation is enabled."
     },
 
+    "sync-settings": {
+        id: "sync-settings", type: "checkbox", default: false,
+        description: "Sync settings across devices via Firefox Sync",
+        tooltip: "When enabled, most settings (toggles, colors, single text fields, numbers) are also written to browser.storage.sync, and on load take precedence over this device's local copy — so multiple signed-in devices converge on the same settings. Firefox Sync has a strict quota (100KB total, 8KB per item), so a few fields never sync: the custom background image URL(s) (can be long or many), the \"include subfolders\" folder-picker flag (the folder/images themselves can never sync — they live in this browser profile's IndexedDB), and this toggle itself (it has to be readable locally before anything can decide whether to consult Sync at all). Requires being signed into Firefox Sync — if you aren't, or a write exceeds quota, saves quietly stay local-only."
+    },
+
     "settings-import-export": {
         id: "settings-import-export", type: "import-export",
         description: "Import / export settings",
@@ -343,4 +362,74 @@ export function isFieldEnabled(field, settings) {
     return !!settings[field.dependency];
 }
 
-export default { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled };
+// ══════════════════════════════════════════════════════════════════════
+// Firefox Sync (browser.storage.sync) allowlist
+//
+// Sync has a strict quota (100KB total, 8KB per item — see MDN's
+// StorageArea documentation for browser.storage.sync), nowhere near
+// enough for every setting this extension has. Rather than sync
+// everything and let large/unsyncable fields silently blow the quota (and
+// potentially block *other* fields from syncing too, since Sync failures
+// are whole-call), SYNCABLE_KEYS is an explicit, hand-picked allowlist:
+// every FIELDS key that maps to a real storage.local scalar (i.e. not one
+// of the two synthetic UI-only field types — see NON_STORAGE_FIELD_TYPES,
+// shared with options.js's import/export validation for the same reason)
+// MINUS a short, explicit exclusion list:
+//
+//   - "background-image-url": free-form multiline text, potentially many
+//     URLs — easily exceeds the 8KB-per-item quota on its own.
+//   - "background-folder-include-subfolders": the folder-picker feature's
+//     actual folder/images live in this browser profile's IndexedDB and
+//     can never sync (IndexedDB is profile/origin-scoped) — excluding
+//     this one small paired flag too keeps that feature's "does not sync"
+//     story consistent, even though the flag itself is cheap to sync.
+//   - "sync-settings": the sync toggle itself must be readable from
+//     storage.local BEFORE anything can decide whether to consult
+//     storage.sync at all (bootstrapping), so it can only ever live
+//     locally.
+// ══════════════════════════════════════════════════════════════════════
+
+/** Field types with no single storage.local scalar of their own — shared by options.js's import/export validation and the Sync allowlist below. */
+export const NON_STORAGE_FIELD_TYPES = new Set(["folder-picker", "import-export"]);
+
+/** Keys explicitly excluded from Firefox Sync even though they are valid storage.local scalars — see the module doc comment above for why each one is here. */
+export const SYNC_EXCLUDED_KEYS = new Set([
+    "background-image-url",
+    "background-folder-include-subfolders",
+    "sync-settings"
+]);
+
+/** True if `key` is a plain storage.local scalar eligible for Firefox Sync mirroring. */
+export function isSyncable(key) {
+    let field = FIELDS[key];
+    if (!field) return false;
+    if (NON_STORAGE_FIELD_TYPES.has(field.type)) return false;
+    if (SYNC_EXCLUDED_KEYS.has(key)) return false;
+    return true;
+}
+
+/** Every FIELDS key eligible for Firefox Sync — see isSyncable(). */
+export const SYNCABLE_KEYS = Object.freeze(Object.keys(FIELDS).filter(isSyncable));
+
+/**
+ * Merge a synced-settings object over a local-settings object, keeping
+ * only keys in `syncableKeys` (default SYNCABLE_KEYS) and only where
+ * `syncedState` actually has that key — sync wins for any key it defines,
+ * local (or DEFAULTS, already folded into localState by the caller) wins
+ * otherwise. Pure and side-effect-free so it can be unit tested without
+ * any browser.* mocking; the actual browser.storage.sync.get() call is
+ * made by each entry point (options.js / newtab.js / popup.js) and its
+ * result passed in here.
+ */
+export function mergeSyncedSettings(localState, syncedState, syncableKeys = SYNCABLE_KEYS) {
+    let merged = Object.assign({}, localState);
+    if (!syncedState) return merged;
+    for (let key of syncableKeys) {
+        if (Object.prototype.hasOwnProperty.call(syncedState, key)) {
+            merged[key] = syncedState[key];
+        }
+    }
+    return merged;
+}
+
+export default { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled, isSyncable, SYNCABLE_KEYS, mergeSyncedSettings };

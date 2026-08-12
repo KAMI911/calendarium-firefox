@@ -95,6 +95,10 @@
     "message": "Births on this day",
     "description": "Source: \"Births on this day\""
   },
+  "cache_duration_for_weather_data": {
+    "message": "Cache duration for weather data",
+    "description": "Source: \"Cache duration for weather data\""
+  },
   "cache_duration_for_wikipedia_data": {
     "message": "Cache duration for Wikipedia data",
     "description": "Source: \"Cache duration for Wikipedia data\""
@@ -179,6 +183,10 @@
     "message": "City 3 timezone (IANA, e.g. Asia/Tokyo)",
     "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
   },
+  "clear_sky": {
+    "message": "Clear sky",
+    "description": "Source: \"Clear sky\""
+  },
   "color_theme": {
     "message": "Color theme",
     "description": "Source: \"Color theme\""
@@ -242,6 +250,18 @@
   "degrees": {
     "message": "degrees",
     "description": "Source: \"degrees\""
+  },
+  "dense_drizzle": {
+    "message": "Dense drizzle",
+    "description": "Source: \"Dense drizzle\""
+  },
+  "dense_freezing_drizzle": {
+    "message": "Dense freezing drizzle",
+    "description": "Source: \"Dense freezing drizzle\""
+  },
+  "depositing_rime_fog": {
+    "message": "Depositing rime fog",
+    "description": "Source: \"Depositing rime fog\""
   },
   "dog": {
     "message": "Dog",
@@ -315,6 +335,10 @@
     "message": "First Quarter",
     "description": "Source: \"First Quarter\""
   },
+  "fog": {
+    "message": "Fog",
+    "description": "Source: \"Fog\""
+  },
   "folk_calendar_sayings": {
     "message": "Folk Calendar Sayings",
     "description": "Source: \"Folk Calendar Sayings\""
@@ -371,6 +395,22 @@
     "message": "Gradient",
     "description": "Source: \"Gradient\""
   },
+  "heavy_freezing_rain": {
+    "message": "Heavy freezing rain",
+    "description": "Source: \"Heavy freezing rain\""
+  },
+  "heavy_rain": {
+    "message": "Heavy rain",
+    "description": "Source: \"Heavy rain\""
+  },
+  "heavy_snow_fall": {
+    "message": "Heavy snow fall",
+    "description": "Source: \"Heavy snow fall\""
+  },
+  "heavy_snow_showers": {
+    "message": "Heavy snow showers",
+    "description": "Source: \"Heavy snow showers\""
+  },
   "hebrew_date": {
     "message": "Hebrew date",
     "description": "Source: \"Hebrew date\""
@@ -386,6 +426,10 @@
   "hours": {
     "message": "hours",
     "description": "Source: \"hours\""
+  },
+  "how_long_to_keep_weather_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage_weather_changes_faster_than_wikipedia_s_daily_content_so_this_defaults_much_lower_than_the_wikipedia_cache": {
+    "message": "How long to keep weather data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage. Weather changes faster than Wikipedia's daily content, so this defaults much lower than the Wikipedia cache.",
+    "description": "Source: \"How long to keep weather data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage. Weather changes faster than Wikipedia's daily content, so this defaults much lower than the Wikipedia cache.\""
   },
   "how_long_to_keep_wikipedia_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage": {
     "message": "How long to keep Wikipedia data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage.",
@@ -495,6 +539,18 @@
     "message": "Libra",
     "description": "Source: \"Libra\""
   },
+  "light_drizzle": {
+    "message": "Light drizzle",
+    "description": "Source: \"Light drizzle\""
+  },
+  "light_freezing_drizzle": {
+    "message": "Light freezing drizzle",
+    "description": "Source: \"Light freezing drizzle\""
+  },
+  "light_freezing_rain": {
+    "message": "Light freezing rain",
+    "description": "Source: \"Light freezing rain\""
+  },
   "local_time": {
     "message": "Local time",
     "description": "Source: \"Local time\""
@@ -506,6 +562,10 @@
   "longitude_positive_east": {
     "message": "Longitude (positive = East)",
     "description": "Source: \"Longitude (positive = East)\""
+  },
+  "mainly_clear": {
+    "message": "Mainly clear",
+    "description": "Source: \"Mainly clear\""
   },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "\"Match system\" follows your OS/browser light or dark preference automatically. Light/Dark force that palette regardless of the system setting, on the New Tab page, popup, and full view alike.",
@@ -522,6 +582,22 @@
   "minutes": {
     "message": "minutes",
     "description": "Source: \"minutes\""
+  },
+  "moderate_drizzle": {
+    "message": "Moderate drizzle",
+    "description": "Source: \"Moderate drizzle\""
+  },
+  "moderate_rain": {
+    "message": "Moderate rain",
+    "description": "Source: \"Moderate rain\""
+  },
+  "moderate_rain_showers": {
+    "message": "Moderate rain showers",
+    "description": "Source: \"Moderate rain showers\""
+  },
+  "moderate_snow_fall": {
+    "message": "Moderate snow fall",
+    "description": "Source: \"Moderate snow fall\""
   },
   "monkey": {
     "message": "Monkey",
@@ -595,6 +671,10 @@
     "message": "One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "overcast": {
+    "message": "Overcast",
+    "description": "Source: \"Overcast\""
+  },
   "ox": {
     "message": "Ox",
     "description": "Source: \"Ox\""
@@ -602,6 +682,14 @@
   "page_background_new_tab_homepage_full_view": {
     "message": "Page background (New Tab / homepage / full view)",
     "description": "Source: \"Page background (New Tab / homepage / full view)\""
+  },
+  "partly_cloudy": {
+    "message": "Partly cloudy",
+    "description": "Source: \"Partly cloudy\""
+  },
+  "permission_was_not_granted_weather_stays_disabled": {
+    "message": "Permission was not granted; Weather stays disabled.",
+    "description": "Source: \"Permission was not granted; Weather stays disabled.\""
   },
   "persian_date": {
     "message": "Persian date",
@@ -698,6 +786,10 @@
   "show_current_local_time_for_each_city": {
     "message": "Show current local time for each city",
     "description": "Source: \"Show current local time for each city\""
+  },
+  "show_current_weather_uses_open_meteo_requires_internet": {
+    "message": "Show current weather (uses Open-Meteo, requires Internet)",
+    "description": "Source: \"Show current weather (uses Open-Meteo, requires Internet)\""
   },
   "show_date": {
     "message": "Show date",
@@ -815,6 +907,26 @@
     "message": "Show UTC offset for each city (e.g. UTC+1)",
     "description": "Source: \"Show UTC offset for each city (e.g. UTC+1)\""
   },
+  "shows_current_temperature_and_conditions_for_your_primary_location_and_for_any_extra_city_below_that_has_a_name_set_enabling_this_requests_permission_to_contact_api_open_meteo_com_a_free_keyless_weather_api_no_account_or_api_key_needed": {
+    "message": "Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.",
+    "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
+  },
+  "slight_rain": {
+    "message": "Slight rain",
+    "description": "Source: \"Slight rain\""
+  },
+  "slight_rain_showers": {
+    "message": "Slight rain showers",
+    "description": "Source: \"Slight rain showers\""
+  },
+  "slight_snow_fall": {
+    "message": "Slight snow fall",
+    "description": "Source: \"Slight snow fall\""
+  },
+  "slight_snow_showers": {
+    "message": "Slight snow showers",
+    "description": "Source: \"Slight snow showers\""
+  },
   "small": {
     "message": "Small",
     "description": "Source: \"Small\""
@@ -822,6 +934,10 @@
   "snake": {
     "message": "Snake",
     "description": "Source: \"Snake\""
+  },
+  "snow_grains": {
+    "message": "Snow grains",
+    "description": "Source: \"Snow grains\""
   },
   "spanish": {
     "message": "Spanish",
@@ -851,6 +967,14 @@
     "message": "Sunset",
     "description": "Source: \"Sunset\""
   },
+  "sync": {
+    "message": "Sync",
+    "description": "Source: \"Sync\""
+  },
+  "sync_settings_across_devices_via_firefox_sync": {
+    "message": "Sync settings across devices via Firefox Sync",
+    "description": "Source: \"Sync settings across devices via Firefox Sync\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -879,6 +1003,18 @@
     "message": "This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.",
     "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
   },
+  "thunderstorm": {
+    "message": "Thunderstorm",
+    "description": "Source: \"Thunderstorm\""
+  },
+  "thunderstorm_with_heavy_hail": {
+    "message": "Thunderstorm with heavy hail",
+    "description": "Source: \"Thunderstorm with heavy hail\""
+  },
+  "thunderstorm_with_slight_hail": {
+    "message": "Thunderstorm with slight hail",
+    "description": "Source: \"Thunderstorm with slight hail\""
+  },
   "tiger": {
     "message": "Tiger",
     "description": "Source: \"Tiger\""
@@ -903,6 +1039,10 @@
     "message": "Type a city name — coordinates are filled in automatically after 1.5 seconds.",
     "description": "Source: \"Type a city name — coordinates are filled in automatically after 1.5 seconds.\""
   },
+  "unknown_conditions": {
+    "message": "Unknown conditions",
+    "description": "Source: \"Unknown conditions\""
+  },
   "upcoming_periods_lookahead_days": {
     "message": "Upcoming periods lookahead (days)",
     "description": "Source: \"Upcoming periods lookahead (days)\""
@@ -910,6 +1050,10 @@
   "use_manual_location_default_budapest_hungary": {
     "message": "Use manual location (default: Budapest, Hungary)",
     "description": "Source: \"Use manual location (default: Budapest, Hungary)\""
+  },
+  "violent_rain_showers": {
+    "message": "Violent rain showers",
+    "description": "Source: \"Violent rain showers\""
   },
   "virgo": {
     "message": "Virgo",
@@ -935,6 +1079,10 @@
     "message": "Waxing Gibbous",
     "description": "Source: \"Waxing Gibbous\""
   },
+  "weather": {
+    "message": "Weather",
+    "description": "Source: \"Weather\""
+  },
   "week_n": {
     "message": "Week %d",
     "description": "Source: \"Week %d\""
@@ -954,6 +1102,10 @@
   "western_zodiac_display": {
     "message": "Western zodiac display",
     "description": "Source: \"Western zodiac display\""
+  },
+  "when_enabled_most_settings_toggles_colors_single_text_fields_numbers_are_also_written_to_browser_storage_sync_and_on_load_take_precedence_over_this_device_s_local_copy_so_multiple_signed_in_devices_converge_on_the_same_settings_firefox_sync_has_a_strict_quota_100kb_total_8kb_per_item_so_a_few_fields_never_sync_the_custom_background_image_url_s_can_be_long_or_many_the_include_subfolders_folder_picker_flag_the_folder_images_themselves_can_never_sync_they_live_in_this_browser_profile_s_indexeddb_and_this_toggle_itself_it_has_to_be_readable_locally_before_anything_can_decide_whether_to_consult_sync_at_all_requires_being_signed_into_firefox_sync_if_you_aren_t_or_a_write_exceeds_quota_saves_quietly_stay_local_only": {
+    "message": "When enabled, most settings (toggles, colors, single text fields, numbers) are also written to browser.storage.sync, and on load take precedence over this device's local copy — so multiple signed-in devices converge on the same settings. Firefox Sync has a strict quota (100KB total, 8KB per item), so a few fields never sync: the custom background image URL(s) (can be long or many), the \"include subfolders\" folder-picker flag (the folder/images themselves can never sync — they live in this browser profile's IndexedDB), and this toggle itself (it has to be readable locally before anything can decide whether to consult Sync at all). Requires being signed into Firefox Sync — if you aren't, or a write exceeds quota, saves quietly stay local-only.",
+    "description": "Source: \"When enabled, most settings (toggles, colors, single text fields, numbers) are also written to browser.storage.sync, and on load take precedence over this device's local copy — so multiple signed-in devices converge on the same settings. Firefox Sync has a strict quota (100KB total, 8KB per item), so a few fields never sync: the custom background image URL(s) (can be long or many), the \"include subfolders\" folder-picker flag (the folder/images themselves can never sync — they live in this browser profile's IndexedDB), and this toggle itself (it has to be readable locally before anything can decide whether to consult Sync at all). Requires being signed into Firefox Sync — if you aren't, or a write exceeds quota, saves quietly stay local-only.\""
   },
   "when_unchecked_default_only_images_directly_inside_the_chosen_folder_are_used_when_checked_images_in_every_subfolder_underneath_it_are_included_too": {
     "message": "When unchecked (default), only images directly inside the chosen folder are used. When checked, images in every subfolder underneath it are included too.",

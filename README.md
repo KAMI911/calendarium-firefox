@@ -3,12 +3,13 @@
 A Firefox Manifest V3 extension that shows a rich date/astronomy/calendar
 widget: date & time, calendar progress (day of year, ISO week, month
 progress, New Year countdown), traditional month names, moon phase,
-sunrise/sunset (+ up to 3 extra cities), Western and Chinese zodiac,
+sunrise/sunset (+ up to 3 extra cities), current weather for the primary
+location and each named extra city, Western and Chinese zodiac,
 equinox/solstice, name days, folk-calendar sayings, national holidays and
 seasonal periods, alternate calendar dates (Julian/Hebrew/Islamic/Persian),
-an optional search box, and optional Wikipedia "on this day" / "article of
-the day" content. Every section is individually toggleable from the
-options page.
+an optional search box, optional Wikipedia "on this day" / "article of the
+day" content, and optional Firefox Sync of most settings across devices.
+Every section is individually toggleable from the options page.
 
 ## Three ways to use it
 
@@ -162,6 +163,18 @@ extension E2E isn't reliably scriptable in CI):
 - Clicking the toolbar button opens the compact popup with the same
   enabled sections; right-clicking it and choosing "Open full view in a
   new tab" opens `view.html` in a new tab with the full-size widget.
+- Enabling General > Weather > "Show current weather" triggers a
+  permission prompt for `api.open-meteo.com`; after granting, current
+  temperature and conditions appear for the primary location, and for any
+  of the three extra cities (Location tab) that has a name set — reusing
+  the same "has a name → show its row" presence signal the sunrise/sunset
+  city rows already use, rather than adding a separate per-city checkbox.
+  Weather is New Tab / full-view only (not the popup — see below).
+- Enabling General > Sync > "Sync settings across devices" mirrors most
+  settings to `browser.storage.sync` going forward and, on every load,
+  lets any value already in Sync take precedence over this device's local
+  copy for the fields that participate — see "Firefox Sync" below for
+  exactly which fields that is and why.
 - Enabling General > Search > "Show a search box" adds a search field at
   the top of the New Tab / full-view widget (deliberately **not** the
   popup — see below); typing a query and submitting it dispatches to
@@ -346,6 +359,138 @@ Wikipedia) with the same sections as tabs, generically from that schema
 `dependencyValue` variant of `dependency`, array-valued or not), and
 persists every field to `browser.storage.local`
 (replacing Cinnamon's per-desklet GSettings-backed `DeskletSettings`).
+
+### Weather
+
+`show-weather` (General > Weather), a checkbox, default `false` — another
+Firefox-only addition, not present in the source desklet. Enabling it
+requests the `https://api.open-meteo.com/*` optional host permission at
+runtime, via `browser.permissions.request()` called synchronously from
+inside the checkbox's own `change` handler in `src/options.js`
+(`requestWeatherPermission()`) — the exact same pattern as the Wikipedia
+permission flow above, and for the same reason: `permissions.request()`
+must run inside a real user-input handler in the calling page's own
+context, not be relayed through `runtime.sendMessage()` to
+`background.js`, or Firefox rejects it with "permissions.request may only
+be called from a user input handler" once the transient user-activation
+flag is gone by the time a message handler picks it up.
+
+- **API**: [Open-Meteo](https://open-meteo.com)
+  (`https://api.open-meteo.com/v1/forecast?latitude=<lat>&longitude=<lon>&current_weather=true`)
+  — free, keyless, CORS-enabled, no account or API key needed, considerably
+  simpler to integrate than the Wikipedia feed. `src/lib/weather.js`
+  mirrors `src/lib/wikipedia.js`'s shape closely (a small object with a
+  `fetchCurrent(lat, lon, callback)` function, `fetch()` for the network
+  call, no DOM/browser-UI concerns) and the same *policy* of TTL-based
+  caching in `browser.storage.local`, cache key derived from the request's
+  coordinates — but the key is the coordinates rounded to a coarse ~0.05°
+  grid (`weather:<lat>:<lon>`) rather than a `lang:mmdd` pair, since
+  weather is location-scoped, not day/language-scoped, and rounding lets
+  nearby-but-not-identical coordinates (repeated geocoder lookups, float
+  drift) share one cache entry instead of each making their own request.
+  On a network/parse error, a stale cache entry (if any) is served rather
+  than returning nothing, the same "degrade gracefully" spirit as
+  Wikipedia's offline fallback.
+- `weather-cache-hours` (indented under `show-weather`), a spinbutton,
+  default `1`, range 1–12 hours — noticeably shorter than
+  `wikipedia-cache-hours`' default of 12, since current weather conditions
+  go stale far faster than a day's Wikipedia digest.
+- The WMO `weathercode` integer Open-Meteo returns is mapped to a short
+  emoji + English label by `src/lib/weather.js`'s `getWeatherInfo()`,
+  covering every code in the official
+  [WMO Weather interpretation codes table](https://open-meteo.com/en/docs)
+  (clear/mainly clear/partly cloudy/overcast, fog, drizzle, rain,
+  freezing rain, snow, showers, thunderstorm — including hail variants),
+  plus a neutral fallback for any future/undocumented code so the render
+  never comes out blank. The label text is intentionally left
+  untranslated inside `weather.js` itself (same separation of concerns as
+  Wikipedia's raw JSON data) — `src/lib/render.js`'s `renderWeather()`
+  runs it through `_()` at render time, the same pattern used for
+  moon-phase and zodiac names elsewhere in that file.
+- **Render**: `renderWeather()` shows temperature + icon/label for the
+  primary location (`#cal-weather-primary`) and, for each of the three
+  extra cities that has a name set, a small list
+  (`#cal-weather-cities`) — reusing the exact same "does this city have a
+  name?" presence signal `renderSun()`/`renderCityTimes()` already use for
+  the sunrise/sunset city rows, so no additional per-city checkbox exists.
+  It is deliberately a separate DOM structure from the sunrise/sunset city
+  grid rather than a 6th column bolted onto it, because that grid's own
+  visibility is gated by `show-sun`, while weather needs to work
+  independently of whether sunrise/sunset display is on. Rendered in
+  `src/newtab.html` (and therefore `src/view.html`, which duplicates that
+  markup) — **not** the popup, the same boundary the search box already
+  draws (see `src/popup.js`, which likewise never renders it): a
+  ~380px-wide short-lived popup is a poor fit for a feature built around a
+  network fetch + a permission flow. `renderWeather()` itself no-ops
+  safely if `popup.html`'s markup (which has no weather elements at all)
+  is passed in, since `renderAll()` is shared code.
+- **Orchestration**: `src/newtab.js`'s `scheduleWeather()` runs on the
+  same 60s refresh cadence as `scheduleWikipedia()` — no separate timer —
+  checking the `api.open-meteo.com` permission first, then calling
+  `Weather.fetchCurrent()` for the primary location and every named extra
+  city. The actual network-call throttling happens inside
+  `lib/weather.js` via the cache TTL, exactly like Wikipedia, so calling
+  `scheduleWeather()` every 60s is cheap (usually a cache hit, no fetch).
+
+### Firefox Sync (opt-in, scoped to a safe subset of settings)
+
+`sync-settings` (General > Sync), a checkbox, default `false`. When
+enabled, `src/options.js`'s `saveField()` best-effort-mirrors every
+*syncable* field write to `browser.storage.sync` in addition to its normal
+`browser.storage.local` write, and on load (`options.js`, `newtab.js`,
+`popup.js`), any value already present in `browser.storage.sync` for a
+syncable field takes precedence over this device's local copy — so
+multiple signed-in devices converge on the same value for that field, sync
+wins on conflict. `sync-settings` itself is bootstrapped from
+`browser.storage.local` only (see below for why).
+
+**The quota is the whole reason this is scoped down deliberately.**
+`browser.storage.sync` has a hard **100KB total / 8KB per item** quota —
+nowhere near enough for every setting this extension has, and Sync can
+reject an entire write outright once either limit is hit. Rather than sync
+everything and risk one oversized field silently breaking sync for every
+other field too, `src/settings/schema.js` defines an explicit, hand-picked
+`SYNCABLE_KEYS` allowlist: every schema field that maps to a real
+`browser.storage.local` scalar (the two synthetic UI-only field types,
+`folder-picker` and `import-export`, are automatically excluded — see
+`NON_STORAGE_FIELD_TYPES`), **minus** three keys excluded by name via
+`SYNC_EXCLUDED_KEYS`:
+
+- **`background-image-url`** — free-form multiline text, one or more
+  image URLs, unbounded in practice. Easily exceeds the 8KB-per-item
+  quota on its own.
+- **`background-folder-include-subfolders`** — paired with the
+  `image-folder` background style. The actual folder contents live in
+  this browser profile's IndexedDB (`src/lib/image-store.js`), which is
+  origin/profile-scoped and can never sync at all (see that feature's own
+  README section above) — excluding this small paired flag too keeps
+  "the image-folder feature does not sync" a consistent, easy-to-explain
+  story, even though the flag itself would be cheap to sync on its own.
+- **`sync-settings`** — the toggle has to be read from
+  `browser.storage.local` *before* anything can decide whether to consult
+  `browser.storage.sync` at all (a bootstrapping problem: you can't ask
+  Sync whether to use Sync), so it can only ever live locally.
+
+Everything else — every checkbox, combobox, single color, single short
+text field (city names, timezones, the progress separator, etc.), and
+number in the schema — is small (well under a kilobyte each) and safe to
+sync.
+
+Every `browser.storage.sync` touch is guarded the same defensive way
+`browser.menus`/`browser.theme`/`browser.search` are guarded elsewhere in
+this codebase: feature-detected before use, and the call itself wrapped in
+try/catch. A rejected write (quota exceeded, or the user simply isn't
+signed into Firefox Sync at all — a very common case, and not an error
+condition worth surfacing to the user) never blocks or throws past the
+local save that already happened; a failed read just leaves the
+already-loaded local settings in place. `mergeSyncedSettings()` (in
+`settings/schema.js`) is the pure, independently unit-tested merge
+function all three entry points call with whatever `browser.storage.sync`
+happened to return.
+
+This does **not** cover the IndexedDB-stored `image-folder` background
+images, for the same reason Import/Export doesn't (see above) — those
+can never leave this browser profile.
 
 ### Import / export settings
 

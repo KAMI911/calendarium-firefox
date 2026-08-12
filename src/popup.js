@@ -19,7 +19,7 @@ import { Namedays } from "./lib/namedays.js";
 import { Folkdays } from "./lib/folkdays.js";
 import { Holidays } from "./lib/holidays.js";
 import { Wikipedia } from "./lib/wikipedia.js";
-import { DEFAULTS } from "./settings/schema.js";
+import { DEFAULTS, SYNCABLE_KEYS, mergeSyncedSettings } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
     renderWikiOnThisDay, renderWikiFeatured,
@@ -28,7 +28,16 @@ import {
 
 async function loadSettings() {
     let stored = (typeof browser !== "undefined") ? await browser.storage.local.get(null) : {};
-    return Object.assign({}, DEFAULTS, stored);
+    let state = Object.assign({}, DEFAULTS, stored);
+    // Firefox Sync merge — same opt-in, best-effort logic as newtab.js's
+    // loadSettings(); see settings/schema.js's SYNCABLE_KEYS doc comment.
+    if (state["sync-settings"] && typeof browser !== "undefined" && browser.storage && browser.storage.sync) {
+        try {
+            let synced = await browser.storage.sync.get(SYNCABLE_KEYS);
+            state = mergeSyncedSettings(state, synced);
+        } catch (_e) { /* Sync unavailable/not signed in — fall back to local-only settings */ }
+    }
+    return state;
 }
 
 async function loadLocaleData(state) {

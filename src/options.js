@@ -8,7 +8,10 @@
  * enabled state, mirroring the desklet's `dependency`/`indent` behaviour.
  */
 
-import { LAYOUT, FIELDS, DEFAULTS, isFieldEnabled } from "./settings/schema.js";
+import {
+    LAYOUT, FIELDS, DEFAULTS, isFieldEnabled,
+    NON_STORAGE_FIELD_TYPES, SYNCABLE_KEYS, isSyncable, mergeSyncedSettings
+} from "./settings/schema.js";
 import { Geocoder } from "./lib/geocoder.js";
 import { _ } from "./lib/i18n.js";
 import { getInstalledSearchEngines } from "./lib/render.js";
@@ -30,7 +33,40 @@ function setStatus(text) {
 async function saveField(id, value) {
     state[id] = value;
     await browser.storage.local.set({ [id]: value });
+    if (state["sync-settings"] && isSyncable(id)) {
+        await trySyncSet(id, value);
+    }
     applyDependencies();
+}
+
+/**
+ * Best-effort mirror of a single field to browser.storage.sync — never
+ * lets a Sync failure (quota exceeded, not signed into Firefox Sync, API
+ * unavailable on this build/platform) block or throw past the local save
+ * that already happened in saveField() above. Guarded the same defensive
+ * way browser.menus/browser.theme/browser.search are elsewhere in this
+ * codebase: feature-detect first, then try/catch the call itself.
+ */
+async function trySyncSet(id, value) {
+    if (typeof browser === "undefined" || !browser.storage || !browser.storage.sync) return;
+    try {
+        await browser.storage.sync.set({ [id]: value });
+    } catch (_e) { /* quota exceeded / not signed in / unavailable — local save already succeeded */ }
+}
+
+/**
+ * Best-effort read of every syncable key from browser.storage.sync,
+ * merged over the already-loaded local `state` (sync wins — see
+ * mergeSyncedSettings's doc comment in settings/schema.js). No-ops
+ * silently if browser.storage.sync is unavailable or the read fails, same
+ * defensive guard as trySyncSet above.
+ */
+async function mergeSyncSettings() {
+    if (typeof browser === "undefined" || !browser.storage || !browser.storage.sync) return;
+    try {
+        let synced = await browser.storage.sync.get(SYNCABLE_KEYS);
+        state = mergeSyncedSettings(state, synced);
+    } catch (_e) { /* Sync unavailable/not signed in — fall back to local-only settings */ }
 }
 
 function applyDependencies() {
@@ -165,6 +201,10 @@ function onFieldChanged(field, value) {
         requestWikipediaPermission(field);
         return;
     }
+    if (field.id === "show-weather" && value === true) {
+        requestWeatherPermission(field);
+        return;
+    }
     saveField(field.id, value);
 
     if (field.id === "location-search") {
@@ -205,6 +245,28 @@ async function requestWikipediaPermission(field) {
         } else {
             if (entry && entry.input) entry.input.checked = false;
             setStatus(_("Permission was not granted; Wikipedia features stay disabled."));
+        }
+    } catch (e) {
+        if (entry && entry.input) entry.input.checked = false;
+        setStatus(String(e));
+    }
+}
+
+// Same synchronous-user-gesture requirement as WIKI_HOST_PERMISSION above —
+// see that constant's doc comment for why this must happen here, in the
+// checkbox's own "change" handler, and not be relayed through
+// runtime.sendMessage() to background.js.
+const WEATHER_HOST_PERMISSION = { origins: ["https://api.open-meteo.com/*"] };
+
+async function requestWeatherPermission(field) {
+    let entry = fieldEls[field.id];
+    try {
+        let granted = await browser.permissions.request(WEATHER_HOST_PERMISSION);
+        if (granted) {
+            await saveField(field.id, true);
+        } else {
+            if (entry && entry.input) entry.input.checked = false;
+            setStatus(_("Permission was not granted; Weather stays disabled."));
         }
     } catch (e) {
         if (entry && entry.input) entry.input.checked = false;
@@ -358,10 +420,10 @@ function todayStamp() {
  * own ("folder-picker", "import-export" — see their FIELDS entries) are
  * never accepted either, since there's nothing meaningful to import for
  * them (folder-picked images live in IndexedDB — see the note next to the
- * Import/Export section and in the README).
+ * Import/Export section and in the README). NON_STORAGE_FIELD_TYPES is
+ * imported from settings/schema.js, shared with the Firefox Sync
+ * allowlist (isSyncable()) for the same reason.
  */
-const NON_STORAGE_FIELD_TYPES = new Set(["folder-picker", "import-export"]);
-
 export function validateImportedSettings(parsed, fields = FIELDS) {
     let known = new Set(
         Object.values(fields)
@@ -556,6 +618,9 @@ function selectPage(pageKey) {
 async function loadState() {
     let stored = await browser.storage.local.get(null);
     state = Object.assign({}, DEFAULTS, stored);
+    if (state["sync-settings"]) {
+        await mergeSyncSettings();
+    }
 }
 
 async function init() {
@@ -575,6 +640,22 @@ async function init() {
             applyDependencies();
         }
     } catch (_e) { /* background not reachable yet — ignore */ }
+
+    // Same reconciliation for the Weather checkbox — no background-script
+    // round trip needed here since browser.permissions.contains() is a
+    // synchronous-enough, non-user-activation-gated check that options.js
+    // can just call directly (unlike permissions.request()).
+    try {
+        if (typeof browser !== "undefined" && browser.permissions && browser.permissions.contains) {
+            let granted = await browser.permissions.contains(WEATHER_HOST_PERMISSION);
+            if (!granted && state["show-weather"]) {
+                state["show-weather"] = false;
+                await browser.storage.local.set({ "show-weather": false });
+                syncFieldInputs(["show-weather"]);
+                applyDependencies();
+            }
+        }
+    } catch (_e) { /* ignore */ }
 }
 
 if (typeof document !== "undefined") {

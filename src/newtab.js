@@ -19,18 +19,31 @@ import { Namedays } from "./lib/namedays.js";
 import { Folkdays } from "./lib/folkdays.js";
 import { Holidays } from "./lib/holidays.js";
 import { Wikipedia } from "./lib/wikipedia.js";
-import { DEFAULTS } from "./settings/schema.js";
+import { Weather } from "./lib/weather.js";
+import { DEFAULTS, SYNCABLE_KEYS, mergeSyncedSettings } from "./settings/schema.js";
 import {
     getEls, renderAll, renderTime, renderCityTimes,
-    renderWikiOnThisDay, renderWikiFeatured, initSearchBox,
+    renderWikiOnThisDay, renderWikiFeatured, renderWeather, initSearchBox,
     resolveLocale, applyThemeMode, applyBackground,
     applyIconSize, applyPanelOpacity, applyFirefoxThemeBackground,
-    applyImageFolderBackground
+    applyImageFolderBackground, DEFAULT_LAT, DEFAULT_LON
 } from "./lib/render.js";
 
 async function loadSettings() {
     let stored = (typeof browser !== "undefined") ? await browser.storage.local.get(null) : {};
-    return Object.assign({}, DEFAULTS, stored);
+    let state = Object.assign({}, DEFAULTS, stored);
+    // Firefox Sync (opt-in via "sync-settings") — see settings/schema.js's
+    // SYNCABLE_KEYS/mergeSyncedSettings doc comment. Guarded the same
+    // defensive way browser.menus/browser.theme/browser.search are
+    // elsewhere: feature-detect, then try/catch the call itself, falling
+    // back to local-only settings silently.
+    if (state["sync-settings"] && typeof browser !== "undefined" && browser.storage && browser.storage.sync) {
+        try {
+            let synced = await browser.storage.sync.get(SYNCABLE_KEYS);
+            state = mergeSyncedSettings(state, synced);
+        } catch (_e) { /* Sync unavailable/not signed in — fall back to local-only settings */ }
+    }
+    return state;
 }
 
 async function loadLocaleData(state) {
@@ -54,7 +67,11 @@ async function resolveOwnTabId() {
 
 function initApp() {
     let els = getEls(document);
-    let data = { namedayData: null, folkdayData: null, holidayData: null, wikiOnThisDay: null, wikiFeatured: null, wikiRotateStep: 0 };
+    let data = {
+        namedayData: null, folkdayData: null, holidayData: null,
+        wikiOnThisDay: null, wikiFeatured: null, wikiRotateStep: 0,
+        weather: { primary: null, cities: [null, null, null] }
+    };
     let state = Object.assign({}, DEFAULTS);
     let fullTimer = null;
     let clockTimer = null;
@@ -136,12 +153,59 @@ function initApp() {
         }
     }
 
+    /**
+     * Fetch current weather for the primary location and every named extra
+     * city, same permission-check-then-fetch shape as scheduleWikipedia()
+     * above — the actual network-call gating (cache TTL) lives inside
+     * lib/weather.js itself, exactly like Wikipedia, so this just needs to
+     * call it on the same 60s refresh cadence rather than owning a
+     * separate timer.
+     */
+    async function scheduleWeather() {
+        if (!state["show-weather"]) {
+            data.weather = { primary: null, cities: [null, null, null] };
+            renderWeather(els, state, data.weather);
+            return;
+        }
+        let hasPerm = false;
+        try {
+            hasPerm = await browser.permissions.contains({ origins: ["https://api.open-meteo.com/*"] });
+        } catch (_e) { /* ignore */ }
+        if (!hasPerm) return;
+
+        Weather.CACHE_TTL_SECS = (state["weather-cache-hours"] || 1) * 3600;
+        if (!data.weather) data.weather = { primary: null, cities: [null, null, null] };
+        renderWeather(els, state, data.weather);
+
+        let lat = state["use-manual-location"] ? state["latitude"]  : DEFAULT_LAT;
+        let lon = state["use-manual-location"] ? state["longitude"] : DEFAULT_LON;
+        Weather.fetchCurrent(lat, lon, (result) => {
+            data.weather.primary = result;
+            renderWeather(els, state, data.weather);
+        });
+
+        let cityKeys = [
+            ["city1-name", "city1-lat", "city1-lon"],
+            ["city2-name", "city2-lat", "city2-lon"],
+            ["city3-name", "city3-lat", "city3-lon"]
+        ];
+        cityKeys.forEach(([nameKey, latKey, lonKey], i) => {
+            let name = state[nameKey];
+            if (!name || !name.trim()) return;
+            Weather.fetchCurrent(state[latKey], state[lonKey], (result) => {
+                data.weather.cities[i] = result;
+                renderWeather(els, state, data.weather);
+            });
+        });
+    }
+
     async function refresh() {
         if (fullTimer) { clearTimeout(fullTimer); fullTimer = null; }
         let now = new Date();
         renderAll(els, state, data, now);
         data.wikiRotateStep = (data.wikiRotateStep || 0) + 1;
         scheduleWikipedia(now);
+        scheduleWeather();
         if (!isHidden()) fullTimer = setTimeout(refresh, 60000);
         scheduleClock();
     }
@@ -159,6 +223,7 @@ function initApp() {
         data = Object.assign(data, await loadLocaleData(state));
         data.wikiRotateStep = 0;
         data.wikiOnThisDay = null;
+        data.weather = { primary: null, cities: [null, null, null] };
         refresh();
     }
 

@@ -95,6 +95,10 @@
     "message": "Ezen a napon születtek",
     "description": "Source: \"Births on this day\""
   },
+  "cache_duration_for_weather_data": {
+    "message": "Az időjárási adatok gyorsítótárának időtartama",
+    "description": "Source: \"Cache duration for weather data\""
+  },
   "cache_duration_for_wikipedia_data": {
     "message": "Wikipédia adatok gyorsítótár-időtartama",
     "description": "Source: \"Cache duration for Wikipedia data\""
@@ -179,6 +183,10 @@
     "message": "3. város időzónája (IANA, pl. Asia/Tokyo)",
     "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
   },
+  "clear_sky": {
+    "message": "Derült égbolt",
+    "description": "Source: \"Clear sky\""
+  },
   "color_theme": {
     "message": "Színséma",
     "description": "Source: \"Color theme\""
@@ -242,6 +250,18 @@
   "degrees": {
     "message": "fok",
     "description": "Source: \"degrees\""
+  },
+  "dense_drizzle": {
+    "message": "Sűrű szitálás",
+    "description": "Source: \"Dense drizzle\""
+  },
+  "dense_freezing_drizzle": {
+    "message": "Sűrű fagyos szitálás",
+    "description": "Source: \"Dense freezing drizzle\""
+  },
+  "depositing_rime_fog": {
+    "message": "Zúzmarás köd",
+    "description": "Source: \"Depositing rime fog\""
   },
   "dog": {
     "message": "Kutya",
@@ -315,6 +335,10 @@
     "message": "Első negyed",
     "description": "Source: \"First Quarter\""
   },
+  "fog": {
+    "message": "Köd",
+    "description": "Source: \"Fog\""
+  },
   "folk_calendar_sayings": {
     "message": "Népi naptárregulák",
     "description": "Source: \"Folk Calendar Sayings\""
@@ -371,6 +395,22 @@
     "message": "Színátmenet",
     "description": "Source: \"Gradient\""
   },
+  "heavy_freezing_rain": {
+    "message": "Erős fagyos eső",
+    "description": "Source: \"Heavy freezing rain\""
+  },
+  "heavy_rain": {
+    "message": "Erős eső",
+    "description": "Source: \"Heavy rain\""
+  },
+  "heavy_snow_fall": {
+    "message": "Erős hóesés",
+    "description": "Source: \"Heavy snow fall\""
+  },
+  "heavy_snow_showers": {
+    "message": "Erős hózápor",
+    "description": "Source: \"Heavy snow showers\""
+  },
   "hebrew_date": {
     "message": "Héber dátum",
     "description": "Source: \"Hebrew date\""
@@ -386,6 +426,10 @@
   "hours": {
     "message": "óra",
     "description": "Source: \"hours\""
+  },
+  "how_long_to_keep_weather_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage_weather_changes_faster_than_wikipedia_s_daily_content_so_this_defaults_much_lower_than_the_wikipedia_cache": {
+    "message": "Meddig maradjanak az időjárási adatok a helyi gyorsítótárban, mielőtt frissek letöltődnek. Az alacsonyabb értékek gyakoribb letöltést, a magasabbak kevesebb hálózati forgalmat jelentenek. Az időjárás gyorsabban változik, mint a Wikipédia napi tartalma, ezért ez alapértelmezetten jóval alacsonyabb, mint a Wikipédia gyorsítótára.",
+    "description": "Source: \"How long to keep weather data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage. Weather changes faster than Wikipedia's daily content, so this defaults much lower than the Wikipedia cache.\""
   },
   "how_long_to_keep_wikipedia_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage": {
     "message": "Mennyi ideig tárolja a Wikipédia adatokat a helyi gyorsítótárban, mielőtt újat tölt le. Alacsonyabb értéknél sűrűbben frissít; magasabb értéknél csökkenti a hálózathasználatot.Mennyi ideig tárolja a Wikipédia adatokat a helyi gyorsítótárban, mielőtt újat tölt le. Alacsonyabb értéknél sűrűbben frissít; magasabb értéknél csökkenti a hálózathasználatot.",
@@ -495,6 +539,18 @@
     "message": "Mérleg",
     "description": "Source: \"Libra\""
   },
+  "light_drizzle": {
+    "message": "Gyenge szitálás",
+    "description": "Source: \"Light drizzle\""
+  },
+  "light_freezing_drizzle": {
+    "message": "Gyenge fagyos szitálás",
+    "description": "Source: \"Light freezing drizzle\""
+  },
+  "light_freezing_rain": {
+    "message": "Gyenge fagyos eső",
+    "description": "Source: \"Light freezing rain\""
+  },
   "local_time": {
     "message": "Helyi idő",
     "description": "Source: \"Local time\""
@@ -506,6 +562,10 @@
   "longitude_positive_east": {
     "message": "Hosszúsági fok (pozitív = Kelet)",
     "description": "Source: \"Longitude (positive = East)\""
+  },
+  "mainly_clear": {
+    "message": "Túlnyomórészt derült",
+    "description": "Source: \"Mainly clear\""
   },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "A „Rendszer követése” automatikusan igazodik az operációs rendszer/böngésző világos vagy sötét beállításához. A Világos/Sötét kényszeríti az adott témát a rendszerbeállítástól függetlenül, egységesen az Új lapon, a felugró ablakban és a teljes nézetben.",
@@ -522,6 +582,22 @@
   "minutes": {
     "message": "perc",
     "description": "Source: \"minutes\""
+  },
+  "moderate_drizzle": {
+    "message": "Mérsékelt szitálás",
+    "description": "Source: \"Moderate drizzle\""
+  },
+  "moderate_rain": {
+    "message": "Mérsékelt eső",
+    "description": "Source: \"Moderate rain\""
+  },
+  "moderate_rain_showers": {
+    "message": "Mérsékelt zápor",
+    "description": "Source: \"Moderate rain showers\""
+  },
+  "moderate_snow_fall": {
+    "message": "Mérsékelt hóesés",
+    "description": "Source: \"Moderate snow fall\""
   },
   "monkey": {
     "message": "Majom",
@@ -595,6 +671,10 @@
     "message": "Egy vagy több közvetlen https:// (vagy data:image/...) képURL, soronként egy. Kizárólag CSS background-image-ként használjuk — soha nem értelmezzük szkriptként vagy jelölőnyelvként. Az érvénytelen sorokat egyenként kihagyjuk, nem a teljes listát utasítjuk el. Ha egynél több URL van megadva, és az alábbi „Háttérek automatikus váltása” be van kapcsolva, ugyanúgy váltakoznak, mint a beépített színátmenetek.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "overcast": {
+    "message": "Borult",
+    "description": "Source: \"Overcast\""
+  },
   "ox": {
     "message": "Ökör",
     "description": "Source: \"Ox\""
@@ -602,6 +682,14 @@
   "page_background_new_tab_homepage_full_view": {
     "message": "Oldalháttér (Új lap / kezdőlap / teljes nézet)",
     "description": "Source: \"Page background (New Tab / homepage / full view)\""
+  },
+  "partly_cloudy": {
+    "message": "Részben felhős",
+    "description": "Source: \"Partly cloudy\""
+  },
+  "permission_was_not_granted_weather_stays_disabled": {
+    "message": "Az engedély megadása elmaradt; az időjárás funkció kikapcsolva marad.",
+    "description": "Source: \"Permission was not granted; Weather stays disabled.\""
   },
   "persian_date": {
     "message": "Perzsa dátum",
@@ -698,6 +786,10 @@
   "show_current_local_time_for_each_city": {
     "message": "Az aktuális helyi idő megjelenítése minden városhoz",
     "description": "Source: \"Show current local time for each city\""
+  },
+  "show_current_weather_uses_open_meteo_requires_internet": {
+    "message": "Aktuális időjárás megjelenítése (Open-Meteo szolgáltatással, internetkapcsolatot igényel)",
+    "description": "Source: \"Show current weather (uses Open-Meteo, requires Internet)\""
   },
   "show_date": {
     "message": "Dátum megjelenítése",
@@ -815,6 +907,26 @@
     "message": "UTC eltolás megjelenítése minden városhoz (pl. UTC+1)",
     "description": "Source: \"Show UTC offset for each city (e.g. UTC+1)\""
   },
+  "shows_current_temperature_and_conditions_for_your_primary_location_and_for_any_extra_city_below_that_has_a_name_set_enabling_this_requests_permission_to_contact_api_open_meteo_com_a_free_keyless_weather_api_no_account_or_api_key_needed": {
+    "message": "Megjeleníti az aktuális hőmérsékletet és időjárási viszonyokat az elsődleges helyszínen, valamint minden olyan további városnál lent, amelynek meg van adva a neve. Bekapcsoláskor engedélyt kér az api.open-meteo.com eléréséhez, amely egy ingyenes, kulcs nélküli időjárás API — nincs szükség fiókra vagy API-kulcsra.",
+    "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
+  },
+  "slight_rain": {
+    "message": "Gyenge eső",
+    "description": "Source: \"Slight rain\""
+  },
+  "slight_rain_showers": {
+    "message": "Gyenge zápor",
+    "description": "Source: \"Slight rain showers\""
+  },
+  "slight_snow_fall": {
+    "message": "Gyenge hóesés",
+    "description": "Source: \"Slight snow fall\""
+  },
+  "slight_snow_showers": {
+    "message": "Gyenge hózápor",
+    "description": "Source: \"Slight snow showers\""
+  },
   "small": {
     "message": "Kicsi",
     "description": "Source: \"Small\""
@@ -822,6 +934,10 @@
   "snake": {
     "message": "Kígyó",
     "description": "Source: \"Snake\""
+  },
+  "snow_grains": {
+    "message": "Szemcsés hó",
+    "description": "Source: \"Snow grains\""
   },
   "spanish": {
     "message": "Spanyol",
@@ -851,6 +967,14 @@
     "message": "Napnyugta",
     "description": "Source: \"Sunset\""
   },
+  "sync": {
+    "message": "Szinkronizálás",
+    "description": "Source: \"Sync\""
+  },
+  "sync_settings_across_devices_via_firefox_sync": {
+    "message": "Beállítások szinkronizálása az eszközök között a Firefox Sync használatával",
+    "description": "Source: \"Sync settings across devices via Firefox Sync\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "A „Rendszer alapértelmezett” azt a keresőmotort használja, ami éppen a Firefox alapértelmezettje. Ha egy konkrétat választasz, mindig azt fogja használni, függetlenül a Firefox alapértelmezettjétől.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -879,6 +1003,18 @@
     "message": "Ez a kiterjesztés saját háttere, függetlenül a Firefox beépített Új Lap háttérkép-választójától (amit kiterjesztések nem tudnak sem olvasni, sem beállítani). A „Téma alapértelmezett” a fenti világos/sötét paletta szerint viselkedik. Az eszköztár-popup mindig az egyszerű téma-palettát használja, ettől a beállítástól függetlenül.",
     "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
   },
+  "thunderstorm": {
+    "message": "Zivatar",
+    "description": "Source: \"Thunderstorm\""
+  },
+  "thunderstorm_with_heavy_hail": {
+    "message": "Zivatar erős jégesővel",
+    "description": "Source: \"Thunderstorm with heavy hail\""
+  },
+  "thunderstorm_with_slight_hail": {
+    "message": "Zivatar gyenge jégesővel",
+    "description": "Source: \"Thunderstorm with slight hail\""
+  },
   "tiger": {
     "message": "Tigris",
     "description": "Source: \"Tiger\""
@@ -903,6 +1039,10 @@
     "message": "Írj be egy városnevet — a koordináták 1,5 másodperc után automatikusan kitöltődnek.",
     "description": "Source: \"Type a city name — coordinates are filled in automatically after 1.5 seconds.\""
   },
+  "unknown_conditions": {
+    "message": "Ismeretlen időjárási viszonyok",
+    "description": "Source: \"Unknown conditions\""
+  },
   "upcoming_periods_lookahead_days": {
     "message": "Előretekintés közelgő időszakokhoz (napok)",
     "description": "Source: \"Upcoming periods lookahead (days)\""
@@ -910,6 +1050,10 @@
   "use_manual_location_default_budapest_hungary": {
     "message": "Manuális helyszín megadása (alap: Budapest, Magyarország)",
     "description": "Source: \"Use manual location (default: Budapest, Hungary)\""
+  },
+  "violent_rain_showers": {
+    "message": "Heves zápor",
+    "description": "Source: \"Violent rain showers\""
   },
   "virgo": {
     "message": "Szűz",
@@ -935,6 +1079,10 @@
     "message": "Növekvő telihold előtt",
     "description": "Source: \"Waxing Gibbous\""
   },
+  "weather": {
+    "message": "Időjárás",
+    "description": "Source: \"Weather\""
+  },
   "week_n": {
     "message": "%d. hét",
     "description": "Source: \"Week %d\""
@@ -954,6 +1102,10 @@
   "western_zodiac_display": {
     "message": "Nyugati horoszkóp megjelenítése",
     "description": "Source: \"Western zodiac display\""
+  },
+  "when_enabled_most_settings_toggles_colors_single_text_fields_numbers_are_also_written_to_browser_storage_sync_and_on_load_take_precedence_over_this_device_s_local_copy_so_multiple_signed_in_devices_converge_on_the_same_settings_firefox_sync_has_a_strict_quota_100kb_total_8kb_per_item_so_a_few_fields_never_sync_the_custom_background_image_url_s_can_be_long_or_many_the_include_subfolders_folder_picker_flag_the_folder_images_themselves_can_never_sync_they_live_in_this_browser_profile_s_indexeddb_and_this_toggle_itself_it_has_to_be_readable_locally_before_anything_can_decide_whether_to_consult_sync_at_all_requires_being_signed_into_firefox_sync_if_you_aren_t_or_a_write_exceeds_quota_saves_quietly_stay_local_only": {
+    "message": "Bekapcsolva a legtöbb beállítás (kapcsolók, színek, egysoros szövegmezők, számok) a browser.storage.sync-be is íródik, és betöltéskor elsőbbséget élvez ezen eszköz helyi másolatával szemben — így a több bejelentkezett eszköz ugyanazokon a beállításokon konvergál. A Firefox Sync szigorú kvótával rendelkezik (összesen 100 KB, elemenként 8 KB), ezért néhány mező soha nem szinkronizálódik: az egyéni háttérkép URL-je (lehet hosszú vagy több is), a mappaválasztó „almappák belefoglalása” jelölőnégyzete (maga a mappa/képek soha nem szinkronizálhatók — a böngészőprofil IndexedDB-jében élnek), és maga ez a kapcsoló (helyben kell tudni olvasni, mielőtt bármi eldöntené, hogy egyáltalán érdemes-e a Sync-hez fordulni). Bejelentkezett Firefox Sync fiók szükséges hozzá — ha nincs bejelentkezve, vagy egy mentés túllépi a kvótát, a mentések csendben helyben maradnak.",
+    "description": "Source: \"When enabled, most settings (toggles, colors, single text fields, numbers) are also written to browser.storage.sync, and on load take precedence over this device's local copy — so multiple signed-in devices converge on the same settings. Firefox Sync has a strict quota (100KB total, 8KB per item), so a few fields never sync: the custom background image URL(s) (can be long or many), the \"include subfolders\" folder-picker flag (the folder/images themselves can never sync — they live in this browser profile's IndexedDB), and this toggle itself (it has to be readable locally before anything can decide whether to consult Sync at all). Requires being signed into Firefox Sync — if you aren't, or a write exceeds quota, saves quietly stay local-only.\""
   },
   "when_unchecked_default_only_images_directly_inside_the_chosen_folder_are_used_when_checked_images_in_every_subfolder_underneath_it_are_included_too": {
     "message": "Ha nincs bejelölve (alapértelmezett), csak a kiválasztott mappában közvetlenül található képek kerülnek felhasználásra. Ha be van jelölve, az alatta lévő összes alkönyvtár képei is bekerülnek.",

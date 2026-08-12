@@ -6,7 +6,7 @@ import path from "node:path";
 import {
     getEls, renderDate, renderTime, renderProgress, renderTraditional,
     renderFolkday, renderHoliday, renderMoon,
-    renderZodiac, renderNamedays, renderAltCal,
+    renderZodiac, renderNamedays, renderAltCal, renderWeather,
     renderWikiOnThisDay, renderWikiFeatured, renderAll,
     strftime, getISOWeek, wrapText, formatTzOffset, resolveLocale
 } from "../../src/lib/render.js";
@@ -332,6 +332,57 @@ describe("renderWikiOnThisDay / renderWikiFeatured", () => {
             tfa: { normalizedtitle: "Big Topic", extract: "Text." }
         });
         expect(els.wikiFeatured.hasAttribute("hidden")).toBe(true);
+    });
+});
+
+describe("renderWeather", () => {
+    it("hides both the primary row and the city list when show-weather is false", () => {
+        let els = freshDom();
+        renderWeather(els, baseState({ "show-weather": false }), { primary: { temperature: 20, weathercode: 0 }, cities: [] });
+        expect(els.weatherPrimary.hasAttribute("hidden")).toBe(true);
+        expect(els.weatherCities.hasAttribute("hidden")).toBe(true);
+    });
+
+    it("shows the primary row with formatted temperature + icon/label when enabled", () => {
+        let els = freshDom();
+        renderWeather(els, baseState({ "show-weather": true }), { primary: { temperature: 20.6, weathercode: 0 }, cities: [] });
+        expect(els.weatherPrimary.hasAttribute("hidden")).toBe(false);
+        expect(els.weatherPrimary.textContent).toContain("21°C");
+        expect(els.weatherPrimary.textContent).toContain("☀️");
+    });
+
+    it("shows a 'No data' placeholder before the first fetch resolves", () => {
+        let els = freshDom();
+        renderWeather(els, baseState({ "show-weather": true }), { primary: null, cities: [] });
+        expect(els.weatherPrimary.textContent).toContain("No data");
+    });
+
+    it("only shows a named city's weather row, reusing the city-presence signal, independent of show-sun", () => {
+        let els = freshDom();
+        let state = baseState({
+            "show-weather": true, "show-sun": false,
+            "city1-name": "Vienna", "city2-name": "", "city3-name": ""
+        });
+        renderWeather(els, state, { primary: null, cities: [{ temperature: 15, weathercode: 61 }, null, null] });
+        expect(els.weatherCities.hasAttribute("hidden")).toBe(false);
+        let rows = els.weatherCities.querySelectorAll(".calendarium-weather-city-row");
+        expect(rows[0].hasAttribute("hidden")).toBe(false);
+        expect(rows[0].textContent).toContain("Vienna");
+        expect(rows[1].hasAttribute("hidden")).toBe(true);
+        expect(rows[2].hasAttribute("hidden")).toBe(true);
+    });
+
+    it("hides the city list entirely when no extra city has a name set", () => {
+        let els = freshDom();
+        let state = baseState({ "show-weather": true, "city1-name": "", "city2-name": "", "city3-name": "" });
+        renderWeather(els, state, { primary: null, cities: [null, null, null] });
+        expect(els.weatherCities.hasAttribute("hidden")).toBe(true);
+    });
+
+    it("does not throw when called against markup with no weather elements at all (e.g. popup.html)", () => {
+        let popupEls = { weatherPrimary: null, weatherCities: null, city1Name: undefined };
+        Object.assign(popupEls, { "city1-name": undefined });
+        expect(() => renderWeather(popupEls, baseState({ "show-weather": true }), { primary: { temperature: 20, weathercode: 0 }, cities: [] })).not.toThrow();
     });
 });
 

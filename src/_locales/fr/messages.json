@@ -95,6 +95,10 @@
     "message": "Naissances de ce jour",
     "description": "Source: \"Births on this day\""
   },
+  "cache_duration_for_weather_data": {
+    "message": "Durée de mise en cache des données météo",
+    "description": "Source: \"Cache duration for weather data\""
+  },
   "cache_duration_for_wikipedia_data": {
     "message": "Durée du cache des données Wikipédia",
     "description": "Source: \"Cache duration for Wikipedia data\""
@@ -179,6 +183,10 @@
     "message": "Fuseau horaire de la ville 3 (IANA, ex. Asia/Tokyo)",
     "description": "Source: \"City 3 timezone (IANA, e.g. Asia/Tokyo)\""
   },
+  "clear_sky": {
+    "message": "Ciel dégagé",
+    "description": "Source: \"Clear sky\""
+  },
   "color_theme": {
     "message": "Thème de couleur",
     "description": "Source: \"Color theme\""
@@ -242,6 +250,18 @@
   "degrees": {
     "message": "degrés",
     "description": "Source: \"degrees\""
+  },
+  "dense_drizzle": {
+    "message": "Bruine dense",
+    "description": "Source: \"Dense drizzle\""
+  },
+  "dense_freezing_drizzle": {
+    "message": "Bruine verglaçante dense",
+    "description": "Source: \"Dense freezing drizzle\""
+  },
+  "depositing_rime_fog": {
+    "message": "Brouillard givrant",
+    "description": "Source: \"Depositing rime fog\""
   },
   "dog": {
     "message": "Chien",
@@ -315,6 +335,10 @@
     "message": "Premier quartier",
     "description": "Source: \"First Quarter\""
   },
+  "fog": {
+    "message": "Brouillard",
+    "description": "Source: \"Fog\""
+  },
   "folk_calendar_sayings": {
     "message": "Proverbes du calendrier populaire",
     "description": "Source: \"Folk Calendar Sayings\""
@@ -371,6 +395,22 @@
     "message": "Dégradé",
     "description": "Source: \"Gradient\""
   },
+  "heavy_freezing_rain": {
+    "message": "Pluie verglaçante forte",
+    "description": "Source: \"Heavy freezing rain\""
+  },
+  "heavy_rain": {
+    "message": "Pluie forte",
+    "description": "Source: \"Heavy rain\""
+  },
+  "heavy_snow_fall": {
+    "message": "Chute de neige forte",
+    "description": "Source: \"Heavy snow fall\""
+  },
+  "heavy_snow_showers": {
+    "message": "Averses de neige fortes",
+    "description": "Source: \"Heavy snow showers\""
+  },
   "hebrew_date": {
     "message": "Date hébraïque",
     "description": "Source: \"Hebrew date\""
@@ -386,6 +426,10 @@
   "hours": {
     "message": "heures",
     "description": "Source: \"hours\""
+  },
+  "how_long_to_keep_weather_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage_weather_changes_faster_than_wikipedia_s_daily_content_so_this_defaults_much_lower_than_the_wikipedia_cache": {
+    "message": "Durée de conservation des données météo dans le cache local avant de récupérer des données actualisées. Des valeurs plus basses interrogent plus souvent ; des valeurs plus élevées réduisent l'utilisation du réseau. La météo change plus vite que le contenu quotidien de Wikipédia, cette valeur par défaut est donc bien plus basse que celle du cache Wikipédia.",
+    "description": "Source: \"How long to keep weather data in the local cache before fetching fresh data. Lower values fetch more often; higher values reduce network usage. Weather changes faster than Wikipedia's daily content, so this defaults much lower than the Wikipedia cache.\""
   },
   "how_long_to_keep_wikipedia_data_in_the_local_cache_before_fetching_fresh_data_lower_values_fetch_more_often_higher_values_reduce_network_usage": {
     "message": "Durée de conservation des données Wikipedia dans le cache local avant de télécharger de nouvelles données. Des valeurs plus basses actualisent plus souvent ; des valeurs plus hautes réduisent l'utilisation du réseau.Combien de temps conserver les données Wikipédia dans le cache local avant d'en obtenir de nouvelles. Des valeurs faibles actualisent plus souvent ; des valeurs élevées réduisent l'utilisation du réseau.",
@@ -495,6 +539,18 @@
     "message": "Balance",
     "description": "Source: \"Libra\""
   },
+  "light_drizzle": {
+    "message": "Bruine légère",
+    "description": "Source: \"Light drizzle\""
+  },
+  "light_freezing_drizzle": {
+    "message": "Bruine verglaçante légère",
+    "description": "Source: \"Light freezing drizzle\""
+  },
+  "light_freezing_rain": {
+    "message": "Pluie verglaçante légère",
+    "description": "Source: \"Light freezing rain\""
+  },
   "local_time": {
     "message": "Heure locale",
     "description": "Source: \"Local time\""
@@ -506,6 +562,10 @@
   "longitude_positive_east": {
     "message": "Longitude (positif = Est)",
     "description": "Source: \"Longitude (positive = East)\""
+  },
+  "mainly_clear": {
+    "message": "Généralement dégagé",
+    "description": "Source: \"Mainly clear\""
   },
   "match_system_follows_your_os_browser_light_or_dark_preference_automatically_light_dark_force_that_palette_regardless_of_the_system_setting_on_the_new_tab_page_popup_and_full_view_alike": {
     "message": "« Suivre le système » s'adapte automatiquement à la préférence claire ou sombre de votre système d'exploitation/navigateur. Clair/Sombre force cette palette quel que soit le réglage système, de la même façon sur la page Nouvel onglet, le popup et la vue complète.",
@@ -522,6 +582,22 @@
   "minutes": {
     "message": "minutes",
     "description": "Source: \"minutes\""
+  },
+  "moderate_drizzle": {
+    "message": "Bruine modérée",
+    "description": "Source: \"Moderate drizzle\""
+  },
+  "moderate_rain": {
+    "message": "Pluie modérée",
+    "description": "Source: \"Moderate rain\""
+  },
+  "moderate_rain_showers": {
+    "message": "Averses de pluie modérées",
+    "description": "Source: \"Moderate rain showers\""
+  },
+  "moderate_snow_fall": {
+    "message": "Chute de neige modérée",
+    "description": "Source: \"Moderate snow fall\""
   },
   "monkey": {
     "message": "Singe",
@@ -595,6 +671,10 @@
     "message": "Une ou plusieurs URL d'image directes https:// (ou data:image/...), une par ligne. Utilisée uniquement comme background-image CSS — jamais évaluée comme script ou balisage. Les lignes non valides sont ignorées individuellement plutôt que de rejeter toute la liste. Avec plusieurs URL et « Faire pivoter les arrière-plans » activé ci-dessous, elles alternent de la même manière que les dégradés intégrés.",
     "description": "Source: \"One or more direct https:// (or data:image/...) image URLs, one per line. Used only as a CSS background-image — never evaluated as script or markup. Invalid lines are skipped individually rather than rejecting the whole list. With more than one URL and \"Rotate backgrounds\" enabled below, they rotate the same way the built-in gradients do.\""
   },
+  "overcast": {
+    "message": "Couvert",
+    "description": "Source: \"Overcast\""
+  },
   "ox": {
     "message": "Bœuf",
     "description": "Source: \"Ox\""
@@ -602,6 +682,14 @@
   "page_background_new_tab_homepage_full_view": {
     "message": "Arrière-plan de la page (Nouvel onglet / page d'accueil / vue complète)",
     "description": "Source: \"Page background (New Tab / homepage / full view)\""
+  },
+  "partly_cloudy": {
+    "message": "Partiellement nuageux",
+    "description": "Source: \"Partly cloudy\""
+  },
+  "permission_was_not_granted_weather_stays_disabled": {
+    "message": "L'autorisation n'a pas été accordée ; la météo reste désactivée.",
+    "description": "Source: \"Permission was not granted; Weather stays disabled.\""
   },
   "persian_date": {
     "message": "Date persane",
@@ -698,6 +786,10 @@
   "show_current_local_time_for_each_city": {
     "message": "Afficher l'heure locale actuelle pour chaque ville",
     "description": "Source: \"Show current local time for each city\""
+  },
+  "show_current_weather_uses_open_meteo_requires_internet": {
+    "message": "Afficher la météo actuelle (utilise Open-Meteo, nécessite Internet)",
+    "description": "Source: \"Show current weather (uses Open-Meteo, requires Internet)\""
   },
   "show_date": {
     "message": "Afficher la date",
@@ -815,6 +907,26 @@
     "message": "Afficher le décalage UTC pour chaque ville (ex. UTC+1)",
     "description": "Source: \"Show UTC offset for each city (e.g. UTC+1)\""
   },
+  "shows_current_temperature_and_conditions_for_your_primary_location_and_for_any_extra_city_below_that_has_a_name_set_enabling_this_requests_permission_to_contact_api_open_meteo_com_a_free_keyless_weather_api_no_account_or_api_key_needed": {
+    "message": "Affiche la température et les conditions actuelles de votre emplacement principal et de chaque ville supplémentaire ci-dessous dont le nom est défini. L'activation demande l'autorisation de contacter api.open-meteo.com, une API météo gratuite sans clé — aucun compte ni clé API n'est nécessaire.",
+    "description": "Source: \"Shows current temperature and conditions for your primary location and for any extra city below that has a name set. Enabling this requests permission to contact api.open-meteo.com, a free keyless weather API — no account or API key needed.\""
+  },
+  "slight_rain": {
+    "message": "Pluie faible",
+    "description": "Source: \"Slight rain\""
+  },
+  "slight_rain_showers": {
+    "message": "Averses de pluie faibles",
+    "description": "Source: \"Slight rain showers\""
+  },
+  "slight_snow_fall": {
+    "message": "Chute de neige faible",
+    "description": "Source: \"Slight snow fall\""
+  },
+  "slight_snow_showers": {
+    "message": "Averses de neige faibles",
+    "description": "Source: \"Slight snow showers\""
+  },
   "small": {
     "message": "Petit",
     "description": "Source: \"Small\""
@@ -822,6 +934,10 @@
   "snake": {
     "message": "Serpent",
     "description": "Source: \"Snake\""
+  },
+  "snow_grains": {
+    "message": "Neige en grains",
+    "description": "Source: \"Snow grains\""
   },
   "spanish": {
     "message": "Espagnol",
@@ -851,6 +967,14 @@
     "message": "Coucher du soleil",
     "description": "Source: \"Sunset\""
   },
+  "sync": {
+    "message": "Synchronisation",
+    "description": "Source: \"Sync\""
+  },
+  "sync_settings_across_devices_via_firefox_sync": {
+    "message": "Synchroniser les paramètres entre les appareils via Firefox Sync",
+    "description": "Source: \"Sync settings across devices via Firefox Sync\""
+  },
   "system_default_uses_whatever_firefox_s_default_search_engine_is_picking_a_specific_one_always_uses_that_engine_instead_regardless_of_your_firefox_default": {
     "message": "« Système par défaut » utilise le moteur de recherche par défaut actuel de Firefox. Si vous en choisissez un spécifique, celui-ci sera toujours utilisé, quel que soit votre moteur par défaut Firefox.",
     "description": "Source: \"\"System default\" uses whatever Firefox's default search engine is. Picking a specific one always uses that engine instead, regardless of your Firefox default.\""
@@ -879,6 +1003,18 @@
     "message": "Il s'agit de l'arrière-plan propre de l'extension, indépendant du sélecteur de fond d'écran intégré de Firefox pour le Nouvel onglet (que les extensions ne peuvent ni lire ni définir). « Thème par défaut » suit la palette claire/sombre ci-dessus. Le popup de la barre d'outils utilise toujours la palette de thème simple, quel que soit ce réglage.",
     "description": "Source: \"This is the extension's own background, independent of Firefox's built-in New Tab wallpaper picker (which extensions cannot read or set). \"Theme default\" follows the light/dark palette above. The toolbar popup always uses the plain theme palette, regardless of this setting.\""
   },
+  "thunderstorm": {
+    "message": "Orage",
+    "description": "Source: \"Thunderstorm\""
+  },
+  "thunderstorm_with_heavy_hail": {
+    "message": "Orage avec grêle forte",
+    "description": "Source: \"Thunderstorm with heavy hail\""
+  },
+  "thunderstorm_with_slight_hail": {
+    "message": "Orage avec grêle légère",
+    "description": "Source: \"Thunderstorm with slight hail\""
+  },
   "tiger": {
     "message": "Tigre",
     "description": "Source: \"Tiger\""
@@ -903,6 +1039,10 @@
     "message": "Tapez un nom de ville — les coordonnées se remplissent automatiquement après 1,5 seconde.",
     "description": "Source: \"Type a city name — coordinates are filled in automatically after 1.5 seconds.\""
   },
+  "unknown_conditions": {
+    "message": "Conditions inconnues",
+    "description": "Source: \"Unknown conditions\""
+  },
   "upcoming_periods_lookahead_days": {
     "message": "Anticipation des périodes à venir (jours)",
     "description": "Source: \"Upcoming periods lookahead (days)\""
@@ -910,6 +1050,10 @@
   "use_manual_location_default_budapest_hungary": {
     "message": "Utiliser un emplacement manuel (par défaut : Budapest, Hongrie)",
     "description": "Source: \"Use manual location (default: Budapest, Hungary)\""
+  },
+  "violent_rain_showers": {
+    "message": "Averses de pluie violentes",
+    "description": "Source: \"Violent rain showers\""
   },
   "virgo": {
     "message": "Vierge",
@@ -935,6 +1079,10 @@
     "message": "Gibbeuse croissante",
     "description": "Source: \"Waxing Gibbous\""
   },
+  "weather": {
+    "message": "Météo",
+    "description": "Source: \"Weather\""
+  },
   "week_n": {
     "message": "Semaine %d",
     "description": "Source: \"Week %d\""
@@ -954,6 +1102,10 @@
   "western_zodiac_display": {
     "message": "Affichage du zodiaque occidental",
     "description": "Source: \"Western zodiac display\""
+  },
+  "when_enabled_most_settings_toggles_colors_single_text_fields_numbers_are_also_written_to_browser_storage_sync_and_on_load_take_precedence_over_this_device_s_local_copy_so_multiple_signed_in_devices_converge_on_the_same_settings_firefox_sync_has_a_strict_quota_100kb_total_8kb_per_item_so_a_few_fields_never_sync_the_custom_background_image_url_s_can_be_long_or_many_the_include_subfolders_folder_picker_flag_the_folder_images_themselves_can_never_sync_they_live_in_this_browser_profile_s_indexeddb_and_this_toggle_itself_it_has_to_be_readable_locally_before_anything_can_decide_whether_to_consult_sync_at_all_requires_being_signed_into_firefox_sync_if_you_aren_t_or_a_write_exceeds_quota_saves_quietly_stay_local_only": {
+    "message": "Lorsque cette option est activée, la plupart des paramètres (interrupteurs, couleurs, champs de texte à une ligne, nombres) sont également écrits dans browser.storage.sync et, au chargement, priment sur la copie locale de cet appareil — de sorte que plusieurs appareils connectés convergent vers les mêmes paramètres. Firefox Sync applique un quota strict (100 Ko au total, 8 Ko par élément), donc certains champs ne sont jamais synchronisés : la ou les URL d'image d'arrière-plan personnalisée (peuvent être longues ou nombreuses), la case « inclure les sous-dossiers » du sélecteur de dossier (le dossier ou les images eux-mêmes ne peuvent jamais être synchronisés — ils résident dans l'IndexedDB de ce profil de navigateur), et cet interrupteur lui-même (il doit pouvoir être lu localement avant même de décider s'il faut consulter Sync). Nécessite d'être connecté à Firefox Sync — si ce n'est pas le cas, ou si une écriture dépasse le quota, les enregistrements restent silencieusement locaux.",
+    "description": "Source: \"When enabled, most settings (toggles, colors, single text fields, numbers) are also written to browser.storage.sync, and on load take precedence over this device's local copy — so multiple signed-in devices converge on the same settings. Firefox Sync has a strict quota (100KB total, 8KB per item), so a few fields never sync: the custom background image URL(s) (can be long or many), the \"include subfolders\" folder-picker flag (the folder/images themselves can never sync — they live in this browser profile's IndexedDB), and this toggle itself (it has to be readable locally before anything can decide whether to consult Sync at all). Requires being signed into Firefox Sync — if you aren't, or a write exceeds quota, saves quietly stay local-only.\""
   },
   "when_unchecked_default_only_images_directly_inside_the_chosen_folder_are_used_when_checked_images_in_every_subfolder_underneath_it_are_included_too": {
     "message": "Si la case n'est pas cochée (par défaut), seules les images se trouvant directement dans le dossier choisi sont utilisées. Si elle est cochée, les images de chaque sous-dossier en dessous sont également incluses.",

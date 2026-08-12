@@ -38,8 +38,8 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 77 fields: the 65 ported from the source settings-schema.json ('text-scale' was removed as dead code — see the theme-agent's note in schema.js history), 'show-search-box' + 'search-engine' (Firefox-only extras, not present in the Cinnamon desklet), 7 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url', 'background-rotate', 'background-rotate-minutes'), and 3 more Firefox-only additions ('background-folder-picker', 'background-folder-include-subfolders', 'settings-import-export')", () => {
-        expect(Object.keys(FIELDS).length).toBe(77);
+    it("has 80 fields: the 65 ported from the source settings-schema.json ('text-scale' was removed as dead code — see the theme-agent's note in schema.js history), 'show-search-box' + 'search-engine' (Firefox-only extras, not present in the Cinnamon desklet), 7 Firefox-only theme/background additions ('theme-mode', 'background-style', 'background-color', 'background-gradient', 'background-image-url', 'background-rotate', 'background-rotate-minutes'), 3 more Firefox-only additions ('background-folder-picker', 'background-folder-include-subfolders', 'settings-import-export'), and 3 more Firefox-only additions from this round ('show-weather', 'weather-cache-hours', 'sync-settings')", () => {
+        expect(Object.keys(FIELDS).length).toBe(80);
     });
 
     it("no longer has a 'text-scale' field (dead code, superseded by Firefox's own per-origin Ctrl+/- zoom)", () => {
