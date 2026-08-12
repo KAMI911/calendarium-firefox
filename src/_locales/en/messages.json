@@ -123,6 +123,10 @@
     "message": "Calendarium",
     "description": "Source: \"Calendarium\""
   },
+  "calendarium_settings": {
+    "message": "Calendarium settings",
+    "description": "Source: \"Calendarium settings\""
+  },
   "cancer": {
     "message": "Cancer",
     "description": "Source: \"Cancer\""

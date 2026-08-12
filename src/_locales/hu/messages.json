@@ -123,6 +123,10 @@
     "message": "Kalendárium",
     "description": "Source: \"Calendarium\""
   },
+  "calendarium_settings": {
+    "message": "Calendarium beállítások",
+    "description": "Source: \"Calendarium settings\""
+  },
   "cancer": {
     "message": "Rák",
     "description": "Source: \"Cancer\""

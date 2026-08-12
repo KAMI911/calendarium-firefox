@@ -662,7 +662,9 @@ async function loadState() {
 }
 
 async function init() {
-    document.getElementById("options-title").textContent = _("Calendarium settings");
+    let title = _("Calendarium settings");
+    document.getElementById("options-title").textContent = title;
+    document.title = title;
     await loadState();
     buildPages();
     applyDependencies();
