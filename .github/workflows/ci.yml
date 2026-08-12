@@ -49,17 +49,32 @@ jobs:
         env:
           CI_COMMIT_TAG: ${{ github.ref_name }}
         run: node scripts/set-version.mjs
-      - name: Sign with web-ext (AMO, listed channel)
+      - name: Submit to AMO (listed channel) — don't block on human review
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+        # Listed submissions go through Mozilla review, which can take
+        # anywhere from minutes to days — nothing something CI should ever
+        # block on. --approval-timeout=0 makes web-ext upload + validate
+        # and return immediately without waiting for a signed .xpi (which
+        # only exists once a human reviewer approves it). The GitHub
+        # Release below therefore ships the *unsigned* build, with a note
+        # pointing at the AMO version page for the signed download once
+        # it's approved.
         run: |
           npx web-ext sign --source-dir=src --artifacts-dir=dist-signed \
             --api-key="$WEB_EXT_API_KEY" --api-secret="$WEB_EXT_API_SECRET" \
-            --channel=listed --amo-metadata=amo-metadata.json
-      - name: Create GitHub Release with the signed .xpi attached
+            --channel=listed --amo-metadata=amo-metadata.json --approval-timeout=0
+      - run: npx web-ext build --source-dir=src --artifacts-dir=dist --overwrite-dest
+      - name: Create GitHub Release with the unsigned build attached
         uses: softprops/action-gh-release@v3
         with:
           name: "Calendarium ${{ github.ref_name }}"
-          files: dist-signed/*.xpi
+          files: dist/*.zip
           generate_release_notes: true
+          body: |
+            Submitted to addons.mozilla.org for review (listed channel).
+            The attached `.zip` is the unsigned build; the AMO-signed
+            `.xpi` becomes available once a Mozilla reviewer approves this
+            version — check https://addons.mozilla.org/developers/addon/calendarium/versions
+            for status.
