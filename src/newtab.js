@@ -70,7 +70,12 @@ function initApp() {
     let data = {
         namedayData: null, folkdayData: null, holidayData: null,
         wikiOnThisDay: null, wikiFeatured: null, wikiRotateStep: 0,
-        weather: { primary: null, cities: [null, null, null] }
+        // null (not a null-filled placeholder object) until a permitted
+        // fetch attempt actually happens — see renderWeather()'s doc
+        // comment: this is what lets it distinguish "never attempted /
+        // no permission yet" (stay hidden, like the Wikipedia section)
+        // from "attempted, got nothing back" (show "No data").
+        weather: null
     };
     let state = Object.assign({}, DEFAULTS);
     let fullTimer = null;
@@ -163,7 +168,7 @@ function initApp() {
      */
     async function scheduleWeather() {
         if (!state["show-weather"]) {
-            data.weather = { primary: null, cities: [null, null, null] };
+            data.weather = null;
             renderWeather(els, state, data.weather);
             return;
         }
@@ -171,7 +176,14 @@ function initApp() {
         try {
             hasPerm = await browser.permissions.contains({ origins: ["https://api.open-meteo.com/*"] });
         } catch (_e) { /* ignore */ }
-        if (!hasPerm) return;
+        if (!hasPerm) {
+            // Not (or no longer) granted — stay hidden, exactly like the
+            // Wikipedia section, rather than showing a "No data" row that
+            // implies a fetch was actually attempted.
+            data.weather = null;
+            renderWeather(els, state, data.weather);
+            return;
+        }
 
         Weather.CACHE_TTL_SECS = (state["weather-cache-hours"] || 1) * 3600;
         if (!data.weather) data.weather = { primary: null, cities: [null, null, null] };

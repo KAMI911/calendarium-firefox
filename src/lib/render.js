@@ -596,20 +596,27 @@ function formatWeather(w) {
  * Render current weather for the primary location (els.weatherPrimary) and
  * for each named extra city (els.weatherCities' per-row grid).
  * `weatherData` is `{ primary: WeatherResult|null, cities: [WeatherResult|null, ...] }`
- * (see newtab.js's scheduleWeather()) — may be null/undefined before the
- * first fetch resolves, in which case rows still show (once "show-weather"
- * is on) with a "No data" placeholder rather than staying blank forever.
+ * once a permitted fetch has actually been attempted (see newtab.js's
+ * scheduleWeather()), or plain `null` before that — e.g. "show-weather" is
+ * off, or the `api.open-meteo.com` permission hasn't been granted (yet).
+ * `weatherData === null` hides the section entirely, the same way the
+ * Wikipedia section stays hidden without its permission — a per-location
+ * "No data" placeholder only appears once a fetch actually happened and
+ * came back empty (e.g. a transient network error), never just because
+ * permission is missing.
  */
 export function renderWeather(els, state, weatherData) {
+    let attempted = !!weatherData;
+
     // Guarded (rather than assumed present) because popup.html deliberately
     // has no weather markup at all — weather needs a network fetch +
     // permission flow that doesn't fit the popup's short-lived nature well,
     // the same boundary as the search box (see options.js/README). Calling
     // renderAll() against popup markup must stay a safe no-op here.
     if (els.weatherPrimary) {
-        show(els.weatherPrimary, !!state["show-weather"]);
-        if (state["show-weather"]) {
-            els.weatherPrimary.textContent = formatWeather(weatherData && weatherData.primary);
+        show(els.weatherPrimary, !!state["show-weather"] && attempted);
+        if (state["show-weather"] && attempted) {
+            els.weatherPrimary.textContent = formatWeather(weatherData.primary);
         }
     }
 
@@ -619,7 +626,7 @@ export function renderWeather(els, state, weatherData) {
     let cities = (weatherData && weatherData.cities) || [];
     let anyCity = false;
     for (let i = 0; i < 3; i++) {
-        let has = !!(state["show-weather"] && names[i] && names[i].trim());
+        let has = !!(state["show-weather"] && attempted && names[i] && names[i].trim());
         if (has) anyCity = true;
         show(rows[i].row, has);
         if (!has) continue;

@@ -351,10 +351,19 @@ describe("renderWeather", () => {
         expect(els.weatherPrimary.textContent).toContain("☀️");
     });
 
-    it("shows a 'No data' placeholder before the first fetch resolves", () => {
+    it("shows a 'No data' placeholder once a fetch was attempted but came back empty", () => {
         let els = freshDom();
         renderWeather(els, baseState({ "show-weather": true }), { primary: null, cities: [] });
         expect(els.weatherPrimary.textContent).toContain("No data");
+    });
+
+    it("stays hidden (no 'No data' placeholder) when weatherData is null — never attempted / no permission yet", () => {
+        let els = freshDom();
+        renderWeather(els, baseState({
+            "show-weather": true, "city1-name": "Vienna"
+        }), null);
+        expect(els.weatherPrimary.hasAttribute("hidden")).toBe(true);
+        expect(els.weatherCities.hasAttribute("hidden")).toBe(true);
     });
 
     it("only shows a named city's weather row, reusing the city-presence signal, independent of show-sun", () => {
