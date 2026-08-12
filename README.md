@@ -604,16 +604,20 @@ to `--channel=listed` in the workflow.
 - Icon sizes: `src/icons/` includes `icon-48.png`, `icon-96.png`,
   `icon-128.png` (generated from the desklet's `icon.png` via
   ImageMagick `convert`) plus the original 512×512 `icon.png`.
-- The Wikipedia REST endpoint assumption (`api.wikimedia.org/feed/v1/...`)
-  should be spot-checked against a live response before shipping — see
-  the note in `src/lib/wikipedia.js` and above.
+- ~~The Wikipedia REST endpoint assumption should be spot-checked against
+  a live response~~ — **verified**: both
+  `https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/<mm>/<dd>`
+  and `.../featured/<year>/<mm>/<dd>` return HTTP 200 with real content
+  as of this check.
 - Traditional month names only cover `hu`/`en`/`de` (identical to the
   source desklet — `lib/localization.js` was ported verbatim).
-- `npm run dev` / manual Firefox smoke testing has not been run in this
-  environment (no GUI Firefox available); please run it once before
-  relying on this in daily use — in particular the popup/full-view/
-  search-box additions have only been exercised via jsdom unit tests, not
-  a real Firefox window.
+- Manual Firefox smoke testing (`npm run dev` / installing a signed
+  `.xpi`) has been done for the core widget, options page, and popup —
+  but several later additions (background rotation/gradients, the
+  Firefox-theme-colors background option, the folder-image picker, the
+  weather widget's live rendering, the engine-icon dropdown's visual
+  styling) have only been exercised via jsdom unit tests, not eyeballed
+  in a real window. Worth a pass if any of those look off in daily use.
 - The "Open full view in a new tab" context menu item's title is a plain
   English string (`src/background.js`), not run through the `_()` /
   `browser.i18n` translation layer like the rest of the UI, since
