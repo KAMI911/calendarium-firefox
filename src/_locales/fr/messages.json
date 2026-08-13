@@ -635,6 +635,10 @@
     "message": "Emplacement",
     "description": "Source: \"Location\""
   },
+  "location_set_to": {
+    "message": "Emplacement défini sur",
+    "description": "Source: \"Location set to\""
+  },
   "longitude_positive_east": {
     "message": "Longitude (positif = Est)",
     "description": "Source: \"Longitude (positive = East)\""
@@ -802,6 +806,10 @@
   "permission_was_not_granted_weather_stays_disabled": {
     "message": "L'autorisation n'a pas été accordée ; la météo reste désactivée.",
     "description": "Source: \"Permission was not granted; Weather stays disabled.\""
+  },
+  "permission_was_not_granted_wikipedia_features_stay_disabled": {
+    "message": "L'autorisation n'a pas été accordée ; les fonctionnalités Wikipédia restent désactivées.",
+    "description": "Source: \"Permission was not granted; Wikipedia features stay disabled.\""
   },
   "persian_date": {
     "message": "Date persane",

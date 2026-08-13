@@ -635,6 +635,10 @@
     "message": "Helyszín",
     "description": "Source: \"Location\""
   },
+  "location_set_to": {
+    "message": "A helyszín beállítva:",
+    "description": "Source: \"Location set to\""
+  },
   "longitude_positive_east": {
     "message": "Hosszúsági fok (pozitív = Kelet)",
     "description": "Source: \"Longitude (positive = East)\""
@@ -802,6 +806,10 @@
   "permission_was_not_granted_weather_stays_disabled": {
     "message": "Az engedély megadása elmaradt; az időjárás funkció kikapcsolva marad.",
     "description": "Source: \"Permission was not granted; Weather stays disabled.\""
+  },
+  "permission_was_not_granted_wikipedia_features_stay_disabled": {
+    "message": "Az engedély nem lett megadva; a Wikipédia-funkciók letiltva maradnak.",
+    "description": "Source: \"Permission was not granted; Wikipedia features stay disabled.\""
   },
   "persian_date": {
     "message": "Perzsa dátum",
