@@ -411,6 +411,10 @@
     "message": "French",
     "description": "Source: \"French\""
   },
+  "french_republican_date": {
+    "message": "French Republican date",
+    "description": "Source: \"French Republican date\""
+  },
   "fri_22_feb_2026_a_n_b_y": {
     "message": "Fri, 22 Feb 2026           (%a, %d %b %Y)",
     "description": "Source: \"Fri, 22 Feb 2026           (%a, %d %b %Y)\""
@@ -938,6 +942,10 @@
   "show_folk_calendar_saying_for_today": {
     "message": "Show folk calendar saying for today",
     "description": "Source: \"Show folk calendar saying for today\""
+  },
+  "show_french_republican_calendar_date": {
+    "message": "Show French Republican calendar date",
+    "description": "Source: \"Show French Republican calendar date\""
   },
   "show_future_name_days_in_two_columns": {
     "message": "Show future name days in two columns",

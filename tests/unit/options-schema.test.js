@@ -38,8 +38,8 @@ describe("settings/schema.js structural integrity", () => {
         expect(Object.keys(seen).length).toBe(Object.keys(FIELDS).length);
     });
 
-    it("has 82 fields: 80 from earlier rounds, plus 'background-rotate-trigger' and 'background-rotate-mode' (rotation-on-open + random-order options)", () => {
-        expect(Object.keys(FIELDS).length).toBe(82);
+    it("has 83 fields: 82 from earlier rounds, plus 'show-french-republican' (French Republican alternate calendar)", () => {
+        expect(Object.keys(FIELDS).length).toBe(83);
     });
 
     it("no longer has a 'text-scale' field (dead code, superseded by Firefox's own per-origin Ctrl+/- zoom)", () => {

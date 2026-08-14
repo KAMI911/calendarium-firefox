@@ -757,7 +757,7 @@ export function renderNamedays(els, state, namedayData, now) {
 }
 
 export function renderAltCal(els, state, now) {
-    let anyEnabled = state["show-julian"] || state["show-hebrew"] || state["show-islamic"] || state["show-persian"];
+    let anyEnabled = state["show-julian"] || state["show-hebrew"] || state["show-islamic"] || state["show-persian"] || state["show-french-republican"];
     show(els.altcal, !!anyEnabled);
     if (!anyEnabled) return;
 
@@ -767,6 +767,7 @@ export function renderAltCal(els, state, now) {
     if (state["show-hebrew"])  lines.push(_("Hebrew date")  + ": " + Calendars.formatHebrew(y, m, d));
     if (state["show-islamic"]) lines.push(_("Islamic date") + ": " + Calendars.formatIslamic(y, m, d));
     if (state["show-persian"]) lines.push(_("Persian date") + ": " + Calendars.formatPersian(y, m, d));
+    if (state["show-french-republican"]) lines.push(_("French Republican date") + ": " + Calendars.formatFrenchRepublican(y, m, d));
     els.altcal.textContent = lines.join("\n");
 }
 

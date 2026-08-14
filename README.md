@@ -6,7 +6,8 @@ progress, New Year countdown), traditional month names, moon phase,
 sunrise/sunset (+ up to 3 extra cities), current weather for the primary
 location and each named extra city, Western and Chinese zodiac,
 equinox/solstice, name days, folk-calendar sayings, national holidays and
-seasonal periods, alternate calendar dates (Julian/Hebrew/Islamic/Persian),
+seasonal periods, alternate calendar dates (Julian/Hebrew/Islamic/Persian/
+French Republican),
 an optional search box, optional Wikipedia "on this day" / "article of the
 day" content, and optional Firefox Sync of most settings across devices.
 Every section is individually toggleable from the options page.
@@ -401,6 +402,36 @@ equivalent:
   `background-style`'s options — `popup.js` never calls `applyBackground()`
   or `applyFirefoxThemeBackground()` (see `src/popup.css`'s doc comment
   for why) — though it does apply `icon-size`/`bg-opacity`, as noted above.
+- `show-french-republican` (General > Alternate Calendars), a checkbox,
+  default `false`, with no desklet equivalent — the French Republican
+  calendar (used in France 1792–1805, and still computable for any date)
+  joins the existing Julian/Hebrew/Islamic/Persian alternate calendars,
+  rendered the same way on all three surfaces via `renderAltCal()` in
+  `src/lib/render.js` and `Calendars.formatFrenchRepublican()` in
+  `src/lib/calendars.js`. Unlike the other three alternate calendars
+  (all pure arithmetic once you have the Julian Day Number), this one is
+  deliberately **equinox-based**: historically, Year 1 began at the true
+  astronomical autumnal equinox of 22 September 1792, and each following
+  Republican year begins at the *next* true autumnal equinox — not at a
+  fixed day count. Whether a given Republican year gets 5 or 6 trailing
+  intercalary "Sansculottide" days therefore falls out naturally from
+  the real number of days between two consecutive true equinoxes (365 or
+  366), rather than from a separate leap-year formula. Some software
+  instead uses the later, arithmetic "Romme method" (a fixed leap-year
+  rule approximating the equinox) for simplicity, but that's a less
+  historically accurate convention — this implementation reuses
+  `solstice.js`'s existing Meeus-algorithm equinox calculator
+  (`Solstice.getForYear(year).autumn`) instead of reinventing an
+  approximation, and follows `solstice.js`'s own `getNext()` technique of
+  comparing local-midnight calendar days (not raw UTC instants) to stay
+  DST-safe. `formatFrenchRepublican()` returns e.g. `"3 Brumaire, an
+  234"` for an ordinary month day, or `"Jour de la Vertu, an 234"` for
+  one of the 5 (or 6, in a sextile year) intercalary days that follow
+  Fructidor, the 12th month. The calendar's own month and intercalary-day
+  names (Vendémiaire, Jour de la Vertu, etc.) are real historical French
+  terms and are **not** translated per interface language — same
+  principle as `localization.js`'s traditional month names, which are
+  documented there as cultural data displayed as-is.
 
 `src/options.js` renders the same four pages (General, Location,
 Wikipedia, Advanced) with the same sections as tabs, generically from that schema

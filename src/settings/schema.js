@@ -74,7 +74,7 @@ export const LAYOUT = {
     "section-moon":         { title: "Moon Phase", keys: ["show-moon", "show-moon-name", "show-moon-age", "show-moonrise"] },
     "section-sun":          { title: "Sunrise and Sunset", keys: ["show-sun", "show-solstice"] },
     "section-weather":      { title: "Weather", keys: ["show-weather", "weather-cache-hours"] },
-    "section-altcal":       { title: "Alternate Calendars", keys: ["show-julian", "show-hebrew", "show-islamic", "show-persian"] },
+    "section-altcal":       { title: "Alternate Calendars", keys: ["show-julian", "show-hebrew", "show-islamic", "show-persian", "show-french-republican"] },
     "section-location":     {
         title: "Location",
         keys: [
@@ -366,7 +366,8 @@ export const FIELDS = {
     "show-julian":  { id: "show-julian", type: "checkbox", default: false, description: "Show Julian calendar date" },
     "show-hebrew":  { id: "show-hebrew", type: "checkbox", default: false, description: "Show Hebrew calendar date" },
     "show-islamic": { id: "show-islamic", type: "checkbox", default: false, description: "Show Islamic calendar date" },
-    "show-persian": { id: "show-persian", type: "checkbox", default: false, description: "Show Persian calendar date" }
+    "show-persian": { id: "show-persian", type: "checkbox", default: false, description: "Show Persian calendar date" },
+    "show-french-republican": { id: "show-french-republican", type: "checkbox", default: false, description: "Show French Republican calendar date" }
 };
 
 /** Flat { "show-date": true, ... } default-value map, derived from FIELDS. */
